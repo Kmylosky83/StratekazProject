@@ -1,0 +1,162 @@
+.register-container {
+    min-height: 100vh;
+    padding: 80px 20px;
+    background-color: #f8f9fa;
+  }
+  
+  .auth-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .auth-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(236, 38, 143, 0.15);
+  }
+  
+  .auth-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .auth-subtitle {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+  }
+  
+  /* Tarjetas de selección con efectos mejorados */
+  .user-type-card {
+    border: 2px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+  }
+  
+  .user-type-card:hover {
+    border-color: #ec268f;
+    transform: translateY(-7px);
+    box-shadow: 0 15px 30px rgba(236, 38, 143, 0.15);
+  }
+  
+  .user-type-card:hover h6,
+  .user-type-card.selected h6 {
+    color: #ec268f;
+    transition: color 0.3s ease;
+  }
+  
+  .user-type-card.selected {
+    border-color: #ec268f;
+    box-shadow: 0 15px 30px rgba(236, 38, 143, 0.2);
+  }
+  
+  /* Iconos en tarjetas */
+  .user-type-card svg {
+    color: #6c757d;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .user-type-card:hover svg,
+  .user-type-card.selected svg {
+    color: #ec268f;
+    transform: scale(1.1);
+  }
+  
+  /* Overlay sutil al pasar el mouse */
+  .user-type-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(236, 38, 143, 0.05);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .user-type-card:hover::before {
+    opacity: 1;
+  }
+  
+  /* Botones de navegación */
+  .nav-buttons .btn {
+    transition: all 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .nav-buttons .btn-primary {
+    background-color: #ec268f;
+    border-color: #ec268f;
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .nav-buttons .btn-primary:hover:not(.disabled) {
+    background-color: #d61c7b;
+    border-color: #d61c7b;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(236, 38, 143, 0.2);
+  }
+  
+  .nav-buttons .btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: #ec268f;
+    border-color: #ec268f;
+  }
+  
+  /* Formularios */
+  .form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .form-control {
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    border-color: #dee2e6;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .form-control:focus {
+    border-color: #ec268f;
+    box-shadow: 0 0 0 0.25rem rgba(236, 38, 143, 0.15);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .auth-title { font-size: 1.3rem; }
+    .auth-subtitle { font-size: 0.9rem; }
+    .step h5 { font-size: 1.1rem; }
+  }
+  
+  /* Animación de la barra de progreso */
+  .progress-bar {
+    background-color: #ec268f;
+    transition: width 0.6s ease;
+  }
+  
+  /* Confeti animation */
+  @keyframes confetti-slow {
+    0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0); }
+    100% { transform: translate3d(25px, 105vh, 0) rotateX(360deg) rotateY(180deg); }
+  }
+  
+  @keyframes confetti-medium {
+    0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0); }
+    100% { transform: translate3d(100px, 105vh, 0) rotateX(100deg) rotateY(360deg); }
+  }
+  
+  @keyframes confetti-fast {
+    0% { transform: translate3d(0, 0, 0) rotateX(0) rotateY(0); }
+    100% { transform: translate3d(-50px, 105vh, 0) rotateX(10deg) rotateY(250deg); }
+  }
