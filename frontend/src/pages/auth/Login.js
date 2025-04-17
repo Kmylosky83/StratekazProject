@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
-import authService from '../../services/authService';
+import authService from '../../services/AuthService';
 import '../../styles/Login.css';
 
 const Login = () => {

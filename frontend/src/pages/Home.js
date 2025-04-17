@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/Home.css';
+import '../styles/handleInputChangeome.css';
 
 const Home = () => {
   const [activeModal, setActiveModal] = useState(null);

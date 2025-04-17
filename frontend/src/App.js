@@ -1,13 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/home'; 
-import Register from './pages/auth/Register';
-import Login from './pages/auth/Login';
+import Register from './pages/auth/register';
+import Login from './pages/auth/login';
 import CompleteProfile from './components/profile/CompleteProfile';
-import Dashboard from './pages/dashboard/Dashboard';
+import Dashboard from './pages/dashboard/dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
-import FichaFormacion from './components/dashboard/pilares/herramientas/Formacion/FichaFormacion';
-import CrearEditarFicha from './components/dashboard/pilares/herramientas/Formacion/FichaFormacion/CrearEditarFicha';
+import FichaFormacion from './components/dashboard/pilares/herramientas/formacion/FichaFormacion';
+import CrearEditarFicha from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/CrearEditarFicha';
+import VerFicha from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/VerFicha';
+import VistaActa from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/VistaActa';
+import ListaAsistencia from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/ListaAsistencia';
 import './App.css';
 
 const App = () => {
@@ -40,32 +43,32 @@ const App = () => {
           </ProtectedRoute>
         } />
         
-        <Route path="/dashboard/herramientas/formacion/ficha-formacion/crear" element={
+        <Route path="/dashboard/herramientas/formacion/FichaFormacion/crear" element={
           <ProtectedRoute>
             <CrearEditarFicha />
           </ProtectedRoute>
         } />
         
-        <Route path="/dashboard/herramientas/formacion/ficha-formacion/:id/editar" element={
+        <Route path="/dashboard/herramientas/formacion/FichaFormacion/:id/editar" element={
           <ProtectedRoute>
             <CrearEditarFicha />
           </ProtectedRoute>
         } />
 
         // En App.js
-        <Route path="/dashboard/herramientas/formacion/ficha-formacion/:id" element={
+        <Route path="/dashboard/herramientas/formacion/FichaFormacion/:id" element={
           <ProtectedRoute>
             <VerFicha />
           </ProtectedRoute>
         } />
 
-        <Route path="/dashboard/herramientas/formacion/ficha-formacion/:id/acta" element={
+        <Route path="/dashboard/herramientas/formacion/FichaFormacion/:id/acta" element={
           <ProtectedRoute>
             <VistaActa />
           </ProtectedRoute>
         } />
 
-        <Route path="/formacion/lista-asistencia/:enlace" element={<ListaAsistencia />} />
+        <Route path="/formacion/ListaAsistencia/:enlace" element={<ListaAsistencia />} />
         
         {/* Redirección para rutas no encontradas */}
         <Route path="*" element={<Navigate to="/" />} />

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faUserTie, faBuilding, faIndustry } from '@fortawesome/free-solid-svg-icons';
-import authService from '../../services/authService';
-import '../../styles/Register.css';
+import authService from '../../services/AuthService';
+import '../../styles/register.css';
 
 const Register = () => {
   const navigate = useNavigate();
