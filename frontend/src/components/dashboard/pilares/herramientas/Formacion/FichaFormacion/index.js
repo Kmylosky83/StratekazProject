@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Eye, Calendar, Share2, ArrowLeft } from 'lucide-react';
-import formacionService from '../../../../../../services/herramientas/Formacion';
+import formacionService from '../../../../../../services/herramientas/formacion';
 
 const FichaFormacion = () => {
   const navigate = useNavigate();

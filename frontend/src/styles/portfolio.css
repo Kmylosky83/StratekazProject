@@ -1,0 +1,79 @@
+/* Estilos generales */
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  /* Estilos para el header con parallax */
+  header.relative {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Animaciones para elementos que aparecen al hacer scroll */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Estilos para las tarjetas de servicios */
+  .transition-all {
+    transition: all 0.3s ease;
+  }
+  
+  /* Mejoras específicas para las secciones */
+  section.py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  
+  /* Estilos para las estadísticas */
+  .text-blue-600 {
+    color: #2563eb;
+  }
+  
+  /* Mejoras para dispositivos móviles */
+  @media (max-width: 768px) {
+    .flex-col {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .md\:flex-row {
+      flex-direction: column;
+    }
+    
+    .md\:grid-cols-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  /* Estilos para casos de éxito */
+  .bg-green-50 {
+    background-color: #f0fdf4;
+  }
+  
+  .text-green-800 {
+    color: #166534;
+  }
+  
+  /* Estilos para la sección de metodología */
+  .flex-1.relative {
+    position: relative;
+  }
+  
+  /* Efectos de hover */
+  a:hover {
+    opacity: 0.9;
+  }
+  
+  .hover\:shadow-md:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }

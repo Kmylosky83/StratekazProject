@@ -11,7 +11,7 @@ const InteligenciaNegocios = ({ userType }) => {
         <div className="tool-card">
           <div className="tool-icon-container">
             <div className="tool-icon" style={{ backgroundColor: '#f5a742' }}>
-              <i className="fas fa-certificate"></i>
+            <FontAwesomeIcon icon={faCertificate} />
             </div>
           </div>
           <h3 className="tool-title">Sistemas de Gestión</h3>

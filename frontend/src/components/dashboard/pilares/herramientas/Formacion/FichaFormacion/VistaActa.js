@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download } from 'lucide-react';
-import formacionService from '../../../../../../services/herramientas/Formacion';
+import formacionService from '../../../../../../services/herramientas/formacion';
 
 const VistaActa = () => {
   const { id } = useParams();

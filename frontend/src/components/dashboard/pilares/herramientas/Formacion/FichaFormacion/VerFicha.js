@@ -5,7 +5,7 @@ import {
   ArrowLeft, Edit, Trash2, FileText, Link as LinkIcon, 
   ExternalLink, Copy, Download, Upload, PlusCircle 
 } from 'lucide-react';
-import formacionService from '../../../../../../services/herramientas/Formacion';
+import formacionService from '../../../../../../services/herramientas/formacion';
 
 const VerFicha = () => {
   const { id } = useParams();

@@ -1,26 +1,77 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import './App.css';
+
+// Páginas principales
 import Home from './pages/home'; 
 import Register from './pages/auth/register';
 import Login from './pages/auth/login';
 import CompleteProfile from './components/profile/CompleteProfile';
 import Dashboard from './pages/dashboard/dashboard';
-import ProtectedRoute from './components/ProtectedRoute';
+
+// Componentes de formación
 import FichaFormacion from './components/dashboard/pilares/herramientas/formacion/FichaFormacion';
 import CrearEditarFicha from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/CrearEditarFicha';
 import VerFicha from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/VerFicha';
 import VistaActa from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/VistaActa';
 import ListaAsistencia from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/ListaAsistencia';
-import './App.css';
+
+// Componentes de estructura y seguridad
+import ProtectedRoute from './components/ProtectedRoute';
+
+// Portafolio de Servicios
+import PortfolioPage from './components/dashboard/portafolio/PortfolioPage';
+
+// Botón para cambiar tema
+const ThemeToggler = ({ isDarkTheme, toggleTheme }) => (
+  <button 
+    onClick={toggleTheme} 
+    className="theme-toggle-btn"
+    style={{
+      position: 'fixed',
+      top: '10px',
+      right: '10px',
+      zIndex: 1000,
+      backgroundColor: isDarkTheme ? '#00F5D4' : '#ec268f',
+      color: 'black',
+      border: 'none',
+      padding: '10px',
+      borderRadius: '5px',
+      cursor: 'pointer'
+    }}
+  >
+    {isDarkTheme ? 'Modo Claro' : 'Modo Oscuro'}
+  </button>
+);
 
 const App = () => {
+  // Estado para manejar el tema
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
+
+  // Aplicar/quitar clase de tema oscuro
+  useEffect(() => {
+    if (isDarkTheme) {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
+  }, [isDarkTheme]);
+
+  // Cambiar el tema
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
+
   return (
     <BrowserRouter>
+      <ThemeToggler isDarkTheme={isDarkTheme} toggleTheme={toggleTheme} />
+
       <Routes>
         {/* Rutas públicas */}
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/portfolio" element={<PortfolioPage />} />
         
         {/* Rutas protegidas */}
         <Route path="/complete-profile" element={
@@ -29,7 +80,7 @@ const App = () => {
           </ProtectedRoute>
         } />
         
-        {/* Dashboard y rutas anidadas */}
+        {/* Dashboard */}
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <Dashboard />
@@ -55,7 +106,6 @@ const App = () => {
           </ProtectedRoute>
         } />
 
-        // En App.js
         <Route path="/dashboard/herramientas/formacion/FichaFormacion/:id" element={
           <ProtectedRoute>
             <VerFicha />

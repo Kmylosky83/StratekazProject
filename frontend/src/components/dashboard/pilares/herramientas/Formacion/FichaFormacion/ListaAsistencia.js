@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import SignaturePad from 'react-signature-canvas';
-import formacionService from '../../../../../../services/herramientas/Formacion';
+import formacionService from '../../../../../../services/herramientas/formacion';
 
 const ListaAsistencia = () => {
   const { enlace } = useParams();

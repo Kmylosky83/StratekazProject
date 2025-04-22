@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faUser, faBuilding, faPhone, faMapMarkerAlt, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import '../../styles/CompleteProfile.css';
-import authService from '../../services/authService';
+import authService from '../../services/AuthService';
 
 const CompleteProfile = () => {
   const navigate = useNavigate();
