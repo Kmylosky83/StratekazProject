@@ -8,9 +8,9 @@ const CTASection = () => {
     <section className="cta-section py-5">
       <div className="container">
         <div className="cta-content">
-          <h2 className="cta-title">¿Estás listo para el siguiente nivel?</h2>
-          <p className="cta-text">"No diseñamos sistemas de gestión. Desatamos el potencial de tu empresa. Únete a StrateKaz."</p>
-          <Link to="/register" className="btn btn-cta">Comenzar Ahora</Link>
+          <h2 className="titulo-seccion">¿Estás listo para el siguiente nivel?</h2>
+          <p className="subtitulo-seccion">"No diseñamos sistemas de gestión. Desatamos el potencial de tu empresa. Únete a StrateKaz."</p>
+          <Link to="/register" className="boton-cta mt-4">Comenzar Ahora</Link>
         </div>
       </div>
     </section>

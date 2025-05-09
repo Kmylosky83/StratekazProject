@@ -5,21 +5,6 @@
   overflow: hidden;
 }
 
-.hero-title {
-  padding: 20px;
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: var(--text-color);
-  margin-bottom: 1.5rem;
-  line-height: 1.2;
-}
-
-.hero-text {
-  font-size: 1.25rem;
-  color: var(--text-muted);
-  margin-bottom: 2rem;
-}
-
 .hero-buttons .btn {
   padding: 0.75rem 1.5rem;
   font-weight: 600;
@@ -32,21 +17,11 @@
   padding-top: 2rem;
 }
 
-.stat-item {
-  text-align: center;
-}
-
 .stat-number {
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--primary-color);
   margin-bottom: 0.5rem;
-}
-
-.stat-text {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin-bottom: 0;
 }
 
 /* Dashboard en la sección Hero */
@@ -98,51 +73,8 @@
 
 /* ----- SECCIÓN NORMATIVAS ----- */
 .normativas-section {
+  padding: 4rem 0;
   background-color: var(--light-bg);
-  padding: 3rem 0;
-}
-
-.section-title {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: var(--text-color);
-  margin-bottom: 1rem;
-}
-
-.section-subtitle {
-  font-size: 1.125rem;
-  color: var(--secondary-color);
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.normativa-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: var(--card-shadow);
-  transition: all 0.3s ease;
-  height: 100%;
-}
-
-.normativa-card:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--hover-shadow);
-}
-
-.normativa-icon {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  font-size: 3rem;
-  color: white;
 }
 
 .iso-icon {
@@ -162,39 +94,10 @@
   background-color: #7a1b74;
 }
 
-.normativa-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-color);
-  margin-bottom: 1rem;
-}
-
-.normativa-card p {
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
-
 /* ----- SECCIÓN CÓMO FUNCIONA ----- */
 .como-funciona-section {
   padding: 4rem 0;
   background-color: var(--white);
-}
-
-.paso-card {
-  position: relative;
-  background-color: white;
-  padding: 3rem 1.5rem 2rem;
-  border-radius: 1rem;
-  box-shadow: var(--card-shadow);
-  text-align: center;
-  transition: all 0.3s ease;
-  height: 100%;
-}
-
-.paso-card:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--hover-shadow);
 }
 
 .paso-number {
@@ -214,103 +117,10 @@
   font-size: 1.25rem;
 }
 
-.paso-icon {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem;
-  font-size: 2rem;
-}
-
-.paso-card:nth-child(1) .paso-icon {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-.paso-card:nth-child(2) .paso-icon {
-  background-color: var(--accent-color);
-  color: var(--black);
-}
-
-.paso-card:nth-child(3) .paso-icon {
-  background-color: var(--black);
-  color: white;
-}
-
-.paso-card h4 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--text-color);
-}
-
-.paso-card p {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-}
-
 /* ----- SECCIÓN CARACTERÍSTICAS ----- */
 .caracteristicas-section {
   padding: 4rem 0;
   background-color: var(--light-bg);
-}
-
-.caracteristica-card {
-  background-color: white;
-  border-radius: 1rem;
-  padding: 2rem;
-  height: 100%;
-  text-align: center;
-  transition: all 0.3s ease;
-  box-shadow: var(--card-shadow);
-}
-
-.caracteristica-card:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--hover-shadow);
-}
-
-.caracteristica-icon {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin: 0 auto 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  background-color: var(--light-bg);
-}
-
-.caracteristica-card:nth-child(1) .caracteristica-icon {
-  color: var(--primary-color);
-}
-
-.caracteristica-card:nth-child(2) .caracteristica-icon {
-  color: var(--accent-color);
-}
-
-.caracteristica-card:nth-child(3) .caracteristica-icon {
-  color: var(--black);
-}
-
-.caracteristica-card:nth-child(4) .caracteristica-icon {
-  color: #7a1b74;
-}
-
-.caracteristica-card h4 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: var(--text-color);
-}
-
-.caracteristica-card p {
-  color: var(--text-muted);
-  font-size: 0.9rem;
 }
 
 /* ----- SECCIÓN CTA ----- */

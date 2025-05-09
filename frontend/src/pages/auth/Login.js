@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
-import authService from '../../services/AuthService';
+import authService from '../../services/auth/AuthService';
 import '../../styles/login.css';
+import { AuthContext } from '../../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,6 +16,9 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Obtener funciones del contexto de autenticación si existe
+  const authContext = useContext(AuthContext);
 
   // Mostrar mensaje de éxito si viene redirigido del registro
   const successMessage = location.state?.success || '';
@@ -62,21 +66,52 @@ const Login = () => {
     setIsLoading(true);
     
     try {
+      console.log('Enviando datos de login:', formData);
       const response = await authService.login(formData);
+      console.log('Respuesta de login:', response);
+      
       if (response.success) {
+        console.log('Login exitoso, token recibido:', response.token);
+        // Añadir estos logs para ver el contenido exacto
+        console.log('Datos completos del usuario:', JSON.stringify(response.user));
+        console.log('Valor de profile_completed:', response.user.profile_completed);
+        console.log('Tipo de profile_completed:', typeof response.user.profile_completed);
+        
         // Guardar token en localStorage o sessionStorage según remember
         if (formData.remember) {
           localStorage.setItem('authToken', response.token);
+          localStorage.setItem('user', JSON.stringify(response.user));
+          console.log('Token y usuario guardados en localStorage');
         } else {
           sessionStorage.setItem('authToken', response.token);
+          sessionStorage.setItem('user', JSON.stringify(response.user));
+          console.log('Token y usuario guardados en sessionStorage');
         }
         
-        // Redireccionar al dashboard
-        navigate('/dashboard');
+        // Actualizar el contexto si existe
+        if (authContext) {
+          if (authContext.login) {
+            authContext.login(response);
+          }
+          if (authContext.updateProfileStatus) {
+            authContext.updateProfileStatus(response.user.profile_completed === true);
+          }
+        }
+        
+        // Verificación más robusta
+        if (response.user.profile_completed === true) {
+          console.log('Perfil completo, redirigiendo al dashboard...');
+          navigate('/dashboard');
+        } else {
+          console.log('Perfil incompleto, redirigiendo a completar perfil...');
+          navigate('/complete-profile');
+        }
       } else {
+        console.error('Error en login:', response.message);
         setErrors({ general: response.message || 'Credenciales inválidas' });
       }
     } catch (error) {
+      console.error('Error de conexión:', error);
       setErrors({ general: 'Error de conexión. Inténtalo más tarde.' });
     } finally {
       setIsLoading(false);

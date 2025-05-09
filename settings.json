@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": ["${workspaceFolder}"],
+    "python.linting.pylintEnabled": false,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingModuleSource": "none"
+    }
+}

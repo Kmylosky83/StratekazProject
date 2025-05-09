@@ -1,5 +1,5 @@
-/* Ubicación: frontend/src/styles/variables.css */
 :root {
+    /* Variables de color existentes */
     --primary-color: #ec268f;
     --primary-light: #f15ba5;
     --primary-dark: #d11f7d;
@@ -16,5 +16,562 @@
     --warning-color: #ffc107;
     --card-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.05);
     --hover-shadow: 0 0.5rem 1rem rgba(236, 38, 143, 0.2);
-    --box-shadow-sm:#d11f7d;
+    --box-shadow-sm: #d11f7d;
+    
+    /* Clases tipográficas reutilizables */
+    
+    .titulo-hero {
+        padding: 20px;
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+    }
+
+    .subtitulo-hero {
+        font-size: 1.25rem;
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+    }
+    
+    .titulo-seccion {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .subtitulo-seccion {
+        font-size: 1.125rem;
+        color: var(--secondary-color);
+        max-width: 1000px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    
+    .titulo-tarjeta {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-color);
+        margin-bottom: 1rem;
+    }
+    
+    .subtitulo-tarjeta {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        text-align: center;
+    }
+    
+    /* Clases para texto base y notas */
+    .texto-base {
+        font-size: 1rem;
+        color: var(--secondary-color);
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+    
+    .texto-nota {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+        margin-bottom: 0.5rem;
+        font-style: italic;
+    }   
+    
+    /* Media queries para responsividad */
+    @media (max-width: 991px) {
+        .titulo-hero {
+            font-size: 2.5rem;
+        }
+        
+        .titulo-seccion {
+            font-size: 2rem;
+        }
+    }
+    
+    @media (max-width: 767px) {
+        .titulo-hero {
+            font-size: 2rem;
+        }
+        
+        .subtitulo-hero {
+            font-size: 1rem;
+        }
+        
+        .titulo-tarjeta {
+            font-size: 1.25rem;
+        }
+    }
 }
+
+/* TARJETAS ESTÁNDAR */
+.tarjeta {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    height: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: var(--card-shadow);
+}
+
+.tarjeta:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--hover-shadow);
+}
+
+/* TARJETAS DE SELECCIÓN */
+.tarjeta-seleccion {
+    border: 2px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+  }
+  
+  .tarjeta-seleccion:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-7px);
+    box-shadow: 0 15px 30px rgba(236, 38, 143, 0.15);
+  }
+  
+  .tarjeta-seleccion:hover h6,
+  .tarjeta-seleccion.selected h6 {
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+  }
+  
+  .tarjeta-seleccion.selected {
+    border-color: var(--primary-color);
+    box-shadow: 0 15px 30px rgba(236, 38, 143, 0.2);
+  }
+  
+  .tarjeta-seleccion svg,
+  .tarjeta-seleccion i {
+    color: #6c757d;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .tarjeta-seleccion:hover svg,
+  .tarjeta-seleccion:hover i,
+  .tarjeta-seleccion.selected svg,
+  .tarjeta-seleccion.selected i {
+    color: var(--primary-color);
+    transform: scale(1.1);
+  }
+  
+  .tarjeta-seleccion::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(236, 38, 143, 0.05);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .tarjeta-seleccion:hover::before {
+    opacity: 1;
+  }
+
+/* COMBINACIONES ESTÁNDAR DE ICONOS */
+
+/* Tamaño estándar (80px) */
+.icono-estandar-primario {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background-color: var(--light-bg);
+    color: var(--primary-color);
+}
+/*este es del home normatrivas*/
+.icono-estandar-acento {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background-color: var(--light-bg);
+    color: var(--white); 
+}
+
+.icono-estandar-rosa {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background-color: var(--primary-color);
+    color: var(--light-bg);
+}
+
+.icono-estandar-gris {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background-color: var(--light-bg);
+    color: var(--primary-color);
+}
+
+/* Tamaño pequeño (40px) */
+.icono-pequeno-primario {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    background-color: var(--light-bg);
+    color: var(--primary-color);
+}
+
+.icono-pequeno-acento {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    background-color: var(--light-bg);
+    color: var(--accent-color);
+}
+
+.icono-pequeno-rosa {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    background-color: var(--primary-color);
+    color: var(--light-bg);
+}
+
+.icono-pequeno-gris {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    background-color: var(--light-bg);
+    color: var(--primary-color);
+}
+
+/* Tamaño grande (100px) */
+.icono-grande-primario {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    background-color: var(--light-bg);
+    color: var(--primary-color);
+}
+
+.icono-grande-acento {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    background-color: var(--light-bg);
+    color: var(--accent-color);
+}
+
+.icono-grande-rosa {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    background-color: var(--primary-color);
+    color: var(--light-bg);
+}
+
+.icono-grande-gris {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    background-color: var(--light-bg);
+    color: var(--primary-color);
+}
+
+.icono-suelto-a {
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;    
+    color: var(--text-muted);
+}
+
+.icono-suelto-b {
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;    
+    color: var(--black);
+}
+
+/* BOTONES ESTÁNDAR */
+.boton-primario {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.boton-primario:hover {
+    background-color: var(--primary-dark);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.boton-secundario {
+    background-color: transparent;
+    color: var(--secondary-color);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: 1px solid var(--secondary-color);
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.boton-secundario:hover {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.boton-cta {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 2rem;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border: none;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.boton-cta:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    color: white;
+}
+
+.boton-texto {
+    background-color: transparent;
+    color: var(--primary-color);
+    padding: 0.5rem 0.75rem;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.boton-texto:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+.boton-grande {
+    padding: 0.875rem 2rem;
+    font-size: 1.1rem;
+}
+
+.boton-pequeno {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.tabs-wrapper {
+    display: inline-flex;
+    background-color: var(--light-bg);
+    border-radius: 0.5rem;
+    padding: 0.25rem;
+    gap: 0.5rem;
+}
+
+.tabs-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+
+.tab-button {
+    padding: 0.6rem 1.25rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+}
+
+.tab-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.tab-button.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Botón para tarjetas de selección */
+.boton-tarjeta {
+    background-color: transparent;
+    color: var(--secondary-color);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: 1px solid var(--secondary-color);
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none;
+    opacity: 0.7;
+}
+
+.boton-tarjeta:hover:not(.disabled) {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    opacity: 0.9;
+}
+
+.boton-tarjeta.activo {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+    opacity: 1;
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(236, 38, 143, 0.15);
+}
+
+.boton-tarjeta:disabled,
+.boton-tarjeta.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.password-strength {
+    margin-bottom: 5px;
+  }
+  
+  .strength-badge {
+    display: inline-block;
+    padding: 2px a8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  
+  .strength-badge.very-weak {
+    background-color: #f8d7da;
+    color: #842029;
+  }
+  
+  .strength-badge.weak {
+    background-color: #fff3cd;
+    color: #664d03;
+  }
+  
+  .strength-badge.medium {
+    background-color: #cff4fc;
+    color: #055160;
+  }
+  
+  .strength-badge.strong {
+    background-color: #d1e7dd;
+    color: #0f5132;
+  }
+  
+  .strength-badge.very-strong {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .password-checklist {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 5px;
+    font-size: 0.8rem;
+  }
+  
+  .password-checklist li {
+    margin-bottom: 2px;
+  }
+  
+  .password-checklist li.valid {
+    color: #0f5132;
+  }
+  
+  .password-checklist li.invalid {
+    color: #842029;
+  }
+

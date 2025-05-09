@@ -9,6 +9,7 @@ from .serializers import UserSerializer
 from .models import User
 
 @api_view(['GET'])
+@permission_classes([AllowAny])  # Añadir esta línea
 def api_overview(request):
     """Vista de prueba para verificar que el módulo funciona"""
     return Response({"message": "Auth Module API funcionando correctamente"})
@@ -25,21 +26,42 @@ def register_user(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login_user(request):
+    # Obtener datos del request
     username = request.data.get('username')
+    email = request.data.get('email')
     password = request.data.get('password')
     
-    user = authenticate(username=username, password=password)
+    # Debug: imprime los datos recibidos
+    print(f"Login attempt: username={username}, email={email}")
+    
+    # Intentar autenticación con username
+    user = None
+    if username:
+        user = authenticate(username=username, password=password)
+    
+    # Si no hay username o falló la autenticación, intentar con email
+    if not user and email:
+        try:
+            user_obj = User.objects.get(email=email)
+            user = authenticate(username=user_obj.username, password=password)
+        except User.DoesNotExist:
+            pass
+    
     if user:
         token, _ = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
-            'user_id': user.pk,
-            'user_type': user.user_type
+            'user': {
+                'id': user.pk,
+                'username': user.username,
+                'email': user.email,
+                'user_type': user.user_type,
+                'profile_completed': user.profile_completed,
+                'first_name': user.first_name,
+                'last_name': user.last_name
+            }
         })
     return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
-
-# auth_module/views.py
-# Añade estas nuevas vistas
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -66,18 +88,44 @@ def request_password_reset(request):
         # Por seguridad, no revelamos si el email existe o no
         return Response({"message": "Si el correo existe, recibirás instrucciones para restablecer tu contraseña"})
 
-# auth_module/views.py
-# Añadir esta vista:
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def check_profile_status(request):
     """Verifica si el perfil del usuario está completo"""
-    user = request.user
-    return Response({
-        'profile_completed': user.profile_completed,
-        'user_type': user.user_type
-    })
+    try:
+        user = request.user
+        response_data = {
+            'id': user.pk,
+            'username': user.username,
+            'email': user.email,
+            'user_type': user.user_type,
+            'profile_completed': user.profile_completed,
+            'first_name': user.first_name,
+            'last_name': user.last_name
+        }
+        
+        # Añadir campos específicos según el tipo de usuario
+        if user.user_type == 'professional':
+            response_data.update({
+                'profession': user.profession,
+                'phone': user.phone,
+                'city': user.city,
+                'department': user.department
+            })
+        else:
+            response_data.update({
+                'company_name': user.company_name,
+                'nit': user.nit,
+                'industry': user.industry,
+                'contact_position': user.contact_position,
+                'phone': user.phone,
+                'city': user.city,
+                'department': user.department
+            })
+            
+        return Response(response_data)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -90,4 +138,43 @@ def complete_profile(request):
         # Marcar el perfil como completo
         serializer.save(profile_completed=True)
         return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])  # Usar AllowAny para depuración
+def debug_auth(request):
+    """Vista de depuración para verificar la autenticación"""
+    auth_header = request.META.get('HTTP_AUTHORIZATION', '')
+    is_authenticated = request.user.is_authenticated
+    
+    data = {
+        'authenticated': is_authenticated,
+        'auth_header': auth_header,
+        'headers': dict(request.headers),
+    }
+    
+    if is_authenticated:
+        data.update({
+            'username': request.user.username,
+            'email': request.user.email,
+            'user_type': request.user.user_type
+        })
+    
+    return Response(data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def super_admin_dashboard(request):
+    """Vista del panel de control para Super Administrador"""
+    if request.user.user_type != 'super_admin':
+        return Response({'error': 'Acceso no autorizado'}, status=status.HTTP_403_FORBIDDEN)
+    
+    # Obtener estadísticas básicas
+    stats = {
+        'total_users': User.objects.count(),
+        'professional_users': User.objects.filter(user_type='professional').count(),
+        'consultant_companies': User.objects.filter(user_type='consultant_company').count(),
+        'direct_companies': User.objects.filter(user_type='direct_company').count(),
+    }
+    
+    return Response(stats)

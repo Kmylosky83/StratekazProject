@@ -10,18 +10,18 @@ const HeroSection = () => {
         <div className="row align-items-center">
           {/* Columna izquierda */}
           <div className="col-lg-6 mb-5 mb-lg-0">
-            <h1 className="hero-title">Strateka</h1>
-            <p className="hero-text">
+            <h1 className="titulo-hero">Stratek</h1>
+            <p className="subtitulo-hero">
               Gestiona tu organización de manera inteligente, diseña, implementa y audita, 
               Sistemas Integrados de Gestión, Seguridad y Salud en el Trabajo y mucho mas. 
               "Desde cualquier lugar del mundo".
             </p>
             
             <div className="hero-buttons mb-5">
-              <Link to="/register" className="btn btn-primary btn-lg me-sm-3 mb-3 mb-sm-0">
+              <Link to="/register" className="boton-primario boton-grande me-3 mb-3 mb-sm-0">
                 Comenzar Ahora
               </Link>
-              <Link to="/portfolio" className="btn btn-outline-secondary btn-lg">
+              <Link to="/portfolio" className="boton-secundario boton-grande">
                 Portafolio de Servicios
               </Link>
             </div>
@@ -32,19 +32,19 @@ const HeroSection = () => {
                 <div className="col-4">
                   <div className="stat-item">
                     <h3 className="stat-number">40%</h3>
-                    <p className="stat-text">Menos tiempo de implementación</p>
+                    <p className="texto-base">Menos tiempo de implementación</p>
                   </div>
                 </div>
                 <div className="col-4">
                   <div className="stat-item">
                     <h3 className="stat-number">95%</h3>
-                    <p className="stat-text">Reducción de errores</p>
+                    <p className="texto-base">Reducción de errores</p>
                   </div>
                 </div>
                 <div className="col-4">
                   <div className="stat-item">
                     <h3 className="stat-number">100%</h3>
-                    <p className="stat-text">Cumplimiento normativo</p>
+                    <p className="texto-base">Cumplimiento normativo</p>
                   </div>
                 </div>
               </div>

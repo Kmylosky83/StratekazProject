@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>StratekazProject</title>
+</head>
+<body>
+    <div id="root"></div>
+    <!-- Cargar React desde CDN para pruebas -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script>
+        // Mensaje de prueba
+        const element = React.createElement('h1', {}, 'La aplicación Stratekaz está funcionando');
+        ReactDOM.render(element, document.getElementById('root'));
+    </script>
+</body>
+</html>

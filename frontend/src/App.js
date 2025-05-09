@@ -8,9 +8,12 @@ import Register from './pages/auth/register';
 import Login from './pages/auth/login';
 import CompleteProfile from './components/profile/CompleteProfile';
 import Dashboard from './pages/dashboard/dashboard';
+import PortfolioPage from './pages/PortfolioPage';
+import { AuthProvider } from './context/AuthContext';
 
 // Componentes de formación
-import FichaFormacion from './components/dashboard/pilares/herramientas/formacion/FichaFormacion';
+import FormacionIndex from './components/dashboard/pilares/herramientas/formacion/index';
+import FichaFormacion from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/index';
 import CrearEditarFicha from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/CrearEditarFicha';
 import VerFicha from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/VerFicha';
 import VistaActa from './components/dashboard/pilares/herramientas/formacion/FichaFormacion/VistaActa';
@@ -18,9 +21,6 @@ import ListaAsistencia from './components/dashboard/pilares/herramientas/formaci
 
 // Componentes de estructura y seguridad
 import ProtectedRoute from './components/ProtectedRoute';
-
-// Portafolio de Servicios
-import PortfolioPage from './components/dashboard/portafolio/PortfolioPage';
 
 // Botón para cambiar tema
 const ThemeToggler = ({ isDarkTheme, toggleTheme }) => (
@@ -63,67 +63,76 @@ const App = () => {
   };
 
   return (
-    <BrowserRouter>
-      <ThemeToggler isDarkTheme={isDarkTheme} toggleTheme={toggleTheme} />
+    <AuthProvider>
+      <BrowserRouter>
+        <ThemeToggler isDarkTheme={isDarkTheme} toggleTheme={toggleTheme} />
 
-      <Routes>
-        {/* Rutas públicas */}
-        <Route path="/" element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/portfolio" element={<PortfolioPage />} />
-        
-        {/* Rutas protegidas */}
-        <Route path="/complete-profile" element={
-          <ProtectedRoute>
-            <CompleteProfile />
-          </ProtectedRoute>
-        } />
-        
-        {/* Dashboard */}
-        <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
+        <Routes>
+          {/* Rutas públicas */}
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/portfolio" element={<PortfolioPage />} /> {/* Ruta para el portafolio */}
+          
+          {/* Rutas protegidas */}
+          <Route path="/complete-profile" element={
+            <ProtectedRoute>
+              <CompleteProfile />
+            </ProtectedRoute>
+          } />
+          
+          {/* Dashboard */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
 
-        {/* Rutas de herramientas/formación */}
-        <Route path="/dashboard/herramientas/formacion/FichaFormacion" element={
-          <ProtectedRoute>
-            <FichaFormacion />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/dashboard/herramientas/formacion/FichaFormacion/crear" element={
-          <ProtectedRoute>
-            <CrearEditarFicha />
-          </ProtectedRoute>
-        } />
-        
-        <Route path="/dashboard/herramientas/formacion/FichaFormacion/:id/editar" element={
-          <ProtectedRoute>
-            <CrearEditarFicha />
-          </ProtectedRoute>
-        } />
+          {/* Página principal de Formación */}
+          <Route path="/dashboard/herramientas/formacion" element={
+            <ProtectedRoute>
+              <FormacionIndex />
+            </ProtectedRoute>
+          } />
 
-        <Route path="/dashboard/herramientas/formacion/FichaFormacion/:id" element={
-          <ProtectedRoute>
-            <VerFicha />
-          </ProtectedRoute>
-        } />
+          {/* Rutas de herramientas/formación */}
+          <Route path="/dashboard/herramientas/formacion/FichaFormacion" element={
+            <ProtectedRoute>
+              <FichaFormacion />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/dashboard/herramientas/formacion/FichaFormacion/crear" element={
+            <ProtectedRoute>
+              <CrearEditarFicha />
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/dashboard/herramientas/formacion/FichaFormacion/:id/editar" element={
+            <ProtectedRoute>
+              <CrearEditarFicha />
+            </ProtectedRoute>
+          } />
 
-        <Route path="/dashboard/herramientas/formacion/FichaFormacion/:id/acta" element={
-          <ProtectedRoute>
-            <VistaActa />
-          </ProtectedRoute>
-        } />
+          <Route path="/dashboard/herramientas/formacion/FichaFormacion/:id" element={
+            <ProtectedRoute>
+              <VerFicha />
+            </ProtectedRoute>
+          } />
 
-        <Route path="/formacion/ListaAsistencia/:enlace" element={<ListaAsistencia />} />
-        
-        {/* Redirección para rutas no encontradas */}
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/dashboard/herramientas/formacion/FichaFormacion/:id/acta" element={
+            <ProtectedRoute>
+              <VistaActa />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/formacion/ListaAsistencia/:enlace" element={<ListaAsistencia />} />
+          
+          {/* Redirección para rutas no encontradas */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 

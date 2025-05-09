@@ -85,25 +85,25 @@ const NormativasSection = () => {
   return (
     <section className="normativas-section py-5">
       <div className="container">
-        <div className="text-center mb-5">
-          <h2 className="normativas-section-title">Soluciones Integrales</h2>
-          <p className="section-subtitle mb-5">
+        <div className="row g-4">
+          <h2 className="titulo-seccion">Soluciones Integrales</h2>
+          <p className="subtitulo-seccion">
             Plataforma tecnologica diseñada para gestionar diferentes normativas nacionales e internacionales
           </p>
           
           <div className="row justify-content-center g-4">
-            {normativas.map((normativa) => (
-              <div className="col-6 col-md-3" key={normativa.id}>
-                <div className="normativa-card" onClick={() => handleShowModal(normativa)}>
-                  <div className={`normativa-icon ${normativa.iconClass}`}>
-                    <i className={`fas ${normativa.icon}`}></i>
+              {normativas.map((normativa) => (
+                <div className="col-6 col-md-3" key={normativa.id}>
+                  <div className="tarjeta" onClick={() => handleShowModal(normativa)}>
+                    <div className={`icono-estandar-acento ${normativa.iconClass}`}>
+                        <i className={`fas ${normativa.icon}`}></i>
+                      </div>                   
+                      <h4 className="titulo-tarjeta">{normativa.id.toUpperCase()}</h4>
+                      <p className="subtitulo-tarjeta">{normativa.description.substring(0, 100)}...</p>            
                   </div>
-                  <div className="normativa-name">{normativa.id.toUpperCase()}</div>
-                  <p>{normativa.description.substring(0, 100)}...</p>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>          
         </div>
       </div>
 

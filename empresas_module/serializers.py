@@ -4,10 +4,13 @@ from .models import Empresa, RolOrganizacional
 class EmpresaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Empresa
-        fields = '__all__'
-        read_only_fields = ['creada_por', 'fecha_creacion']
+        fields = ['id', 'nombre', 'nit', 'direccion', 'ciudad', 'departamento', 
+                 'telefono', 'sector', 'sitio_web', 'fecha_creacion', 'activa']
+        read_only_fields = ['id', 'fecha_creacion']
 
 class RolOrganizacionalSerializer(serializers.ModelSerializer):
     class Meta:
         model = RolOrganizacional
-        fields = '__all__'
+        fields = ['id', 'usuario', 'empresa', 'rol', 'fecha_asignacion', 
+                 'activo', 'permisos_especificos']
+        read_only_fields = ['id', 'fecha_asignacion']

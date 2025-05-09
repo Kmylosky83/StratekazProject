@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+</head>
+<body>
+    <h1>Página de login de administración</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="username">Usuario:</label>
+        <input type="text" name="username" id="username">
+        <br>
+        <label for="password">Contraseña:</label>
+        <input type="password" name="password" id="password">
+        <br>
+        <button type="submit">Iniciar sesión</button>
+    </form>
+</body>
+</html>

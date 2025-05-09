@@ -1,94 +1,18 @@
 .register-container {
-    min-height: 100vh;
-    padding: 80px 20px;
-    background-color: #f8f9fa;
-  }
+  min-height: 100vh;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+}
   
   .auth-card {
     background-color: white;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .auth-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(236, 38, 143, 0.15);
-  }
-  
-  .auth-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 8px;
-  }
-  
-  .auth-subtitle {
-    color: #6c757d;
-    font-size: 0.95rem;
-    margin-bottom: 24px;
-  }
-  
-  /* Tarjetas de selección con efectos mejorados */
-  .user-type-card {
-    border: 2px solid #dee2e6;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    height: 100%;
-    position: relative;
-  }
-  
-  .user-type-card:hover {
-    border-color: #ec268f;
-    transform: translateY(-7px);
-    box-shadow: 0 15px 30px rgba(236, 38, 143, 0.15);
-  }
-  
-  .user-type-card:hover h6,
-  .user-type-card.selected h6 {
-    color: #ec268f;
-    transition: color 0.3s ease;
-  }
-  
-  .user-type-card.selected {
-    border-color: #ec268f;
-    box-shadow: 0 15px 30px rgba(236, 38, 143, 0.2);
-  }
-  
-  /* Iconos en tarjetas */
-  .user-type-card svg {
-    color: #6c757d;
-    transition: color 0.3s ease, transform 0.3s ease;
-  }
-  
-  .user-type-card:hover svg,
-  .user-type-card.selected svg {
-    color: #ec268f;
-    transform: scale(1.1);
-  }
-  
-  /* Overlay sutil al pasar el mouse */
-  .user-type-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(236, 38, 143, 0.05);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-  
-  .user-type-card:hover::before {
-    opacity: 1;
-  }
-  
+    width: 100%;
+    margin: 0 auto;
+  }  
+      
   /* Botones de navegación */
   .nav-buttons .btn {
     transition: all 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faUser, faBuilding, faPhone, faMapMarkerAlt, faBriefcase } from '@fortawesome/free-solid-svg-icons';
-import '../../styles/CompleteProfile.css';
-import authService from '../../services/AuthService';
+import authService from '../../services/auth/AuthService';
+import { AuthContext } from '../../context/AuthContext';
 
 const CompleteProfile = () => {
+  console.log("CompleteProfile: Componente montado");
   const navigate = useNavigate();
+  const { updateProfileStatus } = React.useContext(AuthContext);
   const [userType, setUserType] = useState('');
   const [userData, setUserData] = useState({
     // Campos comunes
@@ -30,13 +32,20 @@ const CompleteProfile = () => {
   const [errors, setErrors] = useState({});
   const [isSaving, setIsSaving] = useState(false);
 
-  // Cargar datos del usuario al montar el componente
   useEffect(() => {
+    console.log("CompleteProfile: useEffect ejecutándose");
+    
     const fetchUserData = async () => {
+      console.log("CompleteProfile: Iniciando fetchUserData");
       setIsLoading(true);
       try {
+        console.log("CompleteProfile: Llamando a authService.getUserProfile()");
         const response = await authService.getUserProfile();
+        console.log("CompleteProfile: Respuesta recibida", response);
+        
         if (response.success) {
+          console.log("CompleteProfile: Datos del usuario recibidos correctamente");
+          console.log("CompleteProfile: Tipo de usuario:", response.data.user_type);
           setUserType(response.data.user_type);
           setUserData({
             phone: response.data.phone || '',
@@ -54,12 +63,15 @@ const CompleteProfile = () => {
             contactPosition: response.data.contact_position || ''
           });
         } else {
+          console.error("CompleteProfile: Error en la respuesta", response);
           setErrors({ general: 'No se pudo cargar la información del perfil' });
         }
       } catch (error) {
+        console.error("CompleteProfile: Error al obtener datos del usuario", error);
         setErrors({ general: 'Error de conexión. Inténtalo más tarde.' });
       } finally {
         setIsLoading(false);
+        console.log("CompleteProfile: fetchUserData completado");
       }
     };
     
@@ -73,7 +85,6 @@ const CompleteProfile = () => {
       [name]: value
     });
     
-    // Limpiar error específico
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -85,12 +96,10 @@ const CompleteProfile = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    // Validar campos comunes
     if (!userData.phone) newErrors.phone = 'El teléfono es obligatorio';
     if (!userData.city) newErrors.city = 'La ciudad es obligatoria';
     if (!userData.department) newErrors.department = 'El departamento es obligatorio';
     
-    // Validaciones específicas según tipo de usuario
     if (userType === 'professional') {
       if (!userData.firstName) newErrors.firstName = 'El nombre es obligatorio';
       if (!userData.lastName) newErrors.lastName = 'El apellido es obligatorio';
@@ -105,12 +114,15 @@ const CompleteProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("CompleteProfile: Formulario enviado");
     
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      console.log("CompleteProfile: Validación fallida", errors);
+      return;
+    }
     
     setIsSaving(true);
     
-    // Preparar datos para enviar según tipo de usuario
     const dataToSend = {
       phone: userData.phone,
       city: userData.city,
@@ -128,69 +140,90 @@ const CompleteProfile = () => {
       dataToSend.contact_position = userData.contactPosition;
     }
     
+    console.log("CompleteProfile: Datos a enviar", dataToSend);
+    
     try {
+      console.log("CompleteProfile: Llamando a authService.updateProfile()");
       const response = await authService.updateProfile(dataToSend);
+      console.log("CompleteProfile: Respuesta de updateProfile", response);
+      
       if (response.success) {
-        // Mostrar mensaje de éxito y redireccionar
-        // Usamos setTimeout para dar tiempo a que se vea el mensaje
+        console.log("CompleteProfile: Perfil actualizado correctamente");
+        
+        // Actualizar el estado de perfil en el contexto
+        if (updateProfileStatus) {
+          updateProfileStatus(true);
+        }
+        
+        // Actualizar los datos de usuario en localStorage/sessionStorage
+        const storageType = localStorage.getItem('authToken') ? localStorage : sessionStorage;
+        const userData = JSON.parse(storageType.getItem('user') || '{}');
+        userData.profile_completed = true;
+        storageType.setItem('user', JSON.stringify(userData));
+        
         setTimeout(() => {
+          console.log("CompleteProfile: Redirigiendo al dashboard");
           navigate('/dashboard');
         }, 1500);
-      } else {
+      } 
+      
+      else {
+        console.error("CompleteProfile: Error al actualizar perfil", response);
         setErrors({ general: response.message || 'Error al actualizar el perfil' });
       }
     } catch (error) {
+      console.error("CompleteProfile: Error de conexión", error);
       setErrors({ general: 'Error de conexión. Inténtalo más tarde.' });
     } finally {
       setIsSaving(false);
+      console.log("CompleteProfile: Proceso de guardar completado");
     }
   };
 
   if (isLoading) {
     return (
-      <div className="loading-container">
+      <div className="container mt-5 text-center">
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Cargando...</span>
         </div>
-        <p>Cargando información del perfil...</p>
+        <p className="mt-3">Cargando información del perfil...</p>
       </div>
     );
   }
 
   return (
-    <div className="complete-profile-container">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-lg-8">
-            <div className="profile-card">
-              <div className="card-body p-4">
-                <div className="text-center mb-4">
-                  <h4 className="profile-title">Completa tu Perfil</h4>
-                  <p className="profile-subtitle">
-                    Añade información para personalizar tu experiencia en StrateKaz
-                  </p>
+    <div className="container mt-5 mb-5">
+      <div className="row justify-content-center">
+        <div className="col-lg-8">
+          <div className="card shadow">
+            <div className="card-body p-4">
+              <div className="text-center mb-4">
+                <h4 className="fw-bold">Completa tu Perfil</h4>
+                <p className="text-muted">
+                  Añade información para personalizar tu experiencia en StrateKaz
+                </p>
+              </div>
+              
+              {errors.general && (
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                  {errors.general}
+                  <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                
-                {errors.general && (
-                  <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    {errors.general}
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                )}
-                
-                <form onSubmit={handleSubmit}>
-                  {/* Sección de información común */}
-                  <div className="section-container mb-4">
-                    <h5 className="section-title">
+              )}              
+                           
+              <form onSubmit={handleSubmit}>
+                <div className="card mb-4 bg-light">
+                  <div className="card-body">
+                    <h5 className="mb-3 border-bottom pb-2 text-primary">
                       <FontAwesomeIcon icon={faUser} className="me-2" />
                       Información General
                     </h5>
                     
                     <div className="row g-3">
                       <div className="col-md-6">
-                        <label className="form-label">Teléfono</label>
+                        <label className="form-label fw-bold">Teléfono</label>
                         <div className="input-group">
-                          <span className="input-group-text">
+                          <span className="input-group-text bg-light">
                             <FontAwesomeIcon icon={faPhone} />
                           </span>
                           <input
@@ -206,9 +239,9 @@ const CompleteProfile = () => {
                       </div>
                       
                       <div className="col-md-6">
-                        <label className="form-label">Ciudad</label>
+                        <label className="form-label fw-bold">Ciudad</label>
                         <div className="input-group">
-                          <span className="input-group-text">
+                          <span className="input-group-text bg-light">
                             <FontAwesomeIcon icon={faMapMarkerAlt} />
                           </span>
                           <input
@@ -224,7 +257,7 @@ const CompleteProfile = () => {
                       </div>
                       
                       <div className="col-12">
-                        <label className="form-label">Departamento</label>
+                        <label className="form-label fw-bold">Departamento</label>
                         <select
                           className={`form-select ${errors.department ? 'is-invalid' : ''}`}
                           name="department"
@@ -269,18 +302,19 @@ const CompleteProfile = () => {
                       </div>
                     </div>
                   </div>
-                  
-                  {/* Sección específica según tipo de usuario */}
-                  {userType === 'professional' ? (
-                    <div className="section-container mb-4">
-                      <h5 className="section-title">
+                </div>
+                
+                {userType === 'professional' ? (
+                  <div className="card mb-4 bg-light">
+                    <div className="card-body">
+                      <h5 className="mb-3 border-bottom pb-2 text-primary">
                         <FontAwesomeIcon icon={faBriefcase} className="me-2" />
                         Información Profesional
                       </h5>
                       
                       <div className="row g-3">
                         <div className="col-md-6">
-                          <label className="form-label">Nombres</label>
+                          <label className="form-label fw-bold">Nombres</label>
                           <input
                             type="text"
                             className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
@@ -293,7 +327,7 @@ const CompleteProfile = () => {
                         </div>
                         
                         <div className="col-md-6">
-                          <label className="form-label">Apellidos</label>
+                          <label className="form-label fw-bold">Apellidos</label>
                           <input
                             type="text"
                             className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
@@ -306,7 +340,7 @@ const CompleteProfile = () => {
                         </div>
                         
                         <div className="col-12">
-                          <label className="form-label">Profesión</label>
+                          <label className="form-label fw-bold">Profesión</label>
                           <input
                             type="text"
                             className="form-control"
@@ -318,16 +352,18 @@ const CompleteProfile = () => {
                         </div>
                       </div>
                     </div>
-                  ) : (
-                    <div className="section-container mb-4">
-                      <h5 className="section-title">
+                  </div>
+                ) : (
+                  <div className="card mb-4 bg-light">
+                    <div className="card-body">
+                      <h5 className="mb-3 border-bottom pb-2 text-primary">
                         <FontAwesomeIcon icon={faBuilding} className="me-2" />
                         Información Empresarial
                       </h5>
                       
                       <div className="row g-3">
                         <div className="col-md-6">
-                          <label className="form-label">Nombre de la Empresa</label>
+                          <label className="form-label fw-bold">Nombre de la Empresa</label>
                           <input
                             type="text"
                             className={`form-control ${errors.companyName ? 'is-invalid' : ''}`}
@@ -340,7 +376,7 @@ const CompleteProfile = () => {
                         </div>
                         
                         <div className="col-md-6">
-                          <label className="form-label">NIT</label>
+                          <label className="form-label fw-bold">NIT</label>
                           <input
                             type="text"
                             className={`form-control ${errors.nit ? 'is-invalid' : ''}`}
@@ -353,7 +389,7 @@ const CompleteProfile = () => {
                         </div>
                         
                         <div className="col-md-6">
-                          <label className="form-label">Sector</label>
+                          <label className="form-label fw-bold">Sector</label>
                           <select
                             className="form-select"
                             name="industry"
@@ -374,7 +410,7 @@ const CompleteProfile = () => {
                         </div>
                         
                         <div className="col-md-6">
-                          <label className="form-label">Cargo del Contacto</label>
+                          <label className="form-label fw-bold">Cargo del Contacto</label>
                           <input
                             type="text"
                             className="form-control"
@@ -386,29 +422,29 @@ const CompleteProfile = () => {
                         </div>
                       </div>
                     </div>
-                  )}
-                  
-                  <div className="text-center mt-4">
-                    <button 
-                      type="submit" 
-                      className="btn btn-primary btn-lg px-5"
-                      disabled={isSaving}
-                    >
-                      {isSaving ? (
-                        <>
-                          <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                          Guardando...
-                        </>
-                      ) : (
-                        <>
-                          <FontAwesomeIcon icon={faSave} className="me-2" />
-                          Guardar y Continuar
-                        </>
-                      )}
-                    </button>
                   </div>
-                </form>
-              </div>
+                )}
+                
+                <div className="text-center mt-4">
+                  <button 
+                    type="submit" 
+                    className="btn btn-primary btn-lg px-5"
+                    disabled={isSaving}
+                  >
+                    {isSaving ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Guardando...
+                      </>
+                    ) : (
+                      <>
+                        <FontAwesomeIcon icon={faSave} className="me-2" />
+                        Guardar y Continuar
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>

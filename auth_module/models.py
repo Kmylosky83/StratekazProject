@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 class User(AbstractUser):
     # Campos comunes
     user_type = models.CharField(max_length=20, choices=[
+        ('super_admin', 'Super Administrador'),
         ('professional', 'Profesional Independiente'),
         ('consultant_company', 'Empresa Consultora'),
         ('direct_company', 'Empresa Directa')

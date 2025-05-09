@@ -1,190 +1,220 @@
+// En C:\Proyectos\StratekazProject\frontend\src\pages\dashboard\dashboard.js
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  Activity, Tool, Building, Globe, Menu, 
-  Bell, Search, User, ChevronDown,
-  LineChart
-} from 'lucide-react';
+import { Link } from 'react-router-dom';
 import '../../styles/dashboard.css';
-import '../../styles/dark-theme.css';
-
-// Importamos los componentes de cada pilar
-import HerramientasProductividad from '../../components/dashboard/pilares/herramientas';
-import InteligenciaNegocios from '../../components/dashboard/pilares/inteligencia';
-import RedClientes from '../../components/dashboard/pilares/empresas';
-import EcosistemaEmpresarial from '../../components/dashboard/pilares/ecosistema';
-
-// Servicio para obtener datos del dashboard
-import authService from '../../services/AuthService';
+import '../../styles/variables.css';
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('herramientas');
-  const [userType, setUserType] = useState('');
-  const [userData, setUserData] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [userName, setUserName] = useState('');
+  const [darkMode, setDarkMode] = useState(false);
 
-  // Cargar datos del usuario al montar el componente
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        setIsLoading(true);
-        // Obtener perfil de usuario del servicio de autenticación
-        const userProfile = await authService.getUserProfile();
-        
-        if (userProfile.success) {
-          setUserType(userProfile.data.user_type);
-          setUserData(userProfile.data);
-        } else {
-          // Si hay error al obtener el perfil, redireccionar al login
-          navigate('/login');
-        }
-      } catch (error) {
-        console.error('Error al obtener perfil de usuario:', error);
-        navigate('/login');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [navigate]);
-
-  // Determinar qué pestañas mostrar según el tipo de usuario
-  const getTabs = () => {
-    // Pestañas comunes para todos los tipos de usuario
-    const commonTabs = [
-      {
-        id: 'herramientas',
-        name: 'Herramientas de Productividad',
-        icon: <LineChart className="h-5 w-5 mr-2" />
-      },
-      {
-        id: 'inteligencia',
-        name: 'Inteligencia de Negocios',
-        icon: <Activity className="h-5 w-5 mr-2" />
-      },
-      {
-        id: 'ecosistema',
-        name: 'Ecosistema Empresarial',
-        icon: <Globe className="h-5 w-5 mr-2" />
-      }
-    ];
+    // Obtener información del usuario del localStorage
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    setUserName(user.username || 'Usuario');
     
-    // Si es Profesional Independiente o Empresa Consultora, agregar pestaña de Red de Clientes
-    if (userType === 'professional' || userType === 'consultant_company') {
-      return [
-        ...commonTabs.slice(0, 2), // Primero Herramientas e Inteligencia
-        {
-          id: 'empresas',
-          name: 'Red de Clientes',
-          icon: <Building className="h-5 w-5 mr-2" />
-        },
-        commonTabs[2] // Luego Ecosistema
-      ];
+    // Verificar si hay preferencia de tema guardada
+    const savedTheme = localStorage.getItem('darkMode');
+    if (savedTheme) {
+      setDarkMode(savedTheme === 'true');
+    }
+  }, []);
+
+  useEffect(() => {
+    // Aplicar clase de tema oscuro al body
+    if (darkMode) {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
     }
     
-    // Para Empresa Directa, solo las pestañas comunes (sin Red de Clientes)
-    return commonTabs;
-  };
-  
-  // Título según tipo de usuario
-  const getDashboardTitle = () => {
-    switch(userType) {
-      case 'professional':
-        return 'Dashboard Profesional';
-      case 'consultant_company':
-        return 'Dashboard Consultora';
-      case 'direct_company':
-        return 'Dashboard Empresarial';
-      default:
-        return 'Dashboard';
-    }
-  };
+    // Guardar preferencia en localStorage
+    localStorage.setItem('darkMode', darkMode);
+  }, [darkMode]);
 
-  // Renderizar el contenido según la pestaña activa
-  const renderTabContent = () => {
-    switch(activeTab) {
-      case 'herramientas':
-        return <HerramientasProductividad userType={userType} />;
-      case 'inteligencia':
-        return <InteligenciaNegocios userType={userType} />;
-      case 'empresas':
-        return <RedClientes userType={userType} />;
-      case 'ecosistema':
-        return <EcosistemaEmpresarial userType={userType} />;
-      default:
-        return <HerramientasProductividad userType={userType} />;
-    }
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
   };
-
-  // Mostrar indicador de carga mientras se obtienen los datos
-  if (isLoading) {
-    return (
-      <div className="loading-container dark-theme">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Cargando...</span>
-        </div>
-        <p>Cargando tu dashboard...</p>
-      </div>
-    );
-  }
-
-  const tabs = getTabs();
 
   return (
-    <div className="dashboard-container dark-theme">
-      {/* Navegación superior */}
-      <header className="dashboard-header">
-        <div className="header-content">
-          <div className="header-left">
-            <Menu className="menu-icon hover-glow" />
-            <h1 className="dashboard-title">{getDashboardTitle()}</h1>
-          </div>
-          <div className="header-right">
-            <div className="search-container">
-              <Search className="search-icon" />
-              <input
-                type="text"
-                placeholder="Buscar..."
-                className="search-input strategaz-input"
-              />
-            </div>
-            <button className="notifications-btn hover-glow">
-              <Bell className="icon" />
+    <div className={`dashboard-container ${darkMode ? 'dark-theme' : ''}`}>
+      {/* Header principal */}
+      <header className="main-header">
+        <div className="header-left">
+          <i className="fas fa-bars menu-icon"></i>
+          <h1 className="brand">StrateKaz</h1>
+          <span className="suite-tag">Suite Empresarial</span>
+        </div>
+        
+        <div className="header-center">
+          <div className="tabs-wrapper">
+            <button 
+              className={`tab-button ${activeTab === 'herramientas' ? 'active' : ''}`}
+              onClick={() => setActiveTab('herramientas')}
+            >
+              <i className="fas fa-tools fa-sm"></i> Herramientas
             </button>
-            <div className="user-profile">
-              <div className="user-avatar">
-                <User className="icon" />
-              </div>
-              <span className="user-name">
-                {userData.first_name || userData.username}
-              </span>
-              <ChevronDown className="dropdown-icon" />
-            </div>
+            <button 
+              className={`tab-button ${activeTab === 'inteligencia' ? 'active' : ''}`}
+              onClick={() => setActiveTab('inteligencia')}
+            >
+              <i className="fas fa-chart-line fa-sm"></i> Inteligencia
+            </button>
+            <button 
+              className={`tab-button ${activeTab === 'empresas' ? 'active' : ''}`}
+              onClick={() => setActiveTab('empresas')}
+            >
+              <i className="fas fa-building fa-sm"></i> Empresas
+            </button>
+            <button 
+              className={`tab-button ${activeTab === 'ecosistema' ? 'active' : ''}`}
+              onClick={() => setActiveTab('ecosistema')}
+            >
+              <i className="fas fa-calendar-alt fa-sm"></i> Ecosistema
+            </button>
+            <button 
+              className={`tab-button ${activeTab === 'finanzas' ? 'active' : ''}`}
+              onClick={() => setActiveTab('finanzas')}
+            >
+              <i className="fas fa-dollar-sign fa-sm"></i> Finanzas
+            </button>
           </div>
         </div>
         
-        {/* Navegación de tabs/pestañas */}
-        <div className="tabs-navigation">
-          {tabs.map(tab => (
-            <button
-              key={tab.id}
-              className={`tab-button ${
-                activeTab === tab.id ? 'active-tab' : 'inactive-tab'
-              } hover-glow`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              {tab.icon}
-              {tab.name}
-            </button>
-          ))}
+        <div className="header-right">
+          <div className="search-container">
+            <i className="fas fa-search search-icon"></i>
+            <input type="text" placeholder="Buscar..." className="search-input" />
+          </div>
+          <button className="notification-btn">
+            <i className="fas fa-bell"></i>
+          </button>
+          <div className="user-profile">
+            <div className="avatar">
+              <i className="fas fa-user"></i>
+            </div>
+            <span className="username">{userName}</span>
+            <i className="fas fa-chevron-down down-icon"></i>
+          </div>
+          <button 
+            className="boton-secundario boton-pequeno"
+            onClick={toggleDarkMode}
+          >
+            {darkMode ? <><i className="fas fa-sun"></i> Modo Claro</> : <><i className="fas fa-moon"></i> Modo Oscuro</>}
+          </button>
         </div>
       </header>
-
-      {/* Contenido principal - cambia según la pestaña activa */}
-      <main className="dashboard-main">
-        {renderTabContent()}
+      
+      {/* Contenido principal */}
+      <main className="dashboard-content">
+        {activeTab === 'herramientas' && (
+          <div className="module-container">
+            <h2 className="titulo-seccion">Herramientas de Productividad</h2>
+            <p className="subtitulo-seccion">Gestiona tus actividades y procesos empresariales con nuestras herramientas.</p>
+            
+            <div className="tools-grid">
+            <div className="tarjeta tool-card">
+              <div className="icono-estandar-rosa">
+                <i className="fas fa-chalkboard-teacher fa-lg"></i>
+              </div>
+              <h3 className="titulo-tarjeta">Formación</h3>
+              <p className="subtitulo-tarjeta">Gestiona capacitaciones, asistencia y formación de personal</p>
+              <Link to="/dashboard/herramientas/formacion" className="boton-primario">Acceder</Link>
+            </div>
+              
+              <div className="tarjeta tool-card disabled">
+                <div className="icono-estandar-gris">
+                  <i className="fas fa-file-alt fa-lg"></i>
+                </div>
+                <h3 className="titulo-tarjeta">Documentación</h3>
+                <p className="subtitulo-tarjeta">Control documental, firma electrónica y gestión de documentos</p>
+                <button className="boton-secundario disabled">Próximamente</button>
+              </div>
+              
+              <div className="tarjeta tool-card disabled">
+                <div className="icono-estandar-gris">
+                  <i className="fas fa-tasks fa-lg"></i>
+                </div>
+                <h3 className="titulo-tarjeta">Planificación</h3>
+                <p className="subtitulo-tarjeta">Gestión de proyectos, tareas y planificación empresarial</p>
+                <button className="boton-secundario disabled">Próximamente</button>
+              </div>
+              
+              <div className="tarjeta tool-card disabled">
+                <div className="icono-estandar-gris">
+                  <i className="fas fa-clipboard-check fa-lg"></i>
+                </div>
+                <h3 className="titulo-tarjeta">Inspecciones</h3>
+                <p className="subtitulo-tarjeta">Auditorías, evaluaciones y formularios de inspección</p>
+                <button className="boton-secundario disabled">Próximamente</button>
+              </div>
+              
+              <div className="tarjeta tool-card disabled">
+                <div className="icono-estandar-gris">
+                  <i className="fas fa-comments fa-lg"></i>
+                </div>
+                <h3 className="titulo-tarjeta">Comunicación</h3>
+                <p className="subtitulo-tarjeta">Generador de actas y difusión de información</p>
+                <button className="boton-secundario disabled">Próximamente</button>
+              </div>
+              
+              <div className="tarjeta tool-card disabled">
+                <div className="icono-estandar-gris">
+                  <i className="fas fa-chart-bar fa-lg"></i>
+                </div>
+                <h3 className="titulo-tarjeta">Diagnóstico</h3>
+                <p className="subtitulo-tarjeta">Contexto empresarial, BSC, PCI y POAM</p>
+                <button className="boton-secundario disabled">Próximamente</button>
+              </div>
+              
+              <div className="tarjeta tool-card disabled">
+                <div className="icono-estandar-gris">
+                  <i className="fas fa-database fa-lg"></i>
+                </div>
+                <h3 className="titulo-tarjeta">Análisis de Datos</h3>
+                <p className="subtitulo-tarjeta">Analizador de datos, Power BI y Looker Studio</p>
+                <button className="boton-secundario disabled">Próximamente</button>
+              </div>
+              
+              <div className="tarjeta tool-card disabled">
+                <div className="icono-estandar-gris">
+                  <i className="fas fa-table fa-lg"></i>
+                </div>
+                <h3 className="titulo-tarjeta">Matrices</h3>
+                <p className="subtitulo-tarjeta">Constructor de matrices para gestión de riesgos y procesos</p>
+                <button className="boton-secundario disabled">Próximamente</button>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {activeTab !== 'herramientas' && (
+          <div className="module-container">
+            <h2 className="titulo-seccion">
+              {activeTab === 'inteligencia' ? 'Inteligencia de Negocios' : 
+               activeTab === 'empresas' ? 'Mis Empresas' : 
+               activeTab === 'ecosistema' ? 'Ecosistema Empresarial' : 'Finanzas'}
+            </h2>
+            <p className="subtitulo-seccion">
+              {activeTab === 'inteligencia' ? 'Gestiona sistemas integrados y normativas para tu organización.' : 
+               activeTab === 'empresas' ? 'Gestiona tus empresas y organizaciones.' : 
+               activeTab === 'ecosistema' ? 'Administra tu ecosistema empresarial y colaboradores.' : 
+               'Controla tus finanzas y recursos económicos.'}
+            </p>
+            
+            <div className="tarjeta coming-soon">
+              <div className="icono-grande-primario">
+                <i className="fas fa-code-branch fa-2x"></i>
+              </div>
+              <h3 className="titulo-tarjeta">Módulo en Desarrollo</h3>
+              <p className="texto-base">Estamos trabajando para ofrecerte las mejores herramientas de gestión.</p>
+              <button className="boton-primario">
+                <i className="fas fa-bell"></i> Notificarme cuando esté disponible
+              </button>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
