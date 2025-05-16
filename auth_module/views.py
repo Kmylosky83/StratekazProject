@@ -110,7 +110,9 @@ def check_profile_status(request):
                 'profession': user.profession,
                 'phone': user.phone,
                 'city': user.city,
-                'department': user.department
+                'department': user.department,
+                'id_type': user.id_type,  # Añadido
+                'id_number': user.id_number  # Añadido
             })
         else:
             response_data.update({
@@ -118,6 +120,10 @@ def check_profile_status(request):
                 'nit': user.nit,
                 'industry': user.industry,
                 'contact_position': user.contact_position,
+                'contact_first_name': user.contact_first_name,  # Añadido
+                'contact_last_name': user.contact_last_name,  # Añadido
+                'contact_id_type': user.contact_id_type,  # Añadido
+                'contact_id_number': user.contact_id_number,  # Añadido
                 'phone': user.phone,
                 'city': user.city,
                 'department': user.department

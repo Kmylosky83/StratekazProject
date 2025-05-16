@@ -19,6 +19,8 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
     profession = models.CharField(max_length=100, blank=True, null=True)
+    id_type = models.CharField(max_length=20, blank=True, null=True)  # Añadido
+    id_number = models.CharField(max_length=50, blank=True, null=True)  # Añadido
     
     # Campos para empresas
     company_type = models.CharField(max_length=20, blank=True, null=True)
@@ -26,6 +28,10 @@ class User(AbstractUser):
     nit = models.CharField(max_length=20, blank=True, null=True, unique=True)
     industry = models.CharField(max_length=100, blank=True, null=True)
     contact_position = models.CharField(max_length=100, blank=True, null=True)
+    contact_first_name = models.CharField(max_length=100, blank=True, null=True)  # Añadido
+    contact_last_name = models.CharField(max_length=100, blank=True, null=True)  # Añadido
+    contact_id_type = models.CharField(max_length=20, blank=True, null=True)  # Añadido
+    contact_id_number = models.CharField(max_length=50, blank=True, null=True)  # Añadido
     
     # Campos de control
     account_verified = models.BooleanField(default=False)

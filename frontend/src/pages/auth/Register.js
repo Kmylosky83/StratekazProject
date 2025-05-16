@@ -12,32 +12,12 @@ const Register = () => {
   const [userType, setUserType] = useState('');
   const [progress, setProgress] = useState(0);
   const [formData, setFormData] = useState({
-    // Datos comunes
+
+  // Datos comunes (mantener solo estos)
   username: '',
   email: '',
   password: '',
-  confirmPassword: '',
-  
-  // Datos para profesional
-  firstName: '',
-  lastName: '',
-  profession: '',
-  department: '',
-  city: '',
-  contactNumber: '',
-  idType: '',
-  idNumber: '',
-  
-  // Datos para empresa
-  companyName: '',
-  nit: '',
-  industry: '',
-  contactPosition: '',
-  contactFirstName: '',
-  contactLastName: '',
-  contactIdType: '',
-  contactIdNumber: '',
-  contactNumber: ''
+  confirmPassword: ''
 });
 
 // También necesitaremos estado para el indicador de seguridad
@@ -122,40 +102,13 @@ const [passwordStrength, setPasswordStrength] = useState({
     }
     
     if (step === 2) {
-      // Validación según tipo de usuario
-      if (userType === 'professional') {
-        if (!formData.email) newErrors.email = 'El email es obligatorio';
-        else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email inválido';
-        
-        if (!formData.password) newErrors.password = 'La contraseña es obligatoria';
-        else if (formData.password.length < 8) newErrors.password = 'La contraseña debe tener al menos 8 caracteres';
-        
-        if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Las contraseñas no coinciden';
-        
-        if (!formData.firstName) newErrors.firstName = 'El nombre es obligatorio';
-        if (!formData.lastName) newErrors.lastName = 'El apellido es obligatorio';
-        if (!formData.idType) newErrors.idType = 'El tipo de identificación es obligatorio';
-        if (!formData.idNumber) newErrors.idNumber = 'El número de identificación es obligatorio';
-        if (!formData.contactNumber) newErrors.contactNumber = 'El número de contacto es obligatorio';
-        else if (!/^\d{10}$/.test(formData.contactNumber)) newErrors.contactNumber = 'El número debe tener 10 dígitos';
-      } else {
-        if (!formData.email) newErrors.email = 'El email es obligatorio';
-        else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email inválido';
-        
-        if (!formData.password) newErrors.password = 'La contraseña es obligatoria';
-        else if (formData.password.length < 8) newErrors.password = 'La contraseña debe tener al menos 8 caracteres';
-        
-        if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Las contraseñas no coinciden';
-        
-        if (!formData.companyName) newErrors.companyName = 'El nombre de la empresa es obligatorio';
-        if (!formData.nit) newErrors.nit = 'El NIT es obligatorio';
-        if (!formData.contactFirstName) newErrors.contactFirstName = 'El nombre del contacto es obligatorio';
-        if (!formData.contactLastName) newErrors.contactLastName = 'El apellido del contacto es obligatorio';
-        if (!formData.contactIdType) newErrors.contactIdType = 'El tipo de identificación del contacto es obligatorio';
-        if (!formData.contactIdNumber) newErrors.contactIdNumber = 'El número de identificación del contacto es obligatorio';
-        if (!formData.contactPhone) newErrors.contactPhone = 'El número de contacto es obligatorio';
-        else if (!/^\d{10}$/.test(formData.contactPhone)) newErrors.contactPhone = 'El número debe tener 10 dígitos';
-      }
+      if (!formData.email) newErrors.email = 'El email es obligatorio';
+      else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email inválido';
+      
+      if (!formData.password) newErrors.password = 'La contraseña es obligatoria';
+      else if (formData.password.length < 8) newErrors.password = 'La contraseña debe tener al menos 8 caracteres';
+      
+      if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Las contraseñas no coinciden';
     }
     
     if (step === 3) {
@@ -185,34 +138,11 @@ const [passwordStrength, setPasswordStrength] = useState({
 
     // Preparar datos para enviar según tipo de usuario
     const dataToSend = {
-      username: formData.email.split('@')[0], // Generar username del email
-      email: formData.email,
-      password: formData.password,
-      user_type: userType
-    };
-
-    if (userType === 'professional') {
-      dataToSend.first_name = formData.firstName;
-      dataToSend.last_name = formData.lastName;
-      dataToSend.profession = formData.profession;
-      dataToSend.department = formData.department;
-      dataToSend.city = formData.city;
-      dataToSend.id_type = formData.idType;
-      dataToSend.id_number = formData.idNumber;
-      dataToSend.contact_number = formData.contactNumber;
-    } else {
-      dataToSend.company_name = formData.companyName;
-      dataToSend.nit = formData.nit;
-      dataToSend.industry = formData.industry;
-      dataToSend.contact_position = formData.contactPosition;
-      dataToSend.contact_first_name = formData.contactFirstName;
-      dataToSend.contact_last_name = formData.contactLastName;
-      dataToSend.contact_id_type = formData.contactIdType;
-      dataToSend.contact_id_number = formData.contactIdNumber;
-      dataToSend.contact_phone = formData.contactPhone;
-      dataToSend.department = formData.department;
-      dataToSend.city = formData.city;
-    }
+    username: formData.email.split('@')[0], // Generar username del email
+    email: formData.email,
+    password: formData.password,
+    user_type: userType
+  };
     
     try {
       const response = await authService.register(dataToSend);
@@ -318,487 +248,86 @@ const [passwordStrength, setPasswordStrength] = useState({
                 {/* Paso 2: Formulario según tipo de usuario */}
                 {currentStep === 2 && (
                   <div className="step">
-                    <h5 className="text-center mb-4">
-                      {userType === 'professional' 
-                        ? 'Información del Profesional' 
-                        : 'Información de la Empresa'}
-                    </h5>
+                    <h5 className="text-center mb-4">Información de acceso</h5>
                     
-                    {userType === 'professional' ? (
-                      <div className="professional-form">
-                      <div className="row mb-3">
-                        <div className="col-md-6">
-                          <label className="form-label">Nombres</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleInputChange}
-                          />
-                          {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Apellidos</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleInputChange}
-                          />
-                          {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
-                        </div>
-                      </div>
-                      
-                      <div className="row mb-3">
-                        <div className="col-md-6">
-                          <label className="form-label">Tipo de Identificación</label>
-                          <select
-                            className={`form-select ${errors.idType ? 'is-invalid' : ''}`}
-                            name="idType"
-                            value={formData.idType}
-                            onChange={handleInputChange}
-                          >
-                            <option value="">Seleccionar tipo...</option>
-                            <option value="CC">Cédula de Ciudadanía</option>
-                            <option value="CE">Cédula de Extranjería</option>                            
-                            <option value="PP">Pasaporte</option>
-                            <option value="NIT">NIT</option>
-                          </select>
-                          {errors.idType && <div className="invalid-feedback">{errors.idType}</div>}
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Número de Identificación</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.idNumber ? 'is-invalid' : ''}`}
-                            name="idNumber"
-                            value={formData.idNumber}
-                            onChange={handleInputChange}
-                          />
-                          {errors.idNumber && <div className="invalid-feedback">{errors.idNumber}</div>}
-                        </div>
-                      </div>
-                      <div className="row mb-3">
+                    <div className="mb-3">
+                      <label className="form-label">Email</label>
+                      <input
+                        type="email"
+                        className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="tu@email.com"
+                      />
+                      {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                    </div>
+                    
+                    <div className="row mb-3">
                       <div className="col-md-6">
-                        <label className="form-label">Profesión</label>
+                        <label className="form-label">Contraseña</label>
                         <input
-                          type="text"
-                          className="form-control"
-                          name="profession"
-                          value={formData.profession}
+                          type="password"
+                          className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                          name="password"
+                          value={formData.password}
                           onChange={handleInputChange}
                         />
+                        {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                        
+                        {/* Indicador de seguridad */}
+                        {formData.password && (
+                          <div className="mt-2">
+                            <div className="password-strength">
+                              <span className={`strength-badge ${
+                                passwordStrength.score === 0 ? 'very-weak' :
+                                passwordStrength.score === 1 ? 'weak' :
+                                passwordStrength.score === 2 ? 'medium' :
+                                passwordStrength.score === 3 ? 'strong' :
+                                'very-strong'
+                              }`}>
+                                {passwordStrength.score === 0 ? 'Muy débil' :
+                                passwordStrength.score === 1 ? 'Débil' :
+                                passwordStrength.score === 2 ? 'Media' :
+                                passwordStrength.score === 3 ? 'Fuerte' :
+                                'Muy fuerte'}
+                              </span>
+                            </div>
+                            <ul className="password-checklist">
+                              <li className={passwordStrength.length ? 'valid' : 'invalid'}>
+                                {passwordStrength.length ? '✓' : '✗'} Mínimo 8 caracteres
+                              </li>
+                              <li className={passwordStrength.lowercase ? 'valid' : 'invalid'}>
+                                {passwordStrength.lowercase ? '✓' : '✗'} Una letra minúscula
+                              </li>
+                              <li className={passwordStrength.uppercase ? 'valid' : 'invalid'}>
+                                {passwordStrength.uppercase ? '✓' : '✗'} Una letra mayúscula
+                              </li>
+                              <li className={passwordStrength.number ? 'valid' : 'invalid'}>
+                                {passwordStrength.number ? '✓' : '✗'} Un número
+                              </li>
+                              <li className={passwordStrength.special ? 'valid' : 'invalid'}>
+                                {passwordStrength.special ? '✓' : '✗'} Un carácter especial
+                              </li>
+                            </ul>
+                          </div>
+                        )}
                       </div>
-                      
                       <div className="col-md-6">
-                        <label className="form-label">Email</label>
+                        <label className="form-label">Confirmar Contraseña</label>
                         <input
-                          type="email"
-                          className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                          name="email"
-                          value={formData.email}
+                          type="password"
+                          className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
+                          name="confirmPassword"
+                          value={formData.confirmPassword}
                           onChange={handleInputChange}
                         />
-                        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                        {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
                       </div>
-                      </div>
-                      
-                      <div className="mb-3">
-                        <label className="form-label">Número de Contacto</label>
-                        <input
-                          type="text"
-                          className={`form-control ${errors.contactNumber ? 'is-invalid' : ''}`}
-                          name="contactNumber"
-                          value={formData.contactNumber}
-                          onChange={handleInputChange}
-                          placeholder="10 dígitos"
-                        />
-                        {errors.contactNumber && <div className="invalid-feedback">{errors.contactNumber}</div>}
-                      </div>
-                      
-                      <div className="row mb-3">
-                        <div className="col-md-6">
-                          <label className="form-label">Departamento</label>
-                          <select
-                            className="form-select"
-                            name="department"
-                            value={formData.department || ''}
-                            onChange={handleInputChange}
-                          >
-                            <option value="">Seleccionar departamento...</option>
-                            <option value="Amazonas">Amazonas</option>
-                            <option value="Antioquia">Antioquia</option>
-                            <option value="Arauca">Arauca</option>
-                            <option value="Atlántico">Atlántico</option>
-                            <option value="Bolívar">Bolívar</option>
-                            <option value="Boyacá">Boyacá</option>
-                            <option value="Caldas">Caldas</option>
-                            <option value="Caquetá">Caquetá</option>
-                            <option value="Casanare">Casanare</option>
-                            <option value="Cauca">Cauca</option>
-                            <option value="Cesar">Cesar</option>
-                            <option value="Chocó">Chocó</option>
-                            <option value="Córdoba">Córdoba</option>
-                            <option value="Cundinamarca">Cundinamarca</option>
-                            <option value="Guainía">Guainía</option>
-                            <option value="Guaviare">Guaviare</option>
-                            <option value="Huila">Huila</option>
-                            <option value="La Guajira">La Guajira</option>
-                            <option value="Magdalena">Magdalena</option>
-                            <option value="Meta">Meta</option>
-                            <option value="Nariño">Nariño</option>
-                            <option value="Norte de Santander">Norte de Santander</option>
-                            <option value="Putumayo">Putumayo</option>
-                            <option value="Quindío">Quindío</option>
-                            <option value="Risaralda">Risaralda</option>
-                            <option value="San Andrés y Providencia">San Andrés y Providencia</option>
-                            <option value="Santander">Santander</option>
-                            <option value="Sucre">Sucre</option>
-                            <option value="Tolima">Tolima</option>
-                            <option value="Valle del Cauca">Valle del Cauca</option>
-                            <option value="Vaupés">Vaupés</option>
-                            <option value="Vichada">Vichada</option>
-                          </select>
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Ciudad</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="city"
-                            value={formData.city || ''}
-                            onChange={handleInputChange}
-                          />
-                        </div>
-                      </div>
-                      <div className="row mb-3">
-                        <div className="col-md-6">
-                          <label className="form-label">Contraseña</label>
-                          <input
-                            type="password"
-                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                            name="password"
-                            value={formData.password}
-                            onChange={handleInputChange}
-                          />
-                          {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-                          
-                          {/* Indicador de seguridad */}
-                          {formData.password && (
-                            <div className="mt-2">
-                              <div className="password-strength">
-                                <span className={`strength-badge ${
-                                  passwordStrength.score === 0 ? 'very-weak' :
-                                  passwordStrength.score === 1 ? 'weak' :
-                                  passwordStrength.score === 2 ? 'medium' :
-                                  passwordStrength.score === 3 ? 'strong' :
-                                  'very-strong'
-                                }`}>
-                                  {passwordStrength.score === 0 ? 'Muy débil' :
-                                  passwordStrength.score === 1 ? 'Débil' :
-                                  passwordStrength.score === 2 ? 'Media' :
-                                  passwordStrength.score === 3 ? 'Fuerte' :
-                                  'Muy fuerte'}
-                                </span>
-                              </div>
-                              <ul className="password-checklist">
-                                <li className={passwordStrength.length ? 'valid' : 'invalid'}>
-                                  {passwordStrength.length ? '✓' : '✗'} Mínimo 8 caracteres
-                                </li>
-                                <li className={passwordStrength.lowercase ? 'valid' : 'invalid'}>
-                                  {passwordStrength.lowercase ? '✓' : '✗'} Una letra minúscula
-                                </li>
-                                <li className={passwordStrength.uppercase ? 'valid' : 'invalid'}>
-                                  {passwordStrength.uppercase ? '✓' : '✗'} Una letra mayúscula
-                                </li>
-                                <li className={passwordStrength.number ? 'valid' : 'invalid'}>
-                                  {passwordStrength.number ? '✓' : '✗'} Un número
-                                </li>
-                                <li className={passwordStrength.special ? 'valid' : 'invalid'}>
-                                  {passwordStrength.special ? '✓' : '✗'} Un carácter especial
-                                </li>
-                              </ul>
-                            </div>
-                          )}                          
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Confirmar Contraseña</label>
-                          <input
-                            type="password"
-                            className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                          />
-                          {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
-                        </div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="company-form">
-                      <div className="mb-3">
-                        <label className="form-label">Nombre de la Empresa</label>
-                        <input
-                          type="text"
-                          className={`form-control ${errors.companyName ? 'is-invalid' : ''}`}
-                          name="companyName"
-                          value={formData.companyName}
-                          onChange={handleInputChange}
-                        />
-                        {errors.companyName && <div className="invalid-feedback">{errors.companyName}</div>}
-                      </div>
-                      
-                      <div className="row mb-3">
-                        <div className="col-md-6">
-                          <label className="form-label">NIT</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.nit ? 'is-invalid' : ''}`}
-                            name="nit"
-                            value={formData.nit}
-                            onChange={handleInputChange}
-                          />
-                          {errors.nit && <div className="invalid-feedback">{errors.nit}</div>}
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Sector</label>
-                          <select
-                            className="form-select"
-                            name="industry"
-                            value={formData.industry}
-                            onChange={handleInputChange}
-                          >
-                            <option value="">Seleccionar sector...</option>
-                            <option value="tecnologia">Tecnología</option>
-                            <option value="construccion">Construcción</option>
-                            <option value="servicios">Servicios</option>
-                            <option value="manufactura">Manufactura</option>
-                            <option value="salud">Salud</option>
-                            <option value="educacion">Educación</option>
-                            <option value="energia">Energía</option>
-                            <option value="transporte">Transporte</option>
-                            <option value="otros">Otros</option>
-                          </select>
-                        </div>
-                      </div>
-                      
-                      <div className="row mb-3">
-                        <div className="col-md-6">
-                          <label className="form-label">Departamento</label>
-                          <select
-                            className="form-select"
-                            name="department"
-                            value={formData.department || ''}
-                            onChange={handleInputChange}
-                          >
-                            <option value="">Seleccionar departamento...</option>
-                            <option value="Amazonas">Amazonas</option>
-                            <option value="Antioquia">Antioquia</option>
-                            <option value="Arauca">Arauca</option>
-                            <option value="Atlántico">Atlántico</option>
-                            <option value="Bolívar">Bolívar</option>
-                            <option value="Boyacá">Boyacá</option>
-                            <option value="Caldas">Caldas</option>
-                            <option value="Caquetá">Caquetá</option>
-                            <option value="Casanare">Casanare</option>
-                            <option value="Cauca">Cauca</option>
-                            <option value="Cesar">Cesar</option>
-                            <option value="Chocó">Chocó</option>
-                            <option value="Córdoba">Córdoba</option>
-                            <option value="Cundinamarca">Cundinamarca</option>
-                            <option value="Guainía">Guainía</option>
-                            <option value="Guaviare">Guaviare</option>
-                            <option value="Huila">Huila</option>
-                            <option value="La Guajira">La Guajira</option>
-                            <option value="Magdalena">Magdalena</option>
-                            <option value="Meta">Meta</option>
-                            <option value="Nariño">Nariño</option>
-                            <option value="Norte de Santander">Norte de Santander</option>
-                            <option value="Putumayo">Putumayo</option>
-                            <option value="Quindío">Quindío</option>
-                            <option value="Risaralda">Risaralda</option>
-                            <option value="San Andrés y Providencia">San Andrés y Providencia</option>
-                            <option value="Santander">Santander</option>
-                            <option value="Sucre">Sucre</option>
-                            <option value="Tolima">Tolima</option>
-                            <option value="Valle del Cauca">Valle del Cauca</option>
-                            <option value="Vaupés">Vaupés</option>
-                            <option value="Vichada">Vichada</option>
-                          </select>
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Ciudad</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="city"
-                            value={formData.city || ''}
-                            onChange={handleInputChange}
-                          />
-                        </div>
-                      </div>
-                      
-                      <h6 className="mt-4 mb-3">Información del Contacto</h6>
-                      
-                      <div className="row mb-3">
-                        <div className="col-md-6">
-                          <label className="form-label">Nombres</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.contactFirstName ? 'is-invalid' : ''}`}
-                            name="contactFirstName"
-                            value={formData.contactFirstName}
-                            onChange={handleInputChange}
-                          />
-                          {errors.contactFirstName && <div className="invalid-feedback">{errors.contactFirstName}</div>}
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Apellidos</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.contactLastName ? 'is-invalid' : ''}`}
-                            name="contactLastName"
-                            value={formData.contactLastName}
-                            onChange={handleInputChange}
-                          />
-                          {errors.contactLastName && <div className="invalid-feedback">{errors.contactLastName}</div>}
-                        </div>
-                      </div>
-                      
-                      <div className="row mb-3">
-                        <div className="col-md-6">
-                          <label className="form-label">Tipo de Identificación</label>
-                          <select
-                            className={`form-select ${errors.contactIdType ? 'is-invalid' : ''}`}
-                            name="contactIdType"
-                            value={formData.contactIdType}
-                            onChange={handleInputChange}
-                          >
-                            <option value="">Seleccionar tipo...</option>
-                            <option value="CC">Cédula de Ciudadanía</option>
-                            <option value="CE">Cédula de Extranjería</option>                            
-                            <option value="PP">Pasaporte</option>
-                          </select>
-                          {errors.contactIdType && <div className="invalid-feedback">{errors.contactIdType}</div>}
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Número de Identificación</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.contactIdNumber ? 'is-invalid' : ''}`}
-                            name="contactIdNumber"
-                            value={formData.contactIdNumber}
-                            onChange={handleInputChange}
-                          />
-                          {errors.contactIdNumber && <div className="invalid-feedback">{errors.contactIdNumber}</div>}
-                        </div>
-                      </div>
-                      
-                      <div className="row mb-3">
-                        <div className="col-md-6">
-                          <label className="form-label">Cargo</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="contactPosition"
-                            value={formData.contactPosition}
-                            onChange={handleInputChange}
-                          />
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Número de Contacto</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.contactPhone ? 'is-invalid' : ''}`}
-                            name="contactPhone"
-                            value={formData.contactPhone}
-                            onChange={handleInputChange}
-                            placeholder="10 dígitos"
-                          />
-                          {errors.contactPhone && <div className="invalid-feedback">{errors.contactPhone}</div>}
-                        </div>
-                      </div>
-                      
-                      <div className="mb-3">
-                        <label className="form-label">Email de Contacto</label>
-                        <input
-                          type="email"
-                          className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                          name="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                        />
-                        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-                      </div>
-                      <div className="row mb-3">
-                        <div className="col-md-6">
-                          <label className="form-label">Contraseña</label>
-                          <input
-                            type="password"
-                            className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                            name="password"
-                            value={formData.password}
-                            onChange={handleInputChange}
-                          />
-                          {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-                          
-                          {/* Indicador de seguridad */}
-                          {formData.password && (
-                            <div className="mt-2">
-                              <div className="password-strength">
-                                <span className={`strength-badge ${
-                                  passwordStrength.score === 0 ? 'very-weak' :
-                                  passwordStrength.score === 1 ? 'weak' :
-                                  passwordStrength.score === 2 ? 'medium' :
-                                  passwordStrength.score === 3 ? 'strong' :
-                                  'very-strong'
-                                }`}>
-                                  {passwordStrength.score === 0 ? 'Muy débil' :
-                                  passwordStrength.score === 1 ? 'Débil' :
-                                  passwordStrength.score === 2 ? 'Media' :
-                                  passwordStrength.score === 3 ? 'Fuerte' :
-                                  'Muy fuerte'}
-                                </span>
-                              </div>
-                              <ul className="password-checklist">
-                                <li className={passwordStrength.length ? 'valid' : 'invalid'}>
-                                  {passwordStrength.length ? '✓' : '✗'} Mínimo 8 caracteres
-                                </li>
-                                <li className={passwordStrength.lowercase ? 'valid' : 'invalid'}>
-                                  {passwordStrength.lowercase ? '✓' : '✗'} Una letra minúscula
-                                </li>
-                                <li className={passwordStrength.uppercase ? 'valid' : 'invalid'}>
-                                  {passwordStrength.uppercase ? '✓' : '✗'} Una letra mayúscula
-                                </li>
-                                <li className={passwordStrength.number ? 'valid' : 'invalid'}>
-                                  {passwordStrength.number ? '✓' : '✗'} Un número
-                                </li>
-                                <li className={passwordStrength.special ? 'valid' : 'invalid'}>
-                                  {passwordStrength.special ? '✓' : '✗'} Un carácter especial
-                                </li>
-                              </ul>
-                            </div>
-                          )}
-                        </div>
-                        <div className="col-md-6">
-                          <label className="form-label">Confirmar Contraseña</label>
-                          <input
-                            type="password"
-                            className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                          />
-                          {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
-                        </div>
-                      </div>
-                      </div>
-                    )}
+                    </div>
                   </div>
                 )}
-
+                
                 {/* Paso 3: Términos y condiciones */}
                 {currentStep === 3 && (
                   <div className="step">

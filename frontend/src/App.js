@@ -74,12 +74,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/portfolio" element={<PortfolioPage />} /> {/* Ruta para el portafolio */}
           
-          {/* Rutas protegidas */}
-          <Route path="/complete-profile" element={
-            <ProtectedRoute>
-              <CompleteProfile />
-            </ProtectedRoute>
-          } />
+          <Route path="/complete-profile" element={<CompleteProfile />} />
           
           {/* Dashboard */}
           <Route path="/dashboard" element={
