@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { 
-  ArrowRight, Award, Shield, Briefcase, BarChart2, 
+  ChevronRight, Award, Shield, Briefcase, BarChart2, 
   Users, BookOpen, TrendingUp, CheckCircle, 
-  Target, PieChart, UserCheck, ChevronRight 
-} from 'lucide-react';
+  Target, PieChart, UserCheck 
+} from '../../design-system/icons';
+import { H2, Text, Card, Button } from '../../design-system/components';
 import '../../styles/portfolio.css';
 
 const ServiceSection = () => {
@@ -122,11 +123,11 @@ const ServiceSection = () => {
     <section id="servicios" className="service-section">
       <div className="container mx-auto px-4">
         <div className="services-header">
-          <h2 className="titulo-seccion">Portafolio de Servicios</h2>
-          <p className="subtitulo-seccion">
+          <H2 variant="section">Portafolio de Servicios</H2>
+          <Text variant="sectionSubtitle">
             Soluciones personalizadas para impulsar el crecimiento sostenible de su organización
             a través de estrategias integrales y herramientas de gestión innovadoras.
-          </p>
+          </Text>
         </div>
         
         {/* Tabs de navegación */}
@@ -156,12 +157,12 @@ const ServiceSection = () => {
         {/* Contenido de los tabs */}
         <div className="service-grid">
           {servicios[activeTab].map((servicio, index) => (
-            <div key={index} className="tarjeta">
+            <Card key={index} variant="standard">
               <div className="icono-estandar-primario">
                 {servicio.icon}
               </div>
               <h3 className="titulo-tarjeta">{servicio.title}</h3>
-              <p className="subtitulo-tarjeta">{servicio.description}</p>
+              <Text variant="cardSubtitle">{servicio.description}</Text>
               <ul className="service-features">
                 {servicio.features.map((feature, idx) => (
                   <li key={idx} className="feature-item">
@@ -170,7 +171,7 @@ const ServiceSection = () => {
                   </li>
                 ))}
               </ul>              
-            </div>
+            </Card>
           ))}
         </div>
       </div>

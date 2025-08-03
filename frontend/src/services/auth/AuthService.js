@@ -1,299 +1,502 @@
-// URL base para la API
-const API_URL = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000/api';
+/**
+ * Servicio de autenticación para StrateKaz SaaS
+ * Maneja todas las operaciones de autenticación y gestión de sesión
+ */
 
-const authService = {
-  // Iniciar sesión
-  login: async (data) => {
+import config, { getApiUrl, getStorageKey } from '../../config';
+
+class AuthService {
+  constructor() {
+    this.tokenKey = getStorageKey(config.auth.tokenKey);
+    this.refreshTokenKey = getStorageKey(config.auth.refreshTokenKey);
+    this.userKey = getStorageKey(config.auth.userKey);
+    this.tenantKey = getStorageKey(config.auth.tenantKey);
+  }
+
+  /**
+   * Obtener el token actual
+   */
+  getToken() {
+    return localStorage.getItem(this.tokenKey) || sessionStorage.getItem(this.tokenKey);
+  }
+
+  /**
+   * Obtener el tenant actual
+   */
+  getTenant() {
+    return localStorage.getItem(this.tenantKey) || sessionStorage.getItem(this.tenantKey);
+  }
+
+  /**
+   * Guardar token y datos de usuario
+   */
+  saveAuthData(token, refreshToken, user, rememberMe = false) {
+    const storage = rememberMe ? localStorage : sessionStorage;
+    storage.setItem(this.tokenKey, token);
+    if (refreshToken) {
+      storage.setItem(this.refreshTokenKey, refreshToken);
+    }
+    if (user) {
+      storage.setItem(this.userKey, JSON.stringify(user));
+    }
+  }
+
+  /**
+   * Limpiar todos los datos de autenticación
+   */
+  clearAuthData() {
+    [localStorage, sessionStorage].forEach(storage => {
+      storage.removeItem(this.tokenKey);
+      storage.removeItem(this.refreshTokenKey);
+      storage.removeItem(this.userKey);
+      storage.removeItem(this.tenantKey);
+    });
+  }
+
+  /**
+   * Hacer petición con autenticación
+   */
+  async makeAuthRequest(endpoint, options = {}) {
+    const token = this.getToken();
+    const tenant = this.getTenant();
+    
+    const headers = {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    if (tenant) {
+      headers[config.tenant.headerName] = tenant;
+    }
+
     try {
-      const response = await fetch(`${API_URL}/auth/login/`, {
+      const response = await fetch(getApiUrl(endpoint), {
+        ...options,
+        headers,
+      });
+
+      // Si el token expiró, intentar refrescar
+      if (response.status === 401) {
+        const refreshed = await this.refreshToken();
+        if (refreshed) {
+          // Reintentar la petición con el nuevo token
+          headers['Authorization'] = `Bearer ${this.getToken()}`;
+          return fetch(getApiUrl(endpoint), {
+            ...options,
+            headers,
+          });
+        }
+      }
+
+      return response;
+    } catch (error) {
+      console.error('Error en petición autenticada:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Iniciar sesión
+   */
+  async login(email, password, rememberMe = false) {
+    try {
+      const response = await fetch(getApiUrl('/auth/login/'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ email, password }),
       });
-      
-      const result = await response.json();
-      
-      // Si la respuesta es exitosa, guardar el token
+
+      const data = await response.json();
+
       if (response.ok) {
+        this.saveAuthData(
+          data.access,
+          data.refresh,
+          data.user,
+          rememberMe
+        );
+
+        // Guardar tenant si viene en la respuesta
+        if (data.tenant) {
+          const storage = rememberMe ? localStorage : sessionStorage;
+          storage.setItem(this.tenantKey, data.tenant);
+        }
+
         return {
           success: true,
-          token: result.token,
-          user: result.user
+          user: data.user,
+          tenant: data.tenant,
         };
       }
-      
+
       return {
         success: false,
-        message: result.detail || 'Error al iniciar sesión'
+        message: data.detail || data.error || 'Error al iniciar sesión',
       };
     } catch (error) {
       console.error('Error en login:', error);
       return {
         success: false,
-        message: 'Error de conexión. Inténtalo más tarde.'
+        message: 'Error de conexión. Por favor, intenta más tarde.',
       };
     }
-  },
-  
-  // Registrar nuevo usuario
-  register: async (data) => {
+  }
+
+  /**
+   * Registrar nuevo usuario
+   */
+  async register(userData) {
     try {
-      const response = await fetch(`${API_URL}/auth/register/`, {
+      const response = await fetch(getApiUrl('/auth/register/'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(userData),
       });
-      
-      const result = await response.json();
-      
+
+      const data = await response.json();
+
       if (response.ok) {
+        // Auto-login después del registro
+        if (data.access) {
+          this.saveAuthData(data.access, data.refresh, data.user, false);
+        }
+
         return {
           success: true,
-          user: result
+          user: data.user,
+          message: 'Registro exitoso',
         };
       }
-      
+
       return {
         success: false,
-        message: result.detail || result.error || 'Error en el registro'
+        message: data.detail || data.error || 'Error en el registro',
+        errors: data.errors || {},
       };
     } catch (error) {
       console.error('Error en registro:', error);
       return {
         success: false,
-        message: 'Error de conexión. Inténtalo más tarde.'
+        message: 'Error de conexión. Por favor, intenta más tarde.',
       };
     }
-  },
-  
-  // Obtener información del perfil de usuario
-  getUserProfile: async () => {
-    try {
-      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-      
-      if (!token) {
-        console.error('No hay token en localStorage ni sessionStorage');
-        return {
-          success: false,
-          message: 'No hay sesión activa'
-        };
-      }
-      console.log('Token encontrado:', token);
-      
-      // Verificar si hay datos del usuario en el almacenamiento local como respaldo
-      const storageType = localStorage.getItem('authToken') ? localStorage : sessionStorage;
-      const storedUser = JSON.parse(storageType.getItem('user') || '{}');
-      
-      try {
-        const response = await fetch(`${API_URL}/auth/profile/`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`  
-          }
-        });
+  }
 
-        console.log('Respuesta status:', response.status);
-        
-        // Si la respuesta no es ok, lanzar error para pasar al catch
-        if (!response.ok) {
-          throw new Error(`Error ${response.status}: ${response.statusText}`);
-        }
-        
-        const result = await response.json();
-        console.log('Respuesta content:', result);
-        
+  /**
+   * Refrescar token
+   */
+  async refreshToken() {
+    const refreshToken = localStorage.getItem(this.refreshTokenKey) || 
+                        sessionStorage.getItem(this.refreshTokenKey);
+
+    if (!refreshToken) {
+      return false;
+    }
+
+    try {
+      const response = await fetch(getApiUrl('/auth/token/refresh/'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refresh: refreshToken }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const storage = localStorage.getItem(this.tokenKey) ? localStorage : sessionStorage;
+        storage.setItem(this.tokenKey, data.access);
+        return true;
+      }
+
+      // Si el refresh token no es válido, hacer logout
+      this.logout();
+      return false;
+    } catch (error) {
+      console.error('Error al refrescar token:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Obtener perfil del usuario
+   */
+  async getUserProfile() {
+    try {
+      const response = await this.makeAuthRequest('/auth/profile/', {
+        method: 'GET',
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Actualizar datos del usuario en storage
+        const storage = localStorage.getItem(this.tokenKey) ? localStorage : sessionStorage;
+        storage.setItem(this.userKey, JSON.stringify(data));
+
         return {
           success: true,
-          data: result
-        };
-      } catch (apiError) {
-        console.error('Error al llamar a la API:', apiError);
-        
-        // Usar información del almacenamiento local si está disponible
-        if (storedUser && storedUser.user_type) {
-          console.log('Usando datos del usuario en almacenamiento local como respaldo', storedUser);
-          return {
-            success: true,
-            data: storedUser
-          };
-        }
-        
-        // Si no hay datos almacenados, proporcionar un tipo de usuario predeterminado
-        // basado en la URL o el token para permitir que la interfaz funcione
-        const defaultUserType = window.location.pathname.includes('professional') ? 
-          'professional' : 'direct_company';
-        
-        return {
-          success: true,
-          data: {
-            user_type: defaultUserType,
-            // Otros campos pueden estar vacíos
-            first_name: '',
-            last_name: '',
-            email: '',
-            phone: '',
-            city: '',
-            department: '',
-            profile_completed: false
-          }
+          data,
         };
       }
-    } catch (error) {
-      console.error('Error al obtener perfil:', error);
+
       return {
         success: false,
-        message: 'Error de conexión. Inténtalo más tarde.'
+        message: data.detail || 'Error al obtener el perfil',
+      };
+    } catch (error) {
+      console.error('Error al obtener perfil:', error);
+      
+      // Intentar devolver datos cacheados
+      const cachedUser = this.getCachedUser();
+      if (cachedUser) {
+        return {
+          success: true,
+          data: cachedUser,
+          cached: true,
+        };
+      }
+
+      return {
+        success: false,
+        message: 'Error de conexión',
       };
     }
-  },
-  
-  // Actualizar perfil de usuario
-  updateProfile: async (data) => {
+  }
+
+  /**
+   * Actualizar perfil del usuario
+   */
+  async updateProfile(profileData) {
     try {
-      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-      
-      if (!token) {
-        return {
-          success: false,
-          message: 'No hay sesión activa'
-        };
-      }
-      
-      try {
-        const response = await fetch(`${API_URL}/auth/profile/update/`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`
-          },
-          body: JSON.stringify(data)
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Error ${response.status}: ${response.statusText}`);
-        }
-        
-        const result = await response.json();
-        
-        // Actualizar datos del usuario en el almacenamiento local
-        const storageType = localStorage.getItem('authToken') ? localStorage : sessionStorage;
-        const userData = JSON.parse(storageType.getItem('user') || '{}');
-        const updatedUserData = { ...userData, ...data, profile_completed: true };
-        storageType.setItem('user', JSON.stringify(updatedUserData));
-        
+      const response = await this.makeAuthRequest('/auth/profile/', {
+        method: 'PATCH',
+        body: JSON.stringify(profileData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Actualizar datos cacheados
+        const storage = localStorage.getItem(this.tokenKey) ? localStorage : sessionStorage;
+        const currentUser = JSON.parse(storage.getItem(this.userKey) || '{}');
+        const updatedUser = { ...currentUser, ...data };
+        storage.setItem(this.userKey, JSON.stringify(updatedUser));
+
         return {
           success: true,
-          data: result
-        };
-      } catch (apiError) {
-        console.error('Error al llamar a la API:', apiError);
-        
-        // Simular una actualización exitosa para permitir que el usuario continúe
-        const storageType = localStorage.getItem('authToken') ? localStorage : sessionStorage;
-        const userData = JSON.parse(storageType.getItem('user') || '{}');
-        const updatedUserData = { ...userData, ...data, profile_completed: true };
-        storageType.setItem('user', JSON.stringify(updatedUserData));
-        
-        return {
-          success: true,
-          data: updatedUserData,
-          message: 'Perfil actualizado localmente. Los cambios se sincronizarán cuando se restablezca la conexión.'
+          data: updatedUser,
         };
       }
+
+      return {
+        success: false,
+        message: data.detail || 'Error al actualizar el perfil',
+        errors: data.errors || {},
+      };
     } catch (error) {
       console.error('Error al actualizar perfil:', error);
       return {
         success: false,
-        message: 'Error de conexión. Inténtalo más tarde.'
+        message: 'Error de conexión',
       };
     }
-  },
+  }
 
-  // Completar perfil de usuario
-  completeProfile: async (data) => {
+  /**
+   * Completar perfil del usuario
+   */
+  async completeProfile(profileData) {
     try {
-      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-      
-      if (!token) {
-        return {
-          success: false,
-          message: 'No hay sesión activa'
-        };
-      }
-      
-      try {
-        const response = await fetch(`${API_URL}/auth/profile/complete/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${token}`
-          },
-          body: JSON.stringify(data)
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Error ${response.status}: ${response.statusText}`);
-        }
-        
-        const result = await response.json();
-        
-        // Actualizar datos del usuario en el almacenamiento local
-        const storageType = localStorage.getItem('authToken') ? localStorage : sessionStorage;
-        const userData = JSON.parse(storageType.getItem('user') || '{}');
-        const updatedUserData = { ...userData, ...data, profile_completed: true };
-        storageType.setItem('user', JSON.stringify(updatedUserData));
-        
+      const response = await this.makeAuthRequest('/auth/profile/complete/', {
+        method: 'POST',
+        body: JSON.stringify(profileData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Actualizar datos cacheados
+        const storage = localStorage.getItem(this.tokenKey) ? localStorage : sessionStorage;
+        const updatedUser = { ...profileData, profile_completed: true };
+        storage.setItem(this.userKey, JSON.stringify(updatedUser));
+
         return {
           success: true,
-          profile_completed: true,
-          data: result
-        };
-      } catch (apiError) {
-        console.error('Error al llamar a la API:', apiError);
-        
-        // Simular una actualización exitosa para permitir que el usuario continúe
-        const storageType = localStorage.getItem('authToken') ? localStorage : sessionStorage;
-        const userData = JSON.parse(storageType.getItem('user') || '{}');
-        const updatedUserData = { ...userData, ...data, profile_completed: true };
-        storageType.setItem('user', JSON.stringify(updatedUserData));
-        
-        return {
-          success: true,
-          profile_completed: true,
-          data: updatedUserData,
-          message: 'Perfil completado localmente. Los cambios se sincronizarán cuando se restablezca la conexión.'
+          data: updatedUser,
         };
       }
+
+      return {
+        success: false,
+        message: data.detail || 'Error al completar el perfil',
+        errors: data.errors || {},
+      };
     } catch (error) {
       console.error('Error al completar perfil:', error);
       return {
         success: false,
-        message: 'Error de conexión. Inténtalo más tarde.'
+        message: 'Error de conexión',
       };
     }
-  },
-  
-  // Cerrar sesión
-  logout: () => {
-    localStorage.removeItem('authToken');
-    sessionStorage.removeItem('authToken');
-    localStorage.removeItem('user');  // También eliminar datos de usuario
-    sessionStorage.removeItem('user');
-    
-    return {
-      success: true
-    };
-  },
-  
-  // Verificar si el usuario está autenticado
-  isAuthenticated: () => {
-    return localStorage.getItem('authToken') || sessionStorage.getItem('authToken') ? true : false;
   }
-};
 
+  /**
+   * Cerrar sesión
+   */
+  async logout() {
+    try {
+      const token = this.getToken();
+      
+      if (token) {
+        // Notificar al backend
+        await this.makeAuthRequest('/auth/logout/', {
+          method: 'POST',
+        });
+      }
+    } catch (error) {
+      console.error('Error al hacer logout en el servidor:', error);
+    } finally {
+      // Siempre limpiar datos locales
+      this.clearAuthData();
+      window.location.href = '/login';
+    }
+  }
+
+  /**
+   * Verificar si el usuario está autenticado
+   */
+  isAuthenticated() {
+    const token = this.getToken();
+    if (!token) return false;
+
+    // Verificar si el token no ha expirado
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const exp = payload.exp * 1000; // Convertir a millisegundos
+      return Date.now() < exp;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  /**
+   * Obtener usuario cacheado
+   */
+  getCachedUser() {
+    try {
+      const userStr = localStorage.getItem(this.userKey) || sessionStorage.getItem(this.userKey);
+      return userStr ? JSON.parse(userStr) : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  /**
+   * Verificar si el perfil está completo
+   */
+  isProfileComplete() {
+    const user = this.getCachedUser();
+    return user?.profile_completed || false;
+  }
+
+  /**
+   * Cambiar contraseña
+   */
+  async changePassword(currentPassword, newPassword) {
+    try {
+      const response = await this.makeAuthRequest('/auth/change-password/', {
+        method: 'POST',
+        body: JSON.stringify({
+          current_password: currentPassword,
+          new_password: newPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      return {
+        success: response.ok,
+        message: data.message || (response.ok ? 'Contraseña actualizada' : 'Error al cambiar contraseña'),
+      };
+    } catch (error) {
+      console.error('Error al cambiar contraseña:', error);
+      return {
+        success: false,
+        message: 'Error de conexión',
+      };
+    }
+  }
+
+  /**
+   * Solicitar restablecimiento de contraseña
+   */
+  async requestPasswordReset(email) {
+    try {
+      const response = await fetch(getApiUrl('/auth/password-reset/'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      return {
+        success: response.ok,
+        message: data.message || (response.ok ? 'Email enviado' : 'Error al enviar email'),
+      };
+    } catch (error) {
+      console.error('Error al solicitar reset:', error);
+      return {
+        success: false,
+        message: 'Error de conexión',
+      };
+    }
+  }
+
+  /**
+   * Confirmar restablecimiento de contraseña
+   */
+  async confirmPasswordReset(token, newPassword) {
+    try {
+      const response = await fetch(getApiUrl('/auth/password-reset/confirm/'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token,
+          new_password: newPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      return {
+        success: response.ok,
+        message: data.message || (response.ok ? 'Contraseña restablecida' : 'Error al restablecer'),
+      };
+    } catch (error) {
+      console.error('Error al confirmar reset:', error);
+      return {
+        success: false,
+        message: 'Error de conexión',
+      };
+    }
+  }
+}
+
+// Exportar instancia única (Singleton)
+const authService = new AuthService();
 export default authService;

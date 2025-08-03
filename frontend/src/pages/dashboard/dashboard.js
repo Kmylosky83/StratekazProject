@@ -1,8 +1,8 @@
 // En C:\Proyectos\StratekazProject\frontend\src\pages\dashboard\dashboard.js
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Menu, Wrench, BarChart3, Building, Calendar, DollarSign, Search, Bell } from 'lucide-react';
 import '../../styles/dashboard.css';
-import '../../styles/variables.css';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('herramientas');
@@ -42,7 +42,7 @@ const Dashboard = () => {
       {/* Header principal */}
       <header className="main-header">
         <div className="header-left">
-          <i className="fas fa-bars menu-icon"></i>
+          <Menu className="menu-icon" size={20} />
           <h1 className="brand">StrateKaz</h1>
           <span className="suite-tag">Suite Empresarial</span>
         </div>
@@ -53,42 +53,42 @@ const Dashboard = () => {
               className={`tab-button ${activeTab === 'herramientas' ? 'active' : ''}`}
               onClick={() => setActiveTab('herramientas')}
             >
-              <i className="fas fa-tools fa-sm"></i> Herramientas
+              <Wrench size={16} /> Herramientas
             </button>
             <button 
               className={`tab-button ${activeTab === 'inteligencia' ? 'active' : ''}`}
               onClick={() => setActiveTab('inteligencia')}
             >
-              <i className="fas fa-chart-line fa-sm"></i> Inteligencia
+              <BarChart3 size={16} /> Inteligencia
             </button>
             <button 
               className={`tab-button ${activeTab === 'empresas' ? 'active' : ''}`}
               onClick={() => setActiveTab('empresas')}
             >
-              <i className="fas fa-building fa-sm"></i> Empresas
+              <Building size={16} /> Empresas
             </button>
             <button 
               className={`tab-button ${activeTab === 'ecosistema' ? 'active' : ''}`}
               onClick={() => setActiveTab('ecosistema')}
             >
-              <i className="fas fa-calendar-alt fa-sm"></i> Ecosistema
+              <Calendar size={16} /> Ecosistema
             </button>
             <button 
               className={`tab-button ${activeTab === 'finanzas' ? 'active' : ''}`}
               onClick={() => setActiveTab('finanzas')}
             >
-              <i className="fas fa-dollar-sign fa-sm"></i> Finanzas
+              <DollarSign size={16} /> Finanzas
             </button>
           </div>
         </div>
         
         <div className="header-right">
           <div className="search-container">
-            <i className="fas fa-search search-icon"></i>
+            <Search className="search-icon" size={16} />
             <input type="text" placeholder="Buscar..." className="search-input" />
           </div>
           <button className="notification-btn">
-            <i className="fas fa-bell"></i>
+            <Bell size={20} />
           </button>
           <div className="user-profile">
             <div className="avatar">
@@ -210,7 +210,7 @@ const Dashboard = () => {
               <h3 className="titulo-tarjeta">Módulo en Desarrollo</h3>
               <p className="texto-base">Estamos trabajando para ofrecerte las mejores herramientas de gestión.</p>
               <button className="boton-primario">
-                <i className="fas fa-bell"></i> Notificarme cuando esté disponible
+                <Bell size={20} /> Notificarme cuando esté disponible
               </button>
             </div>
           </div>

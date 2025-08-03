@@ -1,7 +1,7 @@
 // frontend/src/components/dashboard/pilares/herramientas/formacion/FichaFormacion/index.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Eye, Calendar, Share2, ArrowLeft } from 'lucide-react';
+import { Plus, Eye, Calendar, Share2, ArrowLeft } from '../../../../../../design-system/icons';
 import formacionService from '../../../../../../services/herramientas/formacion';
 
 const FichaFormacion = () => {

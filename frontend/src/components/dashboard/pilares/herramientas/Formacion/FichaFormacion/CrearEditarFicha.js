@@ -1,7 +1,7 @@
 // frontend/src/components/dashboard/pilares/herramientas/formacion/FichaFormacion/CrearEditarFicha.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2 } from '../../../../../../design-system/icons';
 import formacionService from '../../../../../../services/herramientas/formacion';
 
 const CrearEditarFicha = () => {

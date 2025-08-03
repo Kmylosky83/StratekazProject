@@ -1,6 +1,8 @@
 // frontend/src/components/common/Footer.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Logo_Footer } from '../../design-system/components/Logo';
+import { Linkedin, Twitter, Facebook, Instagram, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -9,23 +11,25 @@ const Footer = () => {
         <div className="row">
           {/* Brand and Description */}
           <div className="col-lg-4 mb-4">
-            <h5 className="fw-bold text-primary mb-3">StrateKaz</h5>
+            <div className="mb-3">
+              <Logo_Footer hoverable onClick={() => window.location.href = '/'} />
+            </div>
             <p className="text-muted">
               Suite empresarial completa para la gestión, optimización y crecimiento 
               de tu negocio. Herramientas profesionales al alcance de todos.
             </p>
             <div className="social-links">
-              <a href="#" className="text-muted me-3">
-                <i className="fab fa-linkedin fs-5"></i>
+              <a href="#" className="text-muted me-3" aria-label="LinkedIn">
+                <Linkedin size={20} />
               </a>
-              <a href="#" className="text-muted me-3">
-                <i className="fab fa-twitter fs-5"></i>
+              <a href="#" className="text-muted me-3" aria-label="Twitter">
+                <Twitter size={20} />
               </a>
-              <a href="#" className="text-muted me-3">
-                <i className="fab fa-facebook fs-5"></i>
+              <a href="#" className="text-muted me-3" aria-label="Facebook">
+                <Facebook size={20} />
               </a>
-              <a href="#" className="text-muted">
-                <i className="fab fa-instagram fs-5"></i>
+              <a href="#" className="text-muted" aria-label="Instagram">
+                <Instagram size={20} />
               </a>
             </div>
           </div>
@@ -91,16 +95,16 @@ const Footer = () => {
           <div className="col-lg-2 col-md-6 mb-4">
             <h6 className="fw-bold mb-3">Contacto</h6>
             <ul className="list-unstyled">
-              <li className="mb-2 text-muted">
-                <i className="fas fa-envelope me-2"></i>
+              <li className="mb-2 text-muted d-flex align-items-center">
+                <Mail size={16} className="me-2" />
                 info@stratekaz.com
               </li>
-              <li className="mb-2 text-muted">
-                <i className="fas fa-phone me-2"></i>
+              <li className="mb-2 text-muted d-flex align-items-center">
+                <Phone size={16} className="me-2" />
                 +57 (1) 234-5678
               </li>
-              <li className="mb-2 text-muted">
-                <i className="fas fa-map-marker-alt me-2"></i>
+              <li className="mb-2 text-muted d-flex align-items-center">
+                <MapPin size={16} className="me-2" />
                 Bogotá, Colombia
               </li>
             </ul>

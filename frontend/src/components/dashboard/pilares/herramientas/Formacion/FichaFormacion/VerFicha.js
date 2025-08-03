@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
-  ArrowLeft, Edit, Trash2, FileText, Link as LinkIcon, 
-  ExternalLink, Copy, Download, Upload, PlusCircle 
-} from 'lucide-react';
+  ArrowLeft, Edit, Trash2, FileText, ExternalLink, Download, Upload,
+  Link as LinkIcon, Copy, PlusCircle
+} from '../../../../../../design-system/icons';
 import formacionService from '../../../../../../services/herramientas/formacion';
 
 const VerFicha = () => {

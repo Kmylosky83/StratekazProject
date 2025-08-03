@@ -2,7 +2,6 @@ import React from 'react';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import ServiceSection from '../components/portfolio/ServiceSection';
-import '../styles/variables.css';
 import '../styles/portfolio.css';
 
 const PortfolioPage = () => {

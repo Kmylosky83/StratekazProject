@@ -2,6 +2,8 @@
 import React from 'react';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
+import { Button, Card, CardBody, ToolIcon, H3, Text } from '../design-system/components';
+import { Award, HardHat, Navigation, Lightbulb } from 'lucide-react';
 
 const AccesoGratuitoPage = () => {
   const isAuthenticated = false; // This should come from AuthContext
@@ -18,71 +20,71 @@ const AccesoGratuitoPage = () => {
               {/* Grid 1x4 para las 4 herramientas principales */}
               <div className="row g-4">
                 <div className="col-lg-3 col-md-6">
-                  <div className="tarjeta-herramienta h-100">
-                    <div className="card-body text-center p-4 d-flex flex-column">
-                      <div className="tool-icon mb-3" style={{ backgroundColor: '#3498db' }}>
-                        <i className="fas fa-certificate text-white fs-1"></i>
-                      </div>
-                      <h5 className="fw-bold mb-3">ISO 9001</h5>
-                      <p className="subtitulo-tarjeta flex-grow-1">
+                  <Card variant="tool" className="h-100">
+                    <CardBody className="text-center p-4 d-flex flex-column">
+                      <ToolIcon backgroundColor="#3498db" className="mb-3">
+                        <Award size={48} color="white" />
+                      </ToolIcon>
+                      <H3 variant="card" className="fw-bold mb-3">ISO 9001</H3>
+                      <Text variant="cardSubtitle" className="flex-grow-1">
                         Sistema de Gestión de Calidad. Herramientas básicas para implementar ISO 9001 en tu organización.
-                      </p>
-                      <button className="boton-tarjeta activo mt-auto">
+                      </Text>
+                      <Button variant="card" className="active mt-auto">
                         Acceder Gratis
-                      </button>
-                    </div>
-                  </div>
+                      </Button>
+                    </CardBody>
+                  </Card>
                 </div>
 
                 <div className="col-lg-3 col-md-6">
-                  <div className="tarjeta-herramienta h-100">
-                    <div className="card-body text-center p-4 d-flex flex-column">
-                      <div className="tool-icon mb-3" style={{ backgroundColor: '#e74c3c' }}>
-                        <i className="fas fa-hard-hat text-white fs-1"></i>
-                      </div>
-                      <h5 className="fw-bold mb-3">SG-SST</h5>
-                      <p className="subtitulo-tarjeta flex-grow-1">
+                  <Card variant="tool" className="h-100">
+                    <CardBody className="text-center p-4 d-flex flex-column">
+                      <ToolIcon backgroundColor="#e74c3c" className="mb-3">
+                        <HardHat size={48} color="white" />
+                      </ToolIcon>
+                      <H3 variant="card" className="fw-bold mb-3">SG-SST</H3>
+                      <Text variant="cardSubtitle" className="flex-grow-1">
                         Sistema de Gestión de Seguridad y Salud en el Trabajo. Cumple con la normatividad colombiana.
-                      </p>
-                      <button className="boton-tarjeta activo mt-auto">
+                      </Text>
+                      <Button variant="card" className="active mt-auto">
                         Acceder Gratis
-                      </button>
-                    </div>
-                  </div>
+                      </Button>
+                    </CardBody>
+                  </Card>
                 </div>
 
                 <div className="col-lg-3 col-md-6">
-                  <div className="tarjeta-herramienta h-100">
-                    <div className="card-body text-center p-4 d-flex flex-column">
-                      <div className="tool-icon mb-3" style={{ backgroundColor: '#f39c12' }}>
-                        <i className="fas fa-road text-white fs-1"></i>
-                      </div>
-                      <h5 className="fw-bold mb-3">PESV</h5>
-                      <p className="subtitulo-tarjeta flex-grow-1">
+                  <Card variant="tool" className="h-100">
+                    <CardBody className="text-center p-4 d-flex flex-column">
+                      <ToolIcon backgroundColor="#f39c12" className="mb-3">
+                        <Navigation size={48} color="white" />
+                      </ToolIcon>
+                      <H3 variant="card" className="fw-bold mb-3">PESV</H3>
+                      <Text variant="cardSubtitle" className="flex-grow-1">
                         Plan Estratégico de Seguridad Vial. Herramientas para implementar y gestionar la seguridad vial.
-                      </p>
-                      <button className="boton-tarjeta activo mt-auto">
+                      </Text>
+                      <Button variant="card" className="active mt-auto">
                         Acceder Gratis
-                      </button>
-                    </div>
-                  </div>
+                      </Button>
+                    </CardBody>
+                  </Card>
                 </div>
 
                 <div className="col-lg-3 col-md-6">
-                  <div className="tarjeta-herramienta h-100">
-                    <div className="card-body text-center p-4 d-flex flex-column">
-                      <div className="tool-icon mb-3" style={{ backgroundColor: '#9b59b6' }}>
-                        <i className="fas fa-lightbulb text-white fs-1"></i>
-                      </div>
-                      <h5 className="fw-bold mb-3">Innovación</h5>
-                      <p className="subtitulo-tarjeta flex-grow-1">
+                  <Card variant="tool" className="h-100">
+                    <CardBody className="text-center p-4 d-flex flex-column">
+                      <ToolIcon backgroundColor="#9b59b6" className="mb-3">
+                        <Lightbulb size={48} color="white" />
+                      </ToolIcon>
+                      <H3 variant="card" className="fw-bold mb-3">Innovación</H3>
+                      <Text variant="cardSubtitle" className="flex-grow-1">
                         Herramientas de innovación empresarial. Metodologías para fomentar la creatividad y mejora continua.
-                      </p>
-                      <button className="boton-tarjeta activo mt-auto">
+                      </Text>
+                      <Button variant="card" className="active mt-auto">
                         Acceder Gratis
-                      </button>
-                    </div>
-                  </div>
+                      </Button>
+                    </CardBody>
+                  </Card>
                 </div>
               </div>
             </div>

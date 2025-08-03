@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CheckSquare, Calendar, Activity } from 'lucide-react';
+import { CheckSquare, Calendar, Activity } from '../../../../design-system/icons';
 import ecosistemaService from '../../../../services/ecosistema';
 
 const EcosistemaEmpresarial = ({ userType }) => {

@@ -1,6 +1,7 @@
 // frontend/src/components/home/HeroSection.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { H1, Text, Button } from '../../design-system/components';
 
 const HeroSection = () => {
   return (
@@ -9,20 +10,20 @@ const HeroSection = () => {
         <div className="row align-items-center">
           {/* Columna izquierda */}
           <div className="col-lg-6 mb-5 mb-lg-0">
-            <h1 className="titulo-hero">Stratek</h1>
-            <p className="subtitulo-hero">
+            <H1 variant="hero">Stratek</H1>
+            <Text variant="heroSubtitle">
               Gestiona tu organización de manera inteligente, diseña, implementa y audita, 
               Sistemas Integrados de Gestión, Seguridad y Salud en el Trabajo y mucho mas. 
               "Desde cualquier lugar del mundo".
-            </p>
+            </Text>
             
             <div className="hero-buttons mb-5">
-              <Link to="/register" className="boton-primario boton-grande me-3 mb-3 mb-sm-0">
+              <Button as={Link} to="/register" variant="primary" size="large" className="me-3 mb-3 mb-sm-0">
                 Comenzar Ahora
-              </Link>
-              <Link to="/portfolio" className="boton-secundario boton-grande">
+              </Button>
+              <Button as={Link} to="/portfolio" variant="secondary" size="large">
                 Portafolio de Servicios
-              </Link>
+              </Button>
             </div>
             
             {/* Estadísticas en formato horizontal */}

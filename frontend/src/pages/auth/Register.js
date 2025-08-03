@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight, faUserTie, faBuilding, faIndustry, faHome } from '@fortawesome/free-solid-svg-icons';
+import { ArrowLeft, ArrowRight, UserCheck, Building2, Factory, Home } from 'lucide-react';
 import authService from '../../services/auth/AuthService';
 import PolicyModal from '../../components/modals/PolicyModal';
 
@@ -209,7 +208,7 @@ const [passwordStrength, setPasswordStrength] = useState({
                           onClick={() => selectUserType('professional')}
                         >
                           <div className="card-body text-center p-4">
-                            <FontAwesomeIcon icon={faUserTie} className="fa-3x mb-3" />
+                            <UserCheck size={48} className="mb-3" />
                             <h6>Profesional Independiente</h6>
                             <p className="subtitulo-tarjeta">Para profesionales que trabajan de manera independiente</p>
                           </div>
@@ -221,7 +220,7 @@ const [passwordStrength, setPasswordStrength] = useState({
                           onClick={() => selectUserType('consultant_company')}
                         >
                           <div className="card-body text-center p-4">
-                            <FontAwesomeIcon icon={faBuilding} className="fa-3x mb-3" />
+                            <Building2 size={48} className="mb-3" />
                             <h6>Empresa Consultora</h6>
                             <p className="subtitulo-tarjeta">Para empresas que ofrecen servicios de consultoría</p>
                           </div>
@@ -233,7 +232,7 @@ const [passwordStrength, setPasswordStrength] = useState({
                           onClick={() => selectUserType('direct_company')}
                         >
                           <div className="card-body text-center p-4">
-                            <FontAwesomeIcon icon={faIndustry} className="fa-3x mb-3" />
+                            <Factory size={48} className="mb-3" />
                             <h6>Empresa Directa</h6>
                             <p className="subtitulo-tarjeta">Para empresas que utilizan la herramienta para su autogestión</p>
                           </div>
@@ -373,7 +372,7 @@ const [passwordStrength, setPasswordStrength] = useState({
                         to="/" 
                         className="boton-secundario"
                       >
-                        <FontAwesomeIcon icon={faHome} className="me-2" />
+                        <Home size={20} className="me-2" />
                         Ir al Home
                       </Link>
                     ) : (
@@ -381,7 +380,7 @@ const [passwordStrength, setPasswordStrength] = useState({
                         className="boton-secundario"
                         onClick={prevStep}
                       >
-                        <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
+                        <ArrowLeft size={20} className="me-2" />
                         Anterior
                       </button>
                     )}
@@ -397,7 +396,7 @@ const [passwordStrength, setPasswordStrength] = useState({
                         disabled={!userType && currentStep === 1}
                       >
                         Siguiente
-                        <FontAwesomeIcon icon={faArrowRight} className="ms-2" />
+                        <ArrowRight size={20} className="ms-2" />
                       </button>
                     ) : (
                       <button 

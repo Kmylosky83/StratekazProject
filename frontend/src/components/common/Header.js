@@ -1,17 +1,17 @@
 // frontend/src/components/common/Header.js
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const Header = ({ isAuthenticated = false, userName = "" }) => {
+
   return (
     <header className="main-header bg-white shadow-sm sticky-top">
       <nav className="navbar navbar-expand-lg">
         <div className="container">
           {/* Brand */}
-          <Link className="navbar-brand d-flex align-items-center" to="/">
+          <a className="navbar-brand d-flex align-items-center" href="/">
             <h2 className="mb-0 text-primary fw-bold">StrateKaz</h2>
             <span className="badge bg-secondary ms-2 small">Suite Empresarial</span>
-          </Link>
+          </a>
 
           {/* Mobile toggle */}
           <button 
@@ -27,24 +27,24 @@ const Header = ({ isAuthenticated = false, userName = "" }) => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto align-items-center">
               <li className="nav-item">
-                <Link className="nav-link" to="/">Inicio</Link>
+                <a className="nav-link" href="/">Inicio</a>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/acceso-gratuito">Acceso Gratuito</Link>
+                <a className="nav-link" href="/acceso-gratuito">Acceso Gratuito</a>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/portfolio">Portafolio</Link>
+                <a className="nav-link" href="/portfolio">Portafolio</a>
               </li>
               
               {!isAuthenticated ? (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/login">Iniciar Sesión</Link>
+                    <a className="nav-link" href="/login">Iniciar Sesión</a>
                   </li>
                   <li className="nav-item ms-2">
-                    <Link className="btn boton-primario btn-sm" to="/register">
+                    <a className="btn boton-primario btn-sm" href="/register">
                       Crear Cuenta
-                    </Link>
+                    </a>
                   </li>
                 </>
               ) : (
@@ -63,16 +63,16 @@ const Header = ({ isAuthenticated = false, userName = "" }) => {
                     </a>
                     <ul className="dropdown-menu dropdown-menu-end">
                       <li>
-                        <Link className="dropdown-item" to="/dashboard">
+                        <a className="dropdown-item" href="/dashboard">
                           <i className="fas fa-tachometer-alt me-2"></i>
                           Dashboard
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item" to="/complete-profile">
+                        <a className="dropdown-item" href="/complete-profile">
                           <i className="fas fa-user-edit me-2"></i>
                           Mi Perfil
-                        </Link>
+                        </a>
                       </li>
                       <li><hr className="dropdown-divider" /></li>
                       <li>

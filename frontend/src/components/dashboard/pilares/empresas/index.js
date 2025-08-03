@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, Edit, Plus } from 'lucide-react';
+import { Eye, Edit, Plus } from '../../../../design-system/icons';
 import empresasService from '../../../../services/empresas';
 
 const RedClientes = ({ userType }) => {
