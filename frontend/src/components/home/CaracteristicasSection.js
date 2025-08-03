@@ -1,6 +1,5 @@
 // frontend/src/components/home/CaracteristicasSection.js
 import React from 'react';
-import '../../styles/home.css';
 
 const CaracteristicasSection = () => {
   return (

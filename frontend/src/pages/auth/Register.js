@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faUserTie, faBuilding, faIndustry, faHome } from '@fortawesome/free-solid-svg-icons';
 import authService from '../../services/auth/AuthService';
-import '../../styles/register.css';
 import PolicyModal from '../../components/modals/PolicyModal';
 
 const Register = () => {

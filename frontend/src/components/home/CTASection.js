@@ -1,7 +1,6 @@
 // frontend/src/components/home/CTASection.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../../styles/home.css';
 
 const CTASection = () => {
   return (

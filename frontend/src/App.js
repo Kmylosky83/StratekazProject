@@ -3,9 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
 // Páginas principales
-import Home from './pages/home'; 
-import Register from './pages/auth/register';
-import Login from './pages/auth/login';
+import Home from './pages/Home'; 
+import Register from './pages/auth/Register';
+import Login from './pages/auth/Login';
 import CompleteProfile from './components/profile/CompleteProfile';
 import Dashboard from './pages/dashboard/dashboard';
 import PortfolioPage from './pages/PortfolioPage';

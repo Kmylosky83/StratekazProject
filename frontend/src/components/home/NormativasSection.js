@@ -1,7 +1,6 @@
 // frontend/src/components/home/NormativasSection.js
 import React, { useState } from 'react';
 import NormativaModal from '../modals/NormativaModal';
-import '../../styles/home.css';
 
 const NormativasSection = () => {
   const [showModal, setShowModal] = useState(false);

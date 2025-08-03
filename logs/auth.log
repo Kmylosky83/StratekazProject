@@ -1,0 +1,405 @@
+INFO 2025-05-22 10:46:52,599 views 4340 11484 Login attempt: username=None, email=testadmin@stratekaz.com
+INFO 2025-05-22 10:46:53,597 views 4340 11484 Authentication by email result: False
+WARNING 2025-05-22 10:46:53,598 views 4340 11484 Login failed: Invalid credentials
+INFO 2025-06-03 20:06:32,186 views 7480 9624 Email verified successfully for user: emailtest@ejemplo.com
+WARNING 2025-06-04 17:22:48,999 views 7480 19132 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 17:23:00,815 views 7480 19132 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 17:23:21,282 views 7480 19132 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 18:08:18,868 views 7480 20760 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 18:09:16,699 views 7480 20760 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 18:09:24,862 views 7480 20760 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 18:12:12,486 views 7480 20760 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 18:14:53,900 views 7480 20760 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 18:17:09,789 views 7480 20760 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 18:17:40,560 views 7480 20760 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 18:17:42,792 views 7480 20760 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 18:19:06,345 views 7480 20760 Incomplete registration attempt for professional: Missing fields ['first_name', 'last_name', 'profession']
+WARNING 2025-06-04 18:27:14,602 views 3368 13584 Invalid registration data: {'username': [ErrorDetail(string='Este campo es requerido.', code='required')]}
+WARNING 2025-06-04 18:27:15,472 views 3368 13584 Invalid registration data: {'username': [ErrorDetail(string='Este campo es requerido.', code='required')]}
+WARNING 2025-06-04 18:27:24,038 views 3368 13584 Invalid registration data: {'username': [ErrorDetail(string='Este campo es requerido.', code='required')]}
+WARNING 2025-06-04 18:28:47,419 views 3368 13584 Invalid registration data: {'username': [ErrorDetail(string='Este campo es requerido.', code='required')]}
+WARNING 2025-06-04 18:30:00,330 views 3368 13584 Invalid registration data: {'username': [ErrorDetail(string='Este campo es requerido.', code='required')]}
+WARNING 2025-06-04 18:30:21,604 views 3368 13584 Invalid registration data: {'username': [ErrorDetail(string='Este campo es requerido.', code='required')]}
+INFO 2025-06-04 18:32:56,459 views 7588 15064 Verification email sent to pruebatest@ejemplo.com
+INFO 2025-06-04 18:32:56,460 views 7588 15064 Successful user registration: pruebatest@ejemplo.com
+WARNING 2025-06-04 18:32:56,619 views 7588 15064 Duplicate email registration attempt: pruebatest@ejemplo.com
+INFO 2025-06-04 18:39:04,505 views 7588 14552 Verification email sent to testflujo@ejemplo.com
+INFO 2025-06-04 18:39:04,506 views 7588 14552 Successful user registration: testflujo@ejemplo.com
+INFO 2025-06-04 18:50:30,921 views 3176 15812 Verification email sent to prueba2@ejemplo.com
+INFO 2025-06-04 18:50:30,921 views 3176 15812 Successful user registration: prueba2@ejemplo.com
+INFO 2025-06-04 19:01:38,182 views 3176 21928 Email verified successfully for user: prueba2@ejemplo.com
+INFO 2025-06-04 19:05:38,134 views 3176 10236 Login attempt: username=None, email=prueba2@ejemplo.com
+INFO 2025-06-04 19:05:39,749 views 3176 10236 Authentication by email result: True
+INFO 2025-06-04 19:05:39,761 views 3176 10236 Successful login for user: prueba2
+INFO 2025-06-04 19:05:39,767 views 3176 10236 Login attempt: username=None, email=None
+WARNING 2025-06-04 19:05:39,769 views 3176 10236 Login failed: Invalid credentials
+INFO 2025-06-04 19:23:26,861 views 3176 12380 Login attempt: username=None, email=prueba2@ejemplo.com
+INFO 2025-06-04 19:23:28,545 views 3176 12380 Authentication by email result: True
+INFO 2025-06-04 19:23:28,549 views 3176 12380 Successful login for user: prueba2
+INFO 2025-06-04 19:23:28,558 views 3176 12380 Login attempt: username=None, email=None
+WARNING 2025-06-04 19:23:28,659 views 3176 12380 Login failed: Invalid credentials
+INFO 2025-06-04 20:47:00,406 views 3176 17764 Login attempt: username=None, email=prueba2@ejemplo.com
+INFO 2025-06-04 20:47:01,264 views 3176 17764 Authentication by email result: True
+INFO 2025-06-04 20:47:01,281 views 3176 17764 Successful login for user: prueba2
+INFO 2025-06-04 20:47:01,286 views 3176 17764 Login attempt: username=None, email=None
+WARNING 2025-06-04 20:47:01,286 views 3176 17764 Login failed: Invalid credentials
+INFO 2025-06-05 07:32:00,596 views 3176 21212 Login attempt: username=None, email=prueba2@ejemplo.com
+INFO 2025-06-05 07:32:01,492 views 3176 21212 Authentication by email result: True
+INFO 2025-06-05 07:32:01,501 views 3176 21212 Successful login for user: prueba2
+INFO 2025-06-05 07:32:01,512 views 3176 21212 Login attempt: username=None, email=None
+WARNING 2025-06-05 07:32:01,547 views 3176 21212 Login failed: Invalid credentials
+INFO 2025-06-05 07:43:56,320 views 21884 11600 Login attempt: username=None, email=prueba2@ejemplo.com
+INFO 2025-06-05 07:43:57,347 views 21884 11600 Authentication by email result: True
+INFO 2025-06-05 07:43:57,347 views 21884 11600 Successful login for user: prueba2
+INFO 2025-06-05 07:43:57,361 views 21884 11600 Login attempt: username=None, email=None
+WARNING 2025-06-05 07:43:57,361 views 21884 11600 Login failed: Invalid credentials
+INFO 2025-06-05 08:06:01,153 views 22088 13000 Login attempt: username=None, email=prueba2@ejemplo.com
+INFO 2025-06-05 08:06:02,055 views 22088 13000 Authentication by email result: True
+INFO 2025-06-05 08:06:02,056 views 22088 13000 Successful login for user: prueba2
+INFO 2025-06-05 08:06:02,061 views 22088 13000 Login attempt: username=None, email=None
+WARNING 2025-06-05 08:06:02,062 views 22088 13000 Login failed: Invalid credentials
+INFO 2025-06-05 08:13:26,950 views 22088 20500 Login attempt: username=None, email=prueba2@ejemplo.com
+INFO 2025-06-05 08:13:30,102 views 22088 20500 Authentication by email result: True
+INFO 2025-06-05 08:13:30,106 views 22088 20500 Successful login for user: prueba2
+INFO 2025-06-05 08:13:30,115 views 22088 20500 Login attempt: username=None, email=None
+WARNING 2025-06-05 08:13:30,116 views 22088 20500 Login failed: Invalid credentials
+INFO 2025-06-05 08:21:44,699 views 22088 12692 Login attempt: username=None, email=prueba2@ejemplo.com
+INFO 2025-06-05 08:21:47,061 views 22088 12692 Authentication by email result: True
+INFO 2025-06-05 08:21:47,061 views 22088 12692 Successful login for user: prueba2
+INFO 2025-06-05 08:21:47,155 views 22088 12692 Login attempt: username=None, email=None
+WARNING 2025-06-05 08:21:47,158 views 22088 12692 Login failed: Invalid credentials
+INFO 2025-06-05 08:26:48,243 views 22088 17276 Login attempt: username=None, email=prueba2@ejemplo.com
+INFO 2025-06-05 08:26:49,263 views 22088 17276 Authentication by email result: True
+INFO 2025-06-05 08:26:49,269 views 22088 17276 Successful login for user: prueba2
+INFO 2025-06-05 08:26:49,311 views 22088 17276 Login attempt: username=None, email=None
+WARNING 2025-06-05 08:26:49,311 views 22088 17276 Login failed: Invalid credentials
+WARNING 2025-06-05 08:31:26,201 views 22088 17276 Duplicate email registration attempt: consultora@ejemplo.com
+INFO 2025-06-05 08:32:51,837 views 22088 17276 Verification email sent to consultora@ejemplo.com
+INFO 2025-06-05 08:32:51,837 views 22088 17276 Successful user registration: consultora@ejemplo.com
+INFO 2025-06-05 08:34:20,205 views 22088 17276 Login attempt: username=None, email=consultora@ejemplo.com
+INFO 2025-06-05 08:34:22,564 views 22088 17276 Authentication by email result: True
+INFO 2025-06-05 08:34:22,587 views 22088 17276 Successful login for user: consultora
+INFO 2025-06-05 08:34:22,595 views 22088 17276 Login attempt: username=None, email=None
+WARNING 2025-06-05 08:34:22,622 views 22088 17276 Login failed: Invalid credentials
+INFO 2025-06-05 08:40:51,967 views 22088 17276 Login attempt: username=None, email=consultora@ejemplo.com
+INFO 2025-06-05 08:40:54,132 views 22088 17276 Authentication by email result: True
+INFO 2025-06-05 08:40:54,133 views 22088 17276 Successful login for user: consultora
+INFO 2025-06-05 08:40:54,145 views 22088 17276 Login attempt: username=None, email=None
+WARNING 2025-06-05 08:40:54,145 views 22088 17276 Login failed: Invalid credentials
+INFO 2025-06-05 08:43:01,387 views 22088 17276 Verification email sent to empresadirecta@ejemplo.com
+INFO 2025-06-05 08:43:01,391 views 22088 17276 Successful user registration: empresadirecta@ejemplo.com
+INFO 2025-06-05 08:43:21,095 views 22088 17276 Login attempt: username=None, email=empresadirecta@ejemplo.com
+INFO 2025-06-05 08:43:23,650 views 22088 17276 Authentication by email result: True
+INFO 2025-06-05 08:43:23,675 views 22088 17276 Successful login for user: empresadirecta
+INFO 2025-06-05 08:43:23,686 views 22088 17276 Login attempt: username=None, email=None
+WARNING 2025-06-05 08:43:23,712 views 22088 17276 Login failed: Invalid credentials
+INFO 2025-06-05 09:09:51,644 views 22088 9556 Login attempt: username=None, email=empresadirecta2@ejemplo.com
+WARNING 2025-06-05 09:09:51,657 views 22088 9556 User not found for email: empresadirecta2@ejemplo.com
+WARNING 2025-06-05 09:09:51,658 views 22088 9556 Login failed: Invalid credentials
+INFO 2025-06-05 09:10:42,779 views 22088 9556 Verification email sent to empresadirecta2@ejemplo.com
+INFO 2025-06-05 09:10:42,779 views 22088 9556 Successful user registration: empresadirecta2@ejemplo.com
+INFO 2025-06-05 09:11:11,170 views 22088 9556 Login attempt: username=None, email=empresadirecta2@ejemplo.com
+INFO 2025-06-05 09:11:12,152 views 22088 9556 Authentication by email result: True
+INFO 2025-06-05 09:11:12,171 views 22088 9556 Successful login for user: empresadirecta2
+INFO 2025-06-05 09:11:12,219 views 22088 9556 Login attempt: username=None, email=None
+WARNING 2025-06-05 09:11:12,225 views 22088 9556 Login failed: Invalid credentials
+INFO 2025-07-25 11:24:01,908 views 9524 19408 Login attempt: username=None, email=test@stratekaz.com
+INFO 2025-07-25 11:24:02,874 views 9524 19408 Authentication by email result: True
+INFO 2025-07-25 11:24:02,886 views 9524 19408 Successful login for user: testuser
+INFO 2025-07-25 11:27:42,388 views 9524 19408 Login attempt: username=None, email=test@stratekaz.com
+INFO 2025-07-25 11:27:43,758 views 9524 19408 Authentication by email result: True
+INFO 2025-07-25 11:27:43,759 views 9524 19408 Successful login for user: testuser
+INFO 2025-07-25 11:27:43,764 views 9524 19408 Login attempt: username=None, email=None
+WARNING 2025-07-25 11:27:43,765 views 9524 19408 Login failed: Invalid credentials
+INFO 2025-07-25 11:37:53,752 views 9524 7312 Login attempt: username=None, email=testadmin@stratekaz.com
+INFO 2025-07-25 11:37:54,784 views 9524 7312 Authentication by email result: False
+WARNING 2025-07-25 11:37:54,784 views 9524 7312 Login failed: Invalid credentials
+INFO 2025-07-25 11:38:24,269 views 9524 7312 Login attempt: username=None, email=test@stratekaz.com
+INFO 2025-07-25 11:38:25,362 views 9524 7312 Authentication by email result: True
+INFO 2025-07-25 11:38:25,364 views 9524 7312 Successful login for user: testuser
+INFO 2025-07-25 11:38:25,368 views 9524 7312 Login attempt: username=None, email=None
+WARNING 2025-07-25 11:38:25,368 views 9524 7312 Login failed: Invalid credentials
+INFO 2025-07-25 11:45:47,143 views 9524 7312 Login attempt: username=None, email=test@stratekaz.com
+INFO 2025-07-25 11:45:48,145 views 9524 7312 Authentication by email result: True
+INFO 2025-07-25 11:45:48,146 views 9524 7312 Successful login for user: testuser
+INFO 2025-07-25 11:45:48,152 views 9524 7312 Login attempt: username=None, email=None
+WARNING 2025-07-25 11:45:48,152 views 9524 7312 Login failed: Invalid credentials
+INFO 2025-07-25 12:29:31,837 views 9524 18616 Login attempt: username=None, email=test@stratekaz.com
+INFO 2025-07-25 12:29:32,804 views 9524 18616 Authentication by email result: True
+INFO 2025-07-25 12:29:32,804 views 9524 18616 Successful login for user: testuser
+INFO 2025-07-25 12:29:32,804 views 9524 18616 Login attempt: username=None, email=None
+WARNING 2025-07-25 12:29:32,817 views 9524 18616 Login failed: Invalid credentials
+INFO 2025-07-25 12:30:01,370 views 9524 18616 Login attempt: username=None, email=test@stratekaz.com
+INFO 2025-07-25 12:30:02,318 views 9524 18616 Authentication by email result: True
+INFO 2025-07-25 12:30:02,331 views 9524 18616 Successful login for user: testuser
+INFO 2025-07-25 12:30:02,337 views 9524 18616 Login attempt: username=None, email=None
+WARNING 2025-07-25 12:30:02,337 views 9524 18616 Login failed: Invalid credentials
+INFO 2025-07-25 12:41:38,757 views 9524 332 Login attempt: username=None, email=flujo@test.com
+INFO 2025-07-25 12:41:39,719 views 9524 332 Authentication by email result: True
+INFO 2025-07-25 12:41:39,753 views 9524 332 Successful login for user: flujotest
+INFO 2025-07-25 12:41:39,769 views 9524 332 Login attempt: username=None, email=None
+WARNING 2025-07-25 12:41:39,769 views 9524 332 Login failed: Invalid credentials
+INFO 2025-07-25 15:12:48,808 views 9524 13016 Login attempt: username=None, email=test@stratekaz.com
+INFO 2025-07-25 15:12:51,394 views 9524 13016 Authentication by email result: False
+WARNING 2025-07-25 15:12:51,394 views 9524 13016 Login failed: Invalid credentials
+INFO 2025-07-25 15:13:51,428 views 9524 13016 Login attempt: username=None, email=testcompleto@ejemplo.com
+INFO 2025-07-25 15:13:53,850 views 9524 13016 Authentication by email result: True
+INFO 2025-07-25 15:13:53,914 views 9524 13016 Successful login for user: testcompleto
+INFO 2025-07-25 15:13:53,944 views 9524 13016 Login attempt: username=None, email=None
+WARNING 2025-07-25 15:13:53,944 views 9524 13016 Login failed: Invalid credentials
+INFO 2025-07-25 15:16:41,567 views 9524 19004 Login attempt: username=None, email=testcompleto@gmail.com
+WARNING 2025-07-25 15:16:41,578 views 9524 19004 User not found for email: testcompleto@gmail.com
+WARNING 2025-07-25 15:16:41,579 views 9524 19004 Login failed: Invalid credentials
+INFO 2025-07-25 15:16:41,684 views 9524 19004 Login attempt: username=None, email=testcompleto@gmail.com
+WARNING 2025-07-25 15:16:41,690 views 9524 19004 User not found for email: testcompleto@gmail.com
+WARNING 2025-07-25 15:16:41,690 views 9524 19004 Login failed: Invalid credentials
+INFO 2025-07-25 15:17:14,224 views 9524 19004 Login attempt: username=None, email=testcompleto@ejemplo.com
+INFO 2025-07-25 15:17:15,285 views 9524 19004 Authentication by email result: True
+INFO 2025-07-25 15:17:15,285 views 9524 19004 Successful login for user: testcompleto
+INFO 2025-07-25 15:17:15,289 views 9524 19004 Login attempt: username=None, email=None
+WARNING 2025-07-25 15:17:15,289 views 9524 19004 Login failed: Invalid credentials
+INFO 2025-07-25 15:24:13,705 views 9524 17040 Login attempt: username=None, email=testcompleto@ejemplo.com
+INFO 2025-07-25 15:24:16,286 views 9524 17040 Authentication by email result: True
+INFO 2025-07-25 15:24:16,286 views 9524 17040 Successful login for user: testcompleto
+INFO 2025-07-25 15:24:16,298 views 9524 17040 Login attempt: username=None, email=None
+WARNING 2025-07-25 15:24:16,298 views 9524 17040 Login failed: Invalid credentials
+INFO 2025-07-25 15:59:14,699 views 9524 7148 Login attempt: username=None, email=directa@ejemplo.com
+INFO 2025-07-25 15:59:17,111 views 9524 7148 Authentication by email result: True
+INFO 2025-07-25 15:59:17,141 views 9524 7148 Successful login for user: directatest
+INFO 2025-07-25 15:59:17,159 views 9524 7148 Login attempt: username=None, email=None
+WARNING 2025-07-25 15:59:17,159 views 9524 7148 Login failed: Invalid credentials
+INFO 2025-07-25 16:29:51,051 views 9524 2816 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-25 16:29:53,658 views 9524 2816 Authentication by email result: False
+WARNING 2025-07-25 16:29:53,660 views 9524 2816 Login failed: Invalid credentials
+INFO 2025-07-25 16:30:45,854 views 9524 2816 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-25 16:30:48,313 views 9524 2816 Authentication by email result: False
+WARNING 2025-07-25 16:30:48,313 views 9524 2816 Login failed: Invalid credentials
+INFO 2025-07-25 16:31:21,855 views 9524 2816 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-25 16:31:24,484 views 9524 2816 Authentication by email result: False
+WARNING 2025-07-25 16:31:24,484 views 9524 2816 Login failed: Invalid credentials
+INFO 2025-07-25 16:33:02,775 views 9524 13196 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-25 16:33:04,088 views 9524 13196 Authentication by email result: True
+INFO 2025-07-25 16:33:04,133 views 9524 13196 Successful login for user: testfinal
+INFO 2025-07-25 16:34:02,895 views 9524 2816 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-25 16:34:03,922 views 9524 2816 Authentication by email result: True
+INFO 2025-07-25 16:34:03,937 views 9524 2816 Successful login for user: testfinal
+INFO 2025-07-25 16:34:03,966 views 9524 2816 Login attempt: username=None, email=None
+WARNING 2025-07-25 16:34:03,966 views 9524 2816 Login failed: Invalid credentials
+INFO 2025-07-25 16:43:52,069 views 9524 3432 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-25 16:43:54,598 views 9524 3432 Authentication by email result: True
+INFO 2025-07-25 16:43:54,598 views 9524 3432 Successful login for user: testfinal
+INFO 2025-07-25 16:43:54,611 views 9524 3432 Login attempt: username=None, email=None
+WARNING 2025-07-25 16:43:54,611 views 9524 3432 Login failed: Invalid credentials
+INFO 2025-07-25 16:58:40,868 views 9524 11720 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-25 16:58:42,078 views 9524 11720 Authentication by email result: True
+INFO 2025-07-25 16:58:42,078 views 9524 11720 Successful login for user: testfinal
+INFO 2025-07-25 16:58:49,199 views 9524 17996 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-25 16:58:50,246 views 9524 17996 Authentication by email result: True
+INFO 2025-07-25 16:58:50,247 views 9524 17996 Successful login for user: testfinal
+INFO 2025-07-25 16:59:46,437 views 9524 20012 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-25 16:59:47,649 views 9524 20012 Authentication by email result: True
+INFO 2025-07-25 16:59:47,650 views 9524 20012 Successful login for user: testfinal
+INFO 2025-07-25 17:46:28,313 views 9524 8836 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-25 17:46:29,172 views 9524 8836 Authentication by email result: True
+INFO 2025-07-25 17:46:29,172 views 9524 8836 Successful login for user: testfinal
+INFO 2025-07-25 17:46:29,182 views 9524 8836 Login attempt: username=None, email=None
+WARNING 2025-07-25 17:46:29,182 views 9524 8836 Login failed: Invalid credentials
+INFO 2025-07-26 00:27:12,403 views 9524 7808 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-26 00:27:14,145 views 9524 7808 Authentication by email result: True
+INFO 2025-07-26 00:27:14,162 views 9524 7808 Successful login for user: testfinal
+INFO 2025-07-26 00:27:14,173 views 9524 7808 Login attempt: username=None, email=None
+WARNING 2025-07-26 00:27:14,174 views 9524 7808 Login failed: Invalid credentials
+INFO 2025-07-26 00:37:29,862 views 9524 17840 Login attempt: username=None, email=testfinal@ejemplo.com
+INFO 2025-07-26 00:37:30,868 views 9524 17840 Authentication by email result: True
+INFO 2025-07-26 00:37:30,868 views 9524 17840 Successful login for user: testfinal
+INFO 2025-07-26 00:37:30,868 views 9524 17840 Login attempt: username=None, email=None
+WARNING 2025-07-26 00:37:30,868 views 9524 17840 Login failed: Invalid credentials
+ERROR 2025-07-26 08:21:41,521 views 9524 4380 Failed to send verification email to testprofesional@stratekaz.com: [Errno 22] Invalid argument
+INFO 2025-07-26 08:21:41,521 views 9524 4380 Successful user registration: testprofesional@stratekaz.com
+INFO 2025-07-26 08:22:31,201 views 9524 4380 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-26 08:22:32,942 views 9524 4380 Authentication by email result: True
+INFO 2025-07-26 08:22:32,951 views 9524 4380 Successful login for user: testprofesional1
+INFO 2025-07-26 08:22:32,970 views 9524 4380 Login attempt: username=None, email=None
+WARNING 2025-07-26 08:22:32,972 views 9524 4380 Login failed: Invalid credentials
+INFO 2025-07-26 08:25:23,743 views 9524 4380 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-26 08:25:25,410 views 9524 4380 Authentication by email result: True
+INFO 2025-07-26 08:25:25,410 views 9524 4380 Successful login for user: testprofesional1
+INFO 2025-07-26 08:25:25,420 views 9524 4380 Login attempt: username=None, email=None
+WARNING 2025-07-26 08:25:25,421 views 9524 4380 Login failed: Invalid credentials
+ERROR 2025-07-26 08:27:07,184 views 9524 4380 Failed to send verification email to testconsultora@stratekaz.com: [Errno 22] Invalid argument
+INFO 2025-07-26 08:27:07,184 views 9524 4380 Successful user registration: testconsultora@stratekaz.com
+INFO 2025-07-26 08:27:24,210 views 9524 4380 Login attempt: username=None, email=testconsultora@stratekaz.com
+INFO 2025-07-26 08:27:27,098 views 9524 4380 Authentication by email result: True
+INFO 2025-07-26 08:27:27,122 views 9524 4380 Successful login for user: testconsultora
+INFO 2025-07-26 08:27:27,129 views 9524 4380 Login attempt: username=None, email=None
+WARNING 2025-07-26 08:27:27,129 views 9524 4380 Login failed: Invalid credentials
+INFO 2025-07-26 08:29:26,318 views 9524 4380 Login attempt: username=None, email=testconsultora@stratekaz.com
+INFO 2025-07-26 08:29:28,874 views 9524 4380 Authentication by email result: True
+INFO 2025-07-26 08:29:28,874 views 9524 4380 Successful login for user: testconsultora
+INFO 2025-07-26 08:29:28,883 views 9524 4380 Login attempt: username=None, email=None
+WARNING 2025-07-26 08:29:28,883 views 9524 4380 Login failed: Invalid credentials
+ERROR 2025-07-26 08:31:33,462 views 9524 20208 Failed to send verification email to testdirecta@stratekaz.com: [Errno 22] Invalid argument
+INFO 2025-07-26 08:31:33,462 views 9524 20208 Successful user registration: testdirecta@stratekaz.com
+INFO 2025-07-26 08:31:53,260 views 9524 20208 Login attempt: username=None, email=testdirecta@stratekaz.com
+INFO 2025-07-26 08:31:55,815 views 9524 20208 Authentication by email result: True
+INFO 2025-07-26 08:31:55,825 views 9524 20208 Successful login for user: testdirecta
+INFO 2025-07-26 08:31:55,845 views 9524 20208 Login attempt: username=None, email=None
+WARNING 2025-07-26 08:31:55,845 views 9524 20208 Login failed: Invalid credentials
+INFO 2025-07-26 08:33:49,481 views 9524 20208 Login attempt: username=None, email=testdirecta@stratekaz.com
+INFO 2025-07-26 08:33:51,956 views 9524 20208 Authentication by email result: True
+INFO 2025-07-26 08:33:51,958 views 9524 20208 Successful login for user: testdirecta
+INFO 2025-07-26 08:33:51,966 views 9524 20208 Login attempt: username=None, email=None
+WARNING 2025-07-26 08:33:51,966 views 9524 20208 Login failed: Invalid credentials
+INFO 2025-07-26 08:50:42,650 views 15872 6268 Verification email sent to testprofesional@stratekaz.com
+INFO 2025-07-26 08:50:42,658 views 15872 6268 Successful user registration: testprofesional@stratekaz.com
+INFO 2025-07-26 08:51:05,747 views 15872 6268 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-26 08:51:08,089 views 15872 6268 Authentication by email result: True
+INFO 2025-07-26 08:51:08,109 views 15872 6268 Successful login for user: testprofesional
+INFO 2025-07-26 08:51:08,177 views 15872 6268 Login attempt: username=None, email=None
+WARNING 2025-07-26 08:51:08,178 views 15872 6268 Login failed: Invalid credentials
+INFO 2025-07-26 12:33:54,567 views 15872 1460 Verification email sent to testprofesional@stratekaz.com
+INFO 2025-07-26 12:33:54,567 views 15872 1460 Successful user registration: testprofesional@stratekaz.com
+INFO 2025-07-26 12:34:32,620 views 15872 1460 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-26 12:34:34,312 views 15872 1460 Authentication by email result: True
+INFO 2025-07-26 12:34:34,329 views 15872 1460 Successful login for user: testprofesional
+INFO 2025-07-26 12:34:34,348 views 15872 1460 Login attempt: username=None, email=None
+WARNING 2025-07-26 12:34:34,348 views 15872 1460 Login failed: Invalid credentials
+INFO 2025-07-26 12:36:07,609 views 15872 1460 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-26 12:36:09,389 views 15872 1460 Authentication by email result: True
+INFO 2025-07-26 12:36:09,389 views 15872 1460 Successful login for user: testprofesional
+INFO 2025-07-26 12:36:09,389 views 15872 1460 Login attempt: username=None, email=None
+WARNING 2025-07-26 12:36:09,389 views 15872 1460 Login failed: Invalid credentials
+INFO 2025-07-26 12:37:07,590 views 15872 1460 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-26 12:37:09,571 views 15872 1460 Authentication by email result: True
+INFO 2025-07-26 12:37:09,571 views 15872 1460 Successful login for user: testprofesional
+INFO 2025-07-26 12:37:09,571 views 15872 1460 Login attempt: username=None, email=None
+WARNING 2025-07-26 12:37:09,571 views 15872 1460 Login failed: Invalid credentials
+INFO 2025-07-26 12:42:08,501 views 15872 1460 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-26 12:42:11,554 views 15872 1460 Authentication by email result: True
+INFO 2025-07-26 12:42:11,554 views 15872 1460 Successful login for user: testprofesional
+INFO 2025-07-26 12:42:11,562 views 15872 1460 Login attempt: username=None, email=None
+WARNING 2025-07-26 12:42:11,562 views 15872 1460 Login failed: Invalid credentials
+INFO 2025-07-26 16:03:28,479 views 15872 12412 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-26 16:03:29,561 views 15872 12412 Authentication by email result: True
+INFO 2025-07-26 16:03:29,571 views 15872 12412 Successful login for user: testprofesional
+INFO 2025-07-26 16:03:29,581 views 15872 12412 Login attempt: username=None, email=None
+WARNING 2025-07-26 16:03:29,581 views 15872 12412 Login failed: Invalid credentials
+INFO 2025-07-26 16:57:41,911 views 15872 1396 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-26 16:57:44,495 views 15872 1396 Authentication by email result: True
+INFO 2025-07-26 16:57:44,504 views 15872 1396 Successful login for user: testprofesional
+INFO 2025-07-26 16:59:00,652 views 15872 1396 Login attempt: username=None, email=testconsultora@stratekaz.com
+WARNING 2025-07-26 16:59:00,669 views 15872 1396 User not found for email: testconsultora@stratekaz.com
+WARNING 2025-07-26 16:59:00,670 views 15872 1396 Login failed: Invalid credentials
+ERROR 2025-07-26 16:59:45,324 views 15872 1396 Failed to send verification email to testconsultora@stratekaz.com: [Errno 22] Invalid argument
+INFO 2025-07-26 16:59:45,324 views 15872 1396 Successful user registration: testconsultora@stratekaz.com
+INFO 2025-07-26 17:00:18,092 views 15872 1396 Login attempt: username=None, email=testconsultora@stratekaz.com
+INFO 2025-07-26 17:00:20,455 views 15872 1396 Authentication by email result: True
+INFO 2025-07-26 17:00:20,482 views 15872 1396 Successful login for user: testconsultora
+INFO 2025-07-26 17:02:02,974 views 15872 1396 Login attempt: username=None, email=testconsultora@stratekaz.com
+INFO 2025-07-26 17:02:05,311 views 15872 1396 Authentication by email result: True
+INFO 2025-07-26 17:02:05,311 views 15872 1396 Successful login for user: testconsultora
+ERROR 2025-07-26 17:03:12,945 views 15872 1396 Failed to send verification email to directa@stratekaz.com: [Errno 22] Invalid argument
+INFO 2025-07-26 17:03:12,946 views 15872 1396 Successful user registration: directa@stratekaz.com
+INFO 2025-07-26 17:03:36,343 views 15872 1396 Login attempt: username=None, email=directa@stratekaz.com
+INFO 2025-07-26 17:03:38,757 views 15872 1396 Authentication by email result: True
+INFO 2025-07-26 17:03:38,767 views 15872 1396 Successful login for user: directa
+INFO 2025-07-26 18:09:58,614 views 15872 20524 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-26 18:10:01,202 views 15872 20524 Authentication by email result: True
+INFO 2025-07-26 18:10:01,211 views 15872 20524 Successful login for user: testprofesional
+INFO 2025-07-26 18:10:43,745 views 15872 20524 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-26 18:10:46,450 views 15872 20524 Authentication by email result: True
+INFO 2025-07-26 18:10:46,450 views 15872 20524 Successful login for user: testprofesional
+INFO 2025-07-26 18:11:14,406 views 15872 20524 Login attempt: username=None, email=directa@stratekaz.com
+INFO 2025-07-26 18:11:16,827 views 15872 20524 Authentication by email result: True
+INFO 2025-07-26 18:11:16,842 views 15872 20524 Successful login for user: directa
+ERROR 2025-07-26 18:13:07,132 views 15872 20524 Failed to send verification email to testprofesiona1@stratekaz.com: [Errno 22] Invalid argument
+INFO 2025-07-26 18:13:07,133 views 15872 20524 Successful user registration: testprofesiona1@stratekaz.com
+INFO 2025-07-26 18:13:39,696 views 15872 20524 Login attempt: username=None, email=testprofesiona1@stratekaz.com
+INFO 2025-07-26 18:13:42,181 views 15872 20524 Authentication by email result: False
+WARNING 2025-07-26 18:13:42,181 views 15872 20524 Login failed: Invalid credentials
+INFO 2025-07-26 18:14:04,637 views 15872 20524 Login attempt: username=None, email=testprofesiona1@stratekaz.com
+INFO 2025-07-26 18:14:07,288 views 15872 20524 Authentication by email result: True
+INFO 2025-07-26 18:14:07,311 views 15872 20524 Successful login for user: testprofesiona1
+INFO 2025-07-27 14:10:33,786 views 15872 18592 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-27 14:10:36,202 views 15872 18592 Authentication by email result: True
+INFO 2025-07-27 14:10:36,214 views 15872 18592 Successful login for user: testprofesional
+INFO 2025-07-28 09:51:30,955 views 15872 18744 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-28 09:51:31,954 views 15872 18744 Authentication by email result: True
+INFO 2025-07-28 09:51:31,971 views 15872 18744 Successful login for user: testprofesional
+INFO 2025-07-28 19:49:18,080 views 19492 4380 Verification email sent to consultora@example.com
+INFO 2025-07-28 19:49:18,085 views 19492 4380 Successful user registration: consultora@example.com
+INFO 2025-07-28 19:49:18,086 test_views 19492 4380 Response Status Code: 201
+INFO 2025-07-28 19:49:18,086 test_views 19492 4380 Response Content: b'{"success":true,"message":"Usuario registrado. Verifica tu correo electr\xc3\xb3nico.","user_id":1}'
+INFO 2025-07-28 19:49:18,086 test_views 19492 4380 Response Data: {'success': True, 'message': 'Usuario registrado. Verifica tu correo electrónico.', 'user_id': 1}
+INFO 2025-07-28 19:49:18,096 views 19492 4380 Login attempt: username=consultora1, email=None
+INFO 2025-07-28 19:49:20,769 views 19492 4380 Authentication by username result: True
+INFO 2025-07-28 19:49:20,772 views 19492 4380 Successful login for user: consultora1
+INFO 2025-07-28 19:49:20,773 test_views 19492 4380 Response Status Code: 200
+INFO 2025-07-28 19:49:20,774 test_views 19492 4380 Response Content: b'{"success":true,"token":"4d0779ebc7bd4be44247fbdcf96d1a87f39b94c1","user":{"id":1,"username":"consultora1","email":"consultora@example.com","user_type":"consultant_company","profile_completed":false,"phone":null,"city":null,"department":null,"first_name":"","last_name":"","company_name":"Consultora Estrat\xc3\xa9gica","subdomain":null,"account_verified":false}}'
+INFO 2025-07-28 19:49:20,774 test_views 19492 4380 Response Data: {'success': True, 'token': '4d0779ebc7bd4be44247fbdcf96d1a87f39b94c1', 'user': {'id': 1, 'username': 'consultora1', 'email': 'consultora@example.com', 'user_type': 'consultant_company', 'profile_completed': False, 'phone': None, 'city': None, 'department': None, 'first_name': '', 'last_name': '', 'company_name': 'Consultora Estratégica', 'subdomain': None, 'account_verified': False}}
+INFO 2025-07-28 19:49:20,792 test_views 19492 4380 Response Status Code: 200
+INFO 2025-07-28 19:49:20,792 test_views 19492 4380 Response Content: b'{"success":true,"user":{"id":1,"username":"consultora1","email":"consultora@example.com","user_type":"consultant_company","phone":"+573009876543","city":"Medell\xc3\xadn","department":"Antioquia","first_name":"","last_name":"","profession":null,"company_name":"Consultora Estrat\xc3\xa9gica S.A.S","nit":"900123456-7","industry":null,"contact_position":"Gerente","account_verified":false,"last_login":null,"subdomain":"consultora1"}}'
+INFO 2025-07-28 19:49:20,793 test_views 19492 4380 Response Data: {'success': True, 'user': {'id': 1, 'username': 'consultora1', 'email': 'consultora@example.com', 'user_type': 'consultant_company', 'phone': '+573009876543', 'city': 'Medellín', 'department': 'Antioquia', 'first_name': '', 'last_name': '', 'profession': None, 'company_name': 'Consultora Estratégica S.A.S', 'nit': '900123456-7', 'industry': None, 'contact_position': 'Gerente', 'account_verified': False, 'last_login': None, 'subdomain': 'consultora1'}}
+INFO 2025-07-28 19:49:22,879 views 19492 4380 Verification email sent to consultora@example.com
+INFO 2025-07-28 19:49:22,880 views 19492 4380 Successful user registration: consultora@example.com
+INFO 2025-07-28 19:49:22,880 test_views 19492 4380 Response Status Code: 201
+INFO 2025-07-28 19:49:22,881 test_views 19492 4380 Response Content: b'{"success":true,"message":"Usuario registrado. Verifica tu correo electr\xc3\xb3nico.","user_id":1}'
+INFO 2025-07-28 19:49:22,881 test_views 19492 4380 Response Data: {'success': True, 'message': 'Usuario registrado. Verifica tu correo electrónico.', 'user_id': 1}
+INFO 2025-07-28 19:49:22,882 views 19492 4380 Login attempt: username=consultora1, email=None
+INFO 2025-07-28 19:49:24,369 views 19492 4380 Authentication by username result: True
+INFO 2025-07-28 19:49:24,372 views 19492 4380 Successful login for user: consultora1
+INFO 2025-07-28 19:49:24,373 test_views 19492 4380 Response Status Code: 200
+INFO 2025-07-28 19:49:24,373 test_views 19492 4380 Response Content: b'{"success":true,"token":"9006ad3ada70b1565d912cdc55534497baa17005","user":{"id":1,"username":"consultora1","email":"consultora@example.com","user_type":"consultant_company","profile_completed":false,"phone":null,"city":null,"department":null,"first_name":"","last_name":"","company_name":"Consultora Estrat\xc3\xa9gica","subdomain":null,"account_verified":false}}'
+INFO 2025-07-28 19:49:24,373 test_views 19492 4380 Response Data: {'success': True, 'token': '9006ad3ada70b1565d912cdc55534497baa17005', 'user': {'id': 1, 'username': 'consultora1', 'email': 'consultora@example.com', 'user_type': 'consultant_company', 'profile_completed': False, 'phone': None, 'city': None, 'department': None, 'first_name': '', 'last_name': '', 'company_name': 'Consultora Estratégica', 'subdomain': None, 'account_verified': False}}
+INFO 2025-07-28 19:49:24,377 test_views 19492 4380 Response Status Code: 200
+INFO 2025-07-28 19:49:24,377 test_views 19492 4380 Response Content: b'{"module":"mis_empresas","has_access":true,"success":true}'
+INFO 2025-07-28 19:49:24,377 test_views 19492 4380 Response Data: {'module': 'mis_empresas', 'has_access': True, 'success': True}
+INFO 2025-07-28 19:49:24,380 test_views 19492 4380 Response Status Code: 200
+INFO 2025-07-28 19:49:24,380 test_views 19492 4380 Response Content: b'{"module":"herramientas","has_access":true,"success":true}'
+INFO 2025-07-28 19:49:24,380 test_views 19492 4380 Response Data: {'module': 'herramientas', 'has_access': True, 'success': True}
+INFO 2025-07-28 19:49:24,380 test_views 19492 4380 Response Status Code: 200
+INFO 2025-07-28 19:49:24,380 test_views 19492 4380 Response Content: b'{"module":"inteligencia_negocios","has_access":true,"success":true}'
+INFO 2025-07-28 19:49:24,380 test_views 19492 4380 Response Data: {'module': 'inteligencia_negocios', 'has_access': True, 'success': True}
+INFO 2025-07-28 19:49:24,388 test_views 19492 4380 Response Status Code: 200
+INFO 2025-07-28 19:49:24,389 test_views 19492 4380 Response Content: b'{"module":"ecosistema_empresarial","has_access":true,"success":true}'
+INFO 2025-07-28 19:49:24,389 test_views 19492 4380 Response Data: {'module': 'ecosistema_empresarial', 'has_access': True, 'success': True}
+INFO 2025-07-28 19:49:24,389 test_views 19492 4380 Response Status Code: 200
+INFO 2025-07-28 19:49:24,389 test_views 19492 4380 Response Content: b'{"module":"finanzas","has_access":true,"success":true}'
+INFO 2025-07-28 19:49:24,389 test_views 19492 4380 Response Data: {'module': 'finanzas', 'has_access': True, 'success': True}
+INFO 2025-07-28 19:49:26,096 views 19492 4380 Verification email sent to consultora@example.com
+INFO 2025-07-28 19:49:26,096 views 19492 4380 Successful user registration: consultora@example.com
+INFO 2025-07-28 19:49:26,109 test_views 19492 4380 Response Status Code: 201
+INFO 2025-07-28 19:49:26,110 test_views 19492 4380 Response Content: b'{"success":true,"message":"Usuario registrado. Verifica tu correo electr\xc3\xb3nico.","user_id":1}'
+INFO 2025-07-28 19:49:26,110 test_views 19492 4380 Response Data: {'success': True, 'message': 'Usuario registrado. Verifica tu correo electrónico.', 'user_id': 1}
+INFO 2025-07-28 19:49:26,113 views 19492 4380 Login attempt: username=consultora1, email=None
+INFO 2025-07-28 19:49:28,538 views 19492 4380 Authentication by username result: True
+INFO 2025-07-28 19:49:28,538 views 19492 4380 Successful login for user: consultora1
+INFO 2025-07-28 19:49:28,538 test_views 19492 4380 Response Status Code: 200
+INFO 2025-07-28 19:49:28,538 test_views 19492 4380 Response Content: b'{"success":true,"token":"7ceddfc02738d254e9b653ab8cb96dede35d2418","user":{"id":1,"username":"consultora1","email":"consultora@example.com","user_type":"consultant_company","profile_completed":false,"phone":null,"city":null,"department":null,"first_name":"","last_name":"","company_name":"Consultora Estrat\xc3\xa9gica","subdomain":null,"account_verified":false}}'
+INFO 2025-07-28 19:49:28,538 test_views 19492 4380 Response Data: {'success': True, 'token': '7ceddfc02738d254e9b653ab8cb96dede35d2418', 'user': {'id': 1, 'username': 'consultora1', 'email': 'consultora@example.com', 'user_type': 'consultant_company', 'profile_completed': False, 'phone': None, 'city': None, 'department': None, 'first_name': '', 'last_name': '', 'company_name': 'Consultora Estratégica', 'subdomain': None, 'account_verified': False}}
+INFO 2025-07-28 19:49:30,555 views 19492 4380 Verification email sent to consultora@example.com
+INFO 2025-07-28 19:49:30,555 views 19492 4380 Successful user registration: consultora@example.com
+INFO 2025-07-28 19:49:30,562 test_views 19492 4380 Response Status Code: 201
+INFO 2025-07-28 19:49:30,562 test_views 19492 4380 Response Content: b'{"success":true,"message":"Usuario registrado. Verifica tu correo electr\xc3\xb3nico.","user_id":1}'
+INFO 2025-07-28 19:49:30,562 test_views 19492 4380 Response Data: {'success': True, 'message': 'Usuario registrado. Verifica tu correo electrónico.', 'user_id': 1}
+INFO 2025-07-29 21:19:37,040 views 15872 17868 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-29 21:19:40,487 views 15872 17868 Authentication by email result: True
+INFO 2025-07-29 21:19:40,501 views 15872 17868 Successful login for user: testprofesional
+INFO 2025-07-30 05:51:17,163 views 15872 11316 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-30 05:51:19,849 views 15872 11316 Authentication by email result: True
+INFO 2025-07-30 05:51:19,860 views 15872 11316 Successful login for user: testprofesional
+INFO 2025-07-30 06:13:59,387 views 15872 24088 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-30 06:14:00,642 views 15872 24088 Authentication by email result: True
+INFO 2025-07-30 06:14:00,642 views 15872 24088 Successful login for user: testprofesional
+INFO 2025-07-30 08:21:29,344 views 15872 18388 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-30 08:21:30,397 views 15872 18388 Authentication by email result: True
+INFO 2025-07-30 08:21:30,397 views 15872 18388 Successful login for user: testprofesional
+INFO 2025-07-30 08:22:58,684 views 15872 18388 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-30 08:22:59,598 views 15872 18388 Authentication by email result: True
+INFO 2025-07-30 08:22:59,598 views 15872 18388 Successful login for user: testprofesional
+INFO 2025-07-30 08:25:12,861 views 15872 18388 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-30 08:25:14,024 views 15872 18388 Authentication by email result: True
+INFO 2025-07-30 08:25:14,025 views 15872 18388 Successful login for user: testprofesional
+INFO 2025-07-30 20:17:30,768 views 15872 21248 Login attempt: username=None, email=testprofesional@stratekaz.com
+INFO 2025-07-30 20:17:31,700 views 15872 21248 Authentication by email result: True
+INFO 2025-07-30 20:17:31,701 views 15872 21248 Successful login for user: testprofesional
