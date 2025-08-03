@@ -9,6 +9,7 @@ import Login from './pages/auth/Login';
 import CompleteProfile from './components/profile/CompleteProfile';
 import Dashboard from './pages/dashboard/dashboard';
 import PortfolioPage from './pages/PortfolioPage';
+import AccesoGratuitoPage from './pages/AccesoGratuitoPage';
 import { AuthProvider } from './context/AuthContext';
 
 // Componentes de formación
@@ -73,6 +74,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/portfolio" element={<PortfolioPage />} /> {/* Ruta para el portafolio */}
+          <Route path="/acceso-gratuito" element={<AccesoGratuitoPage />} /> {/* Ruta para herramientas gratuitas */}
           
           <Route path="/complete-profile" element={<CompleteProfile />} />
           
