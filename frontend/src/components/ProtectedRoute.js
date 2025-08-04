@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import authService from '../services/auth/AuthService';
-import { AuthContext } from '../context/SimpleAuthContext';
+import { AuthContext } from '../context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, profileCompleted, loading } = useContext(AuthContext);

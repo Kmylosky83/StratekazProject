@@ -24,6 +24,17 @@ export const slideInUp = keyframes`
   }
 `;
 
+export const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 export const slideInDown = keyframes`
   from {
     transform: translateY(-100%);
@@ -65,6 +76,33 @@ export const scaleIn = keyframes`
   to {
     transform: scale(1);
     opacity: 1;
+  }
+`;
+
+export const bounceIn = keyframes`
+  0%, 20%, 40%, 60%, 80%, 100% {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+  0% {
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
+  }
+  20% {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+  40% {
+    transform: scale3d(.9, .9, .9);
+  }
+  60% {
+    opacity: 1;
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+  80% {
+    transform: scale3d(.97, .97, .97);
+  }
+  100% {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
   }
 `;
 
@@ -267,11 +305,13 @@ export const cardHover = keyframes`
 export const animations = {
   // Entrada
   fadeIn,
+  fadeInUp,
   slideInUp,
   slideInDown,
   slideInLeft,
   slideInRight,
   scaleIn,
+  bounceIn,
   
   // Salida
   fadeOut,

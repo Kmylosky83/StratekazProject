@@ -1,59 +1,107 @@
 // frontend/src/components/home/CaracteristicasSection.js
 import React from 'react';
+import styled from 'styled-components';
 import { GitBranch, Activity, CheckSquare, PieChart } from 'lucide-react';
+import { Section, SectionHeader, Grid, Card_Feature, H4, Text } from '../../design-system/components';
+import { Icon } from '../../design-system/icons';
+
+const FeatureGrid = styled(Grid)`
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: ${props => props.theme.spacing.s6};
+  
+  @media (min-width: ${props => props.theme.breakpoints.desktop}) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+`;
+
+const FeatureCard = styled.div`
+  background: ${props => props.theme.colors.white};
+  border-radius: ${props => props.theme.borderRadius.large};
+  padding: ${props => props.theme.spacing.s8};
+  text-align: center;
+  box-shadow: ${props => props.theme.shadows.card};
+  transition: ${props => props.theme.transitions.normal};
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: ${props => props.theme.shadows.hover};
+  }
+`;
+
+const FeatureIcon = styled.div`
+  width: 64px;
+  height: 64px;
+  border-radius: ${props => props.theme.borderRadius.full};
+  background: ${props => props.theme.colors.backgroundLight || '#f8f9fa'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto ${props => props.theme.spacing.s4};
+  color: ${props => props.theme.colors.primary};
+  transition: ${props => props.theme.transitions.normal};
+  
+  ${FeatureCard}:hover & {
+    background: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.white};
+  }
+`;
+
+const FeatureTitle = styled(H4)`
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.s3};
+  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
+`;
+
+const FeatureDescription = styled(Text)`
+  color: ${props => props.theme.colors.muted};
+  line-height: 1.6;
+  font-size: 0.95rem;
+`;
+
+const features = [
+  {
+    icon: GitBranch,
+    title: "Sistemas Integrados",
+    description: "Gestiona múltiples normativas en una única plataforma, evitando duplicidades."
+  },
+  {
+    icon: Activity,
+    title: "Trazabilidad",
+    description: "Mantén el control de toda la información de tus sistemas de gestión."
+  },
+  {
+    icon: CheckSquare,
+    title: "Automatización",
+    description: "Reduce el trabajo manual con formularios y reportes automáticos."
+  },
+  {
+    icon: PieChart,
+    title: "Análisis en tiempo real",
+    description: "Toma decisiones basadas en datos y verifica el avance de tus sistemas de gestión a un click de distancia."
+  }
+];
 
 const CaracteristicasSection = () => {
   return (
-    <section id="caracteristicas" className="caracteristicas-section py-5">
-      <div className="container">
-        <div className="text-center mb-5">
-          <h2 className="titulo-seccion">Características Principales</h2>
-          <p className="subtitulo-seccion">Todo lo que necesitas para lograr un verdadero cambio en tu Organización</p>
-        </div>
-        
-        <div className="row g-4">
-          <div className="col-md-6 col-lg-3">
-            <div className="tarjeta">
-              <div className="icono-estandar-gris">
-                <GitBranch size={32} />
-              </div>
-              <h4 className="titulo-tarjeta">Sistemas Integrados</h4>
-              <p className="subtitulo-tarjeta">Gestiona múltiples normativas en una única plataforma, evitando duplicidades.</p>
-            </div>
-          </div>
-          
-          <div className="col-md-6 col-lg-3">
-            <div className="tarjeta">
-              <div className="icono-estandar-gris">
-                <Activity size={32} />
-              </div>
-              <h4 className="titulo-tarjeta">Trazabilidad</h4>
-              <p className="subtitulo-tarjeta">Mantén el control de toda la información de tus sistemas de gestión.</p>
-            </div>
-          </div>
-          
-          <div className="col-md-6 col-lg-3">
-            <div className="tarjeta">
-              <div className="icono-estandar-gris">
-                <CheckSquare size={32} />
-              </div>
-              <h4 className="titulo-tarjeta">Automatización</h4>
-              <p className="subtitulo-tarjeta">Reduce el trabajo manual con formularios y reportes automáticos.</p>
-            </div>
-          </div>
-          
-          <div className="col-md-6 col-lg-3">
-            <div className="tarjeta">
-              <div className="icono-estandar-gris">
-                <PieChart size={32} />
-              </div>
-              <h4 className="titulo-tarjeta">Análisis en tiempo real</h4>
-              <p className="subtitulo-tarjeta">Toma decisiones basadas en datos y verifica el avance de tus sistemas de gestión a un click de distancia.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <Section id="caracteristicas" variant="light" size="large">
+      <SectionHeader
+        title="Características Principales"
+        subtitle="Todo lo que necesitas para lograr un verdadero cambio en tu Organización"
+        centered
+      />
+      
+      <FeatureGrid>
+        {features.map((feature, index) => (
+          <FeatureCard key={index}>
+            <FeatureIcon>
+              <feature.icon size={32} />
+            </FeatureIcon>
+            <FeatureTitle>{feature.title}</FeatureTitle>
+            <FeatureDescription>{feature.description}</FeatureDescription>
+          </FeatureCard>
+        ))}
+      </FeatureGrid>
+    </Section>
   );
 };
 

@@ -1,6 +1,165 @@
 // frontend/src/components/home/NormativasSection.js
 import React, { useState } from 'react';
+import styled, { keyframes } from 'styled-components';
+import { Section, SectionHeader, Grid, Card } from '../../design-system/components';
+import { Award, Shield, Car, Zap } from 'lucide-react';
+import { fadeInUp, slideInUp, bounceIn, scaleIn } from '../../design-system/animations';
 import NormativaModal from '../modals/NormativaModal';
+
+// Animaciones personalizadas
+const float = keyframes`
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+`;
+
+const glow = keyframes`
+  0%, 100% { box-shadow: 0 0 20px rgba(52, 152, 219, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(52, 152, 219, 0.6); }
+`;
+
+const pulse = keyframes`
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+`;
+
+// Styled Components
+const NormativasGrid = styled(Grid)`
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
+const NormativaCard = styled(Card)`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: ${props => props.theme.spacing.s8};
+  background: ${props => props.theme.colors.white};
+  border-radius: ${props => props.theme.borderRadius.large};
+  box-shadow: ${props => props.theme.shadows.card};
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  
+  /* Animación de entrada */
+  animation: ${fadeInUp} 0.6s ease-out ${props => props.delay}s both;
+  
+  /* Efecto hover sorprendente */
+  &:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    
+    /* Glow effect basado en el color temático */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 
+                0 0 30px ${props => props.themeColor}40;
+  }
+  
+  /* Efecto de fondo animado */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg, 
+      transparent, 
+      ${props => props.themeColor}10, 
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+  
+  &:hover::before {
+    left: 100%;
+  }
+`;
+
+const IconContainer = styled.div`
+  width: 100px;
+  height: 100px;
+  border-radius: ${props => props.theme.borderRadius.full};
+  background: linear-gradient(135deg, ${props => props.themeColor}, ${props => props.themeColor}80);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: ${props => props.theme.spacing.s5};
+  color: ${props => props.theme.colors.white};
+  position: relative;
+  animation: ${pulse} 2s ease-in-out infinite;
+  
+  /* Efecto de flotación en hover */
+  transition: all 0.3s ease;
+  
+  ${NormativaCard}:hover & {
+    animation: ${float} 1s ease-in-out infinite;
+    transform: scale(1.1);
+  }
+  
+  /* Círculo de glow */
+  &::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: ${props => props.theme.borderRadius.full};
+    background: linear-gradient(135deg, ${props => props.themeColor}20, transparent);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  ${NormativaCard}:hover &::after {
+    opacity: 1;
+    animation: ${glow} 1.5s ease-in-out infinite;
+  }
+`;
+
+const CardTitle = styled.h3`
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.xl};
+  font-weight: ${props => props.theme.typography.fontWeights.bold};
+  margin-bottom: ${props => props.theme.spacing.s3};
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+  
+  ${NormativaCard}:hover & {
+    color: ${props => props.theme.colors.primary};
+  }
+`;
+
+const CardDescription = styled.p`
+  color: ${props => props.theme.colors.muted};
+  font-size: ${props => props.theme.typography.fontSizes.sm};
+  line-height: 1.6;
+  flex-grow: 1;
+  margin-bottom: ${props => props.theme.spacing.s4};
+  transition: color 0.3s ease;
+  
+  ${NormativaCard}:hover & {
+    color: ${props => props.theme.colors.text};
+  }
+`;
+
+const LearnMoreText = styled.span`
+  color: ${props => props.theme.colors.primary};
+  font-size: ${props => props.theme.typography.fontSizes.sm};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  
+  ${NormativaCard}:hover & {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const NormativasSection = () => {
   const [showModal, setShowModal] = useState(false);
@@ -81,30 +240,60 @@ const NormativasSection = () => {
     setShowModal(false);
   };
 
+  // Mapeo de iconos modernos
+  const getIcon = (id) => {
+    const icons = {
+      'iso': Award,
+      'sgsst': Shield,
+      'pesv': Car,
+      'isoiec': Zap
+    };
+    return icons[id] || Award;
+  };
+
+  // Colores temáticos para cada normativa
+  const getColor = (id) => {
+    const colors = {
+      'iso': '#3498db',
+      'sgsst': '#e74c3c',
+      'pesv': '#9b59b6',
+      'isoiec': '#f39c12'
+    };
+    return colors[id] || '#3498db';
+  };
+
   return (
-    <section className="normativas-section py-5">
-      <div className="container">
-        <div className="row g-4">
-          <h2 className="titulo-seccion">Soluciones Integrales</h2>
-          <p className="subtitulo-seccion">
-            Plataforma tecnologica diseñada para gestionar diferentes normativas nacionales e internacionales
-          </p>
+    <Section size="large" variant="light">
+      <SectionHeader
+        title="Soluciones Integrales"
+        subtitle="Plataforma tecnológica diseñada para gestionar diferentes normativas nacionales e internacionales"
+        centered
+      />
+      
+      <NormativasGrid columns={4} tablet={2} mobile={1} gap="large">
+        {normativas.map((normativa, index) => {
+          const IconComponent = getIcon(normativa.id);
+          const themeColor = getColor(normativa.id);
           
-          <div className="row justify-content-center g-4">
-              {normativas.map((normativa) => (
-                <div className="col-6 col-md-3" key={normativa.id}>
-                  <div className="tarjeta" onClick={() => handleShowModal(normativa)}>
-                    <div className={`icono-estandar-acento ${normativa.iconClass}`}>
-                        <i className={`fas ${normativa.icon}`}></i>
-                      </div>                   
-                      <h4 className="titulo-tarjeta">{normativa.id.toUpperCase()}</h4>
-                      <p className="subtitulo-tarjeta">{normativa.description.substring(0, 100)}...</p>            
-                  </div>
-                </div>
-              ))}
-            </div>          
-        </div>
-      </div>
+          return (
+            <NormativaCard 
+              key={normativa.id}
+              onClick={() => handleShowModal(normativa)}
+              delay={index * 0.1}
+              themeColor={themeColor}
+            >
+              <IconContainer themeColor={themeColor}>
+                <IconComponent size={40} />
+              </IconContainer>
+              <CardTitle>{normativa.id.toUpperCase()}</CardTitle>
+              <CardDescription>
+                {normativa.description.substring(0, 100)}...
+              </CardDescription>
+              <LearnMoreText>Conocer más →</LearnMoreText>
+            </NormativaCard>
+          );
+        })}
+      </NormativasGrid>
 
       {/* Modal de Normativa */}
       <NormativaModal 
@@ -112,7 +301,7 @@ const NormativasSection = () => {
         handleClose={handleCloseModal} 
         normativa={currentNormativa} 
       />
-    </section>
+    </Section>
   );
 };
 

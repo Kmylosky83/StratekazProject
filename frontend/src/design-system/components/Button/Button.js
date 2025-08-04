@@ -46,6 +46,70 @@ const buttonVariants = {
     }
   `,
   
+  outline: css`
+    background-color: transparent;
+    color: ${props => props.theme.colors.primary};
+    border: 2px solid ${props => props.theme.colors.primary};
+    
+    &:hover {
+      background-color: ${props => props.theme.colors.primary};
+      color: ${props => props.theme.colors.white};
+      transform: translateY(-2px);
+      box-shadow: ${props => props.theme.shadows.button};
+    }
+  `,
+  
+  ghost: css`
+    background-color: transparent;
+    color: ${props => props.theme.colors.primary};
+    border: 1px solid transparent;
+    
+    &:hover {
+      background-color: ${props => props.theme.colors.primaryLight || props.theme.colors.hover};
+      border-color: ${props => props.theme.colors.primary};
+      transform: translateY(-1px);
+    }
+  `,
+  
+  link: css`
+    background-color: transparent;
+    color: ${props => props.theme.colors.primary};
+    border: none;
+    padding: 0;
+    font-weight: ${props => props.theme.typography.fontWeights.medium};
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    
+    &:hover {
+      color: ${props => props.theme.colors.primaryDark};
+      text-decoration-color: currentColor;
+    }
+  `,
+  
+  success: css`
+    background-color: ${props => props.theme.colors.success || '#28a745'};
+    color: ${props => props.theme.colors.white};
+    border: none;
+    
+    &:hover {
+      background-color: ${props => props.theme.colors.successDark || '#218838'};
+      transform: translateY(-2px);
+      box-shadow: ${props => props.theme.shadows.button};
+    }
+  `,
+  
+  danger: css`
+    background-color: ${props => props.theme.colors.danger || '#dc3545'};
+    color: ${props => props.theme.colors.white};
+    border: none;
+    
+    &:hover {
+      background-color: ${props => props.theme.colors.dangerDark || '#c82333'};
+      transform: translateY(-2px);
+      box-shadow: ${props => props.theme.shadows.button};
+    }
+  `,
+  
   text: css`
     background-color: transparent;
     color: ${props => props.theme.colors.primary};
@@ -88,24 +152,40 @@ const buttonVariants = {
 
 // Tamaños de botones
 const buttonSizes = {
-  small: css`
-    padding: ${props => props.theme.spacing.padding.buttonSmall};
-    font-size: ${props => props.theme.typography.fontSizes.buttonSmall};
+  xs: css`
+    padding: ${props => props.theme.spacing.s1} ${props => props.theme.spacing.s3};
+    font-size: ${props => props.theme.typography.fontSizes.sm};
+    min-height: 24px;
   `,
   
-  regular: css`
-    padding: ${props => props.theme.spacing.padding.buttonRegular};
-    font-size: ${props => props.theme.typography.fontSizes.buttonBase};
+  small: css`
+    padding: ${props => props.theme.spacing.padding.buttonSmall || `${props.theme.spacing.s2} ${props.theme.spacing.s4}`};
+    font-size: ${props => props.theme.typography.fontSizes.buttonSmall || props.theme.typography.fontSizes.sm};
+    min-height: 32px;
+  `,
+  
+  medium: css`
+    padding: ${props => props.theme.spacing.padding.buttonRegular || `${props.theme.spacing.s3} ${props.theme.spacing.s6}`};
+    font-size: ${props => props.theme.typography.fontSizes.buttonBase || props.theme.typography.fontSizes.base};
+    min-height: 40px;
   `,
   
   large: css`
-    padding: ${props => props.theme.spacing.padding.buttonLarge};
-    font-size: ${props => props.theme.typography.fontSizes.buttonLarge};
+    padding: ${props => props.theme.spacing.padding.buttonLarge || `${props.theme.spacing.s4} ${props.theme.spacing.s8}`};
+    font-size: ${props => props.theme.typography.fontSizes.buttonLarge || props.theme.typography.fontSizes.lg};
+    min-height: 48px;
+  `,
+  
+  xl: css`
+    padding: ${props => props.theme.spacing.s5} ${props => props.theme.spacing.s10};
+    font-size: ${props => props.theme.typography.fontSizes.xl};
+    min-height: 56px;
   `,
   
   cta: css`
-    padding: ${props => props.theme.spacing.padding.buttonCta};
-    font-size: ${props => props.theme.typography.fontSizes.buttonCta};
+    padding: ${props => props.theme.spacing.padding.buttonCta || `${props.theme.spacing.s4} ${props.theme.spacing.s10}`};
+    font-size: ${props => props.theme.typography.fontSizes.buttonCta || props.theme.typography.fontSizes.lg};
+    min-height: 52px;
   `
 };
 
@@ -124,7 +204,7 @@ export const Button = styled.button`
   ${props => buttonVariants[props.variant || 'primary']}
   
   /* Aplicar tamaño */
-  ${props => buttonSizes[props.size || 'regular']}
+  ${props => buttonSizes[props.size || 'medium']}
   
   /* Estado disabled */
   &:disabled {

@@ -1,24 +1,32 @@
 import React from 'react';
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
+import styled from 'styled-components';
+import { Header, Footer, Container } from '../design-system/components';
 import ServiceSection from '../components/portfolio/ServiceSection';
+
+const PageWrapper = styled.div``;
+
+const MainContent = styled.main`
+  min-height: 100vh;
+  background-color: ${props => props.theme.colors.background};
+  padding: ${props => props.theme.spacing.s12} 0;
+`;
 
 const PortfolioPage = () => {
   const isAuthenticated = false; // This should come from AuthContext
   const userName = ""; // This should come from AuthContext
 
   return (
-    <div className="portfolio-page">
+    <PageWrapper>
       <Header isAuthenticated={isAuthenticated} userName={userName} />
       
-      <main className="min-h-screen bg-gray-50 py-5">
-        <div className="container">
+      <MainContent>
+        <Container>
           <ServiceSection />
-        </div>
-      </main>
+        </Container>
+      </MainContent>
 
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 

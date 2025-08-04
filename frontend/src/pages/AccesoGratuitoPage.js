@@ -1,99 +1,137 @@
 // frontend/src/pages/AccesoGratuitoPage.js
 import React from 'react';
-import Header from '../components/common/Header';
-import Footer from '../components/common/Footer';
-import { Button, Card, CardBody, ToolIcon, H3, Text } from '../design-system/components';
+import styled from 'styled-components';
+import { Header, Footer, Section, SectionHeader, Grid, Container } from '../design-system/components';
+import { Button, Card, H3, Text } from '../design-system/components';
 import { Award, HardHat, Navigation, Lightbulb } from 'lucide-react';
+
+const PageWrapper = styled.div``;
+
+const MainContent = styled.main`
+  padding-top: ${props => props.theme.spacing.s12};
+`;
+
+const ToolGrid = styled(Grid)`
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
+const ToolCard = styled(Card)`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: ${props => props.theme.colors.white};
+  border-radius: ${props => props.theme.borderRadius.large};
+  padding: ${props => props.theme.spacing.s8};
+  text-align: center;
+  box-shadow: ${props => props.theme.shadows.card};
+  transition: ${props => props.theme.transitions.normal};
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: ${props => props.theme.shadows.hover};
+  }
+`;
+
+const ToolIcon = styled.div`
+  width: 80px;
+  height: 80px;
+  border-radius: ${props => props.theme.borderRadius.full};
+  background: ${props => props.backgroundColor || props.theme.colors.primary};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto ${props => props.theme.spacing.s4};
+  color: ${props => props.theme.colors.white};
+`;
+
+const ToolTitle = styled(H3)`
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.s3};
+  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
+`;
+
+const ToolDescription = styled(Text)`
+  color: ${props => props.theme.colors.muted};
+  line-height: 1.6;
+  flex-grow: 1;
+  margin-bottom: ${props => props.theme.spacing.s6};
+`;
+
+const ToolButton = styled(Button)`
+  margin-top: auto;
+`;
+
+const tools = [
+  {
+    icon: Award,
+    iconColor: "#3498db",
+    title: "ISO 9001",
+    description: "Sistema de Gestión de Calidad. Herramientas básicas para implementar ISO 9001 en tu organización.",
+    available: true
+  },
+  {
+    icon: HardHat,
+    iconColor: "#e74c3c", 
+    title: "SG-SST",
+    description: "Sistema de Gestión de Seguridad y Salud en el Trabajo. Cumple con la normatividad colombiana.",
+    available: true
+  },
+  {
+    icon: Navigation,
+    iconColor: "#9b59b6",
+    title: "PESV",
+    description: "Plan Estratégico de Seguridad Vial. Herramientas para implementar PESV en tu empresa.",
+    available: true
+  },
+  {
+    icon: Lightbulb,
+    iconColor: "#f39c12",
+    title: "Innovación",
+    description: "Herramientas de gestión de la innovación. Impulsa la creatividad en tu organización.",
+    available: true
+  }
+];
 
 const AccesoGratuitoPage = () => {
   const isAuthenticated = false; // This should come from AuthContext
   const userName = ""; // This should come from AuthContext
 
   return (
-    <div className="acceso-gratuito-page">
+    <PageWrapper>
       <Header isAuthenticated={isAuthenticated} userName={userName} />
       
-      <main className="acceso-gratuito-container py-5">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-10">
-              {/* Grid 1x4 para las 4 herramientas principales */}
-              <div className="row g-4">
-                <div className="col-lg-3 col-md-6">
-                  <Card variant="tool" className="h-100">
-                    <CardBody className="text-center p-4 d-flex flex-column">
-                      <ToolIcon backgroundColor="#3498db" className="mb-3">
-                        <Award size={48} color="white" />
-                      </ToolIcon>
-                      <H3 variant="card" className="fw-bold mb-3">ISO 9001</H3>
-                      <Text variant="cardSubtitle" className="flex-grow-1">
-                        Sistema de Gestión de Calidad. Herramientas básicas para implementar ISO 9001 en tu organización.
-                      </Text>
-                      <Button variant="card" className="active mt-auto">
-                        Acceder Gratis
-                      </Button>
-                    </CardBody>
-                  </Card>
-                </div>
-
-                <div className="col-lg-3 col-md-6">
-                  <Card variant="tool" className="h-100">
-                    <CardBody className="text-center p-4 d-flex flex-column">
-                      <ToolIcon backgroundColor="#e74c3c" className="mb-3">
-                        <HardHat size={48} color="white" />
-                      </ToolIcon>
-                      <H3 variant="card" className="fw-bold mb-3">SG-SST</H3>
-                      <Text variant="cardSubtitle" className="flex-grow-1">
-                        Sistema de Gestión de Seguridad y Salud en el Trabajo. Cumple con la normatividad colombiana.
-                      </Text>
-                      <Button variant="card" className="active mt-auto">
-                        Acceder Gratis
-                      </Button>
-                    </CardBody>
-                  </Card>
-                </div>
-
-                <div className="col-lg-3 col-md-6">
-                  <Card variant="tool" className="h-100">
-                    <CardBody className="text-center p-4 d-flex flex-column">
-                      <ToolIcon backgroundColor="#f39c12" className="mb-3">
-                        <Navigation size={48} color="white" />
-                      </ToolIcon>
-                      <H3 variant="card" className="fw-bold mb-3">PESV</H3>
-                      <Text variant="cardSubtitle" className="flex-grow-1">
-                        Plan Estratégico de Seguridad Vial. Herramientas para implementar y gestionar la seguridad vial.
-                      </Text>
-                      <Button variant="card" className="active mt-auto">
-                        Acceder Gratis
-                      </Button>
-                    </CardBody>
-                  </Card>
-                </div>
-
-                <div className="col-lg-3 col-md-6">
-                  <Card variant="tool" className="h-100">
-                    <CardBody className="text-center p-4 d-flex flex-column">
-                      <ToolIcon backgroundColor="#9b59b6" className="mb-3">
-                        <Lightbulb size={48} color="white" />
-                      </ToolIcon>
-                      <H3 variant="card" className="fw-bold mb-3">Innovación</H3>
-                      <Text variant="cardSubtitle" className="flex-grow-1">
-                        Herramientas de innovación empresarial. Metodologías para fomentar la creatividad y mejora continua.
-                      </Text>
-                      <Button variant="card" className="active mt-auto">
-                        Acceder Gratis
-                      </Button>
-                    </CardBody>
-                  </Card>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+      <MainContent>
+        <Section size="large">
+          <SectionHeader
+            title="Herramientas Gratuitas"
+            subtitle="Accede a herramientas básicas de gestión empresarial sin costo. Perfectas para comenzar tu transformación digital."
+            centered
+          />
+          
+          <ToolGrid columns={4} mobile={1} tablet={2} gap="large">
+            {tools.map((tool, index) => (
+              <ToolCard key={index}>
+                <ToolIcon backgroundColor={tool.iconColor}>
+                  <tool.icon size={48} />
+                </ToolIcon>
+                <ToolTitle>{tool.title}</ToolTitle>
+                <ToolDescription>{tool.description}</ToolDescription>
+                <ToolButton 
+                  variant={tool.available ? "primary" : "outline"}
+                  disabled={!tool.available}
+                  size="medium"
+                >
+                  {tool.available ? "Acceder Gratis" : "Próximamente"}
+                </ToolButton>
+              </ToolCard>
+            ))}
+          </ToolGrid>
+        </Section>
+      </MainContent>
 
       <Footer />
-    </div>
+    </PageWrapper>
   );
 };
 

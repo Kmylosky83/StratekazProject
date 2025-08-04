@@ -5,9 +5,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './design-system/themes/SimpleThemeProvider';
-import { AuthProvider } from './context/SimpleAuthContext';
+import { AuthProvider } from './context/AuthContext';
 import GlobalStyle from './styles/GlobalStyle';
-import ErrorBoundary from './components/common/ErrorBoundary';
+import { ErrorBoundary } from './design-system/components';
 
 // Solo importar las páginas principales inicialmente
 import Home from './pages/Home'; 

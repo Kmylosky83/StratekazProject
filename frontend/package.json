@@ -7,7 +7,6 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
-    "bootstrap": "^5.3.7",
     "chroma-js": "^3.1.2",
     "lucide-react": "^0.536.0",
     "react": "^19.1.0",

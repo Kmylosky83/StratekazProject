@@ -34,6 +34,42 @@ export {
   ToolIcon
 } from './Card';
 
+// Componentes de Layout
+export { Container, Grid, Row, Col } from './Layout';
+
+// Componentes de Header
+export { default as Header } from './Header/Header';
+
+// Componentes de HeroSection
+export { default as HeroSection } from './HeroSection/HeroSection';
+
+// Componentes de Footer
+export { default as Footer } from './Footer/Footer';
+
+// Componentes de ErrorBoundary
+export { default as ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
+
+// Componentes de Section
+export { Section, SectionHeader, SectionContent } from './Section/Section';
+
+// Componentes de Modal
+export { Modal, ModalBody, ModalFooter, ConfirmModal, AlertModal } from './Modal/Modal';
+
+// Componentes de Form
+export { 
+  Form, 
+  FormGroup, 
+  FormField, 
+  Label, 
+  Input, 
+  Textarea, 
+  Select, 
+  Checkbox, 
+  Radio, 
+  FieldError, 
+  FieldHelp 
+} from './Form/Form';
+
 // Componentes de Logo
 export {
   Logo,
