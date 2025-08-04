@@ -8,9 +8,11 @@ import CaracteristicasSection from '../components/home/CaracteristicasSection';
 import MethodologySection from '../components/portfolio/MethodologySection';
 import CTASection from '../components/home/CTASection';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../design-system/themes/ThemeManager';
 
 const Home = () => {
   const { isAuthenticated, user, loading } = useAuth();
+  const { currentTheme, changeTheme } = useTheme();
   const userName = user?.first_name || user?.username || "";
   
   // Mostrar loading spinner mientras se verifica la autenticación
@@ -29,7 +31,12 @@ const Home = () => {
   
   return (
     <div>
-      <Header isAuthenticated={isAuthenticated} userName={userName} />
+      <Header 
+        isAuthenticated={isAuthenticated} 
+        userName={userName} 
+        currentTheme={currentTheme}
+        onThemeChange={changeTheme}
+      />
       
       <main>
         <HeroSection variant="home" />

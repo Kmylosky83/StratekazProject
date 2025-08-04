@@ -38,7 +38,7 @@ export {
 export { Container, Grid, Row, Col } from './Layout';
 
 // Componentes de Header
-export { default as Header } from './Header/Header';
+export { Header } from './Header';
 
 // Componentes de HeroSection
 export { default as HeroSection } from './HeroSection/HeroSection';

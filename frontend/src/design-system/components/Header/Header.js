@@ -1,13 +1,13 @@
-// Header Component - Design System
-// Componente unificado que reemplaza todos los headers duplicados
+// Header Component - Design System (Clean Version)
+// Sin valores hardcodeados - usa solo tokens del design system
 
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../icons';
 import { Container } from '../Layout';
-import { fadeIn, slideInLeft } from '../../animations';
-import { Menu, X } from 'lucide-react';
+import { fadeIn } from '../../animations';
+import { Menu, X, ChevronDown, Sun, Moon, Sparkles, Home, UserPlus, Palette } from 'lucide-react';
 
 const HeaderWrapper = styled.header`
   background-color: ${props => props.theme.colors.white};
@@ -35,12 +35,23 @@ const HeaderContent = styled(Container)`
 
 const Logo = styled(Link)`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   text-decoration: none;
+  line-height: 1;
   
-  img {
-    max-height: 54px;
-    width: auto;
+  .logo-main {
+    font-size: ${props => props.theme.typography.fontSizes.sectionTitle};
+    font-weight: ${props => props.theme.typography.fontWeights.bold};
+    color: ${props => props.theme.colors.primary};
+    letter-spacing: -0.02em;
+  }
+  
+  .logo-sub {
+    font-size: ${props => props.theme.typography.fontSizes.note};
+    font-weight: ${props => props.theme.typography.fontWeights.regular};
+    color: ${props => props.theme.colors.textMuted};
+    margin-top: ${props => props.theme.componentMeasures.header.logoSubMargin};
   }
 `;
 
@@ -50,7 +61,7 @@ const Navigation = styled.nav`
   gap: ${props => props.theme.spacing.s6};
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: none; /* Mobile menu handled separately */
+    display: none;
   }
 `;
 
@@ -65,49 +76,157 @@ const NavLink = styled(Link)`
   }
 `;
 
+// Animación sutil para Acceso Gratuito
+const subtlePulse = keyframes`
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 ${props => props.theme.colors.primary}20;
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 4px ${props => props.theme.colors.primary}10;
+  }
+`;
+
+const AccesoGratuitoLink = styled(NavLink)`
+  position: relative;
+  padding: ${props => props.theme.spacing.s2} ${props => props.theme.spacing.s3};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary}05, ${props => props.theme.colors.accent}05);
+  border: 1px solid ${props => props.theme.colors.primary}20;
+  animation: ${subtlePulse} 3s ease-in-out infinite;
+  
+  &:hover {
+    background: linear-gradient(135deg, ${props => props.theme.colors.primary}10, ${props => props.theme.colors.accent}10);
+    border-color: ${props => props.theme.colors.primary}40;
+    animation-play-state: paused;
+    transform: scale(1.05);
+  }
+`;
+
 const UserSection = styled.div`
   display: flex;
   align-items: center;
   gap: ${props => props.theme.spacing.s4};
 `;
 
-const WelcomeMessage = styled.span`
-  color: ${props => props.theme.colors.primary};
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
+const DropdownButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.s2};
+  padding: ${props => props.theme.spacing.s2} ${props => props.theme.spacing.s3};
+  background: ${props => props.theme.colors.surface};
+  border: ${props => props.theme.componentMeasures.header.borderWidth} solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  color: ${props => props.theme.colors.text};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  cursor: pointer;
+  transition: ${props => props.theme.transitions.normal};
   
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    display: none;
+  &:hover {
+    background: ${props => props.theme.colors.hover};
+    border-color: ${props => props.theme.colors.primary};
+  }
+  
+  svg {
+    transition: transform 0.3s ease;
+  }
+  
+  &.active svg:last-child {
+    transform: rotate(180deg);
   }
 `;
 
-const UserMenu = styled.div`
-  position: relative;
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: calc(100% + ${props => props.theme.componentMeasures.header.dropdownOffset});
+  right: 0;
+  background: ${props => props.theme.colors.white};
+  border: ${props => props.theme.componentMeasures.header.borderWidth} solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.large};
+  box-shadow: ${props => props.theme.shadows.elevated};
+  padding: ${props => props.theme.spacing.s2};
+  min-width: ${props => props.theme.componentMeasures.header.dropdownMinWidth};
+  z-index: ${props => props.theme.zIndex.dropdown};
+  animation: ${fadeIn} 0.2s ease-out;
+`;
+
+const DropdownSection = styled.div`
+  padding: ${props => props.theme.spacing.s2} 0;
   
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: ${props => props.theme.colors.white};
-    border-radius: ${props => props.theme.borderRadius.medium};
-    box-shadow: ${props => props.theme.shadows.elevated};
-    padding: ${props => props.theme.spacing.s2} 0;
-    min-width: 200px;
-    z-index: ${props => props.theme.zIndex.dropdown};
+  &:not(:last-child) {
+    border-bottom: ${props => props.theme.componentMeasures.header.borderWidth} solid ${props => props.theme.colors.border};
+  }
+`;
+
+const DropdownItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.s3};
+  padding: ${props => props.theme.spacing.s3} ${props => props.theme.spacing.s3};
+  color: ${props => props.theme.colors.text};
+  text-decoration: none;
+  border-radius: ${props => props.theme.borderRadius.small};
+  transition: ${props => props.theme.transitions.normal};
+  
+  &:hover {
+    background-color: ${props => props.theme.colors.hover};
+    color: ${props => props.theme.colors.primary};
   }
   
-  .dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: ${props => props.theme.spacing.s2};
-    padding: ${props => props.theme.spacing.s3} ${props => props.theme.spacing.s4};
-    color: ${props => props.theme.colors.text};
-    text-decoration: none;
-    transition: ${props => props.theme.transitions.normal};
-    
-    &:hover {
-      background-color: ${props => props.theme.colors.hover};
-      color: ${props => props.theme.colors.primary};
-    }
+  svg {
+    width: ${props => props.theme.componentMeasures.header.iconSize};
+    height: ${props => props.theme.componentMeasures.header.iconSize};
+  }
+`;
+
+const ThemeSelector = styled.div`
+  padding: ${props => props.theme.spacing.s2} ${props => props.theme.spacing.s3};
+`;
+
+const ThemeLabel = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.s2};
+  font-size: ${props => props.theme.typography.fontSizes.note};
+  color: ${props => props.theme.colors.textMuted};
+  margin-bottom: ${props => props.theme.spacing.s3};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  
+  svg {
+    width: ${props => props.theme.componentMeasures.header.iconSizeSmall};
+    height: ${props => props.theme.componentMeasures.header.iconSizeSmall};
+  }
+`;
+
+const ThemeOptions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.s1};
+`;
+
+const ThemeOption = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.s3};
+  padding: ${props => props.theme.spacing.s2} ${props => props.theme.spacing.s3};
+  background: ${props => props.active ? props.theme.colors.primary + '10' : 'transparent'};
+  border: ${props => props.theme.componentMeasures.header.borderWidth} solid ${props => props.active ? props.theme.colors.primary : 'transparent'};
+  border-radius: ${props => props.theme.borderRadius.small};
+  color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.note};
+  cursor: pointer;
+  transition: ${props => props.theme.transitions.normal};
+  width: 100%;
+  text-align: left;
+  
+  &:hover {
+    background: ${props => props.active ? props.theme.colors.primary + '20' : props.theme.colors.hover};
+  }
+  
+  svg {
+    width: ${props => props.theme.componentMeasures.header.iconSize};
+    height: ${props => props.theme.componentMeasures.header.iconSize};
   }
 `;
 
@@ -129,7 +248,19 @@ const IconButton = styled.button`
   }
 `;
 
-// Animaciones para menú móvil
+const MobileMenuButton = styled(IconButton)`
+  display: none;
+  
+  svg {
+    color: ${props => props.theme.colors.primary};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: flex;
+  }
+`;
+
+// Animaciones para menú móvil usando keyframes del design system
 const slideInRight = keyframes`
   from {
     transform: translateX(100%);
@@ -146,25 +277,15 @@ const fadeInOverlay = keyframes`
   to { opacity: 1; }
 `;
 
-// Botón hamburguesa
-const MobileMenuButton = styled(IconButton)`
-  display: none;
-  
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: flex;
-  }
-`;
-
-// Overlay del menú móvil
 const MobileMenuOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  z-index: ${props => props.theme.zIndex.modal || 1000};
+  background: ${props => props.theme.componentMeasures.header.overlayBackground};
+  backdrop-filter: blur(${props => props.theme.componentMeasures.header.blurRadius});
+  z-index: ${props => props.theme.zIndex.modal};
   animation: ${fadeInOverlay} 0.3s ease-out;
   
   @media (min-width: ${props => props.theme.breakpoints.tablet}) {
@@ -172,18 +293,17 @@ const MobileMenuOverlay = styled.div`
   }
 `;
 
-// Menú móvil
 const MobileMenu = styled.div`
   position: fixed;
   top: 0;
   right: 0;
   height: 100vh;
-  width: 300px;
-  max-width: 80vw;
+  width: ${props => props.theme.componentMeasures.header.mobileMenuWidth};
+  max-width: ${props => props.theme.componentMeasures.header.mobileMenuMaxWidth};
   background: ${props => props.theme.colors.white};
-  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+  box-shadow: ${props => props.theme.componentMeasures.header.shadowMobile};
   padding: ${props => props.theme.spacing.s6};
-  z-index: ${props => props.theme.zIndex.modal + 1 || 1001};
+  z-index: ${props => props.theme.zIndex.modal + 1};
   animation: ${slideInRight} 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   flex-direction: column;
@@ -199,18 +319,14 @@ const MobileMenuHeader = styled.div`
   align-items: center;
   margin-bottom: ${props => props.theme.spacing.s6};
   padding-bottom: ${props => props.theme.spacing.s4};
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  border-bottom: ${props => props.theme.componentMeasures.header.borderWidth} solid ${props => props.theme.colors.border};
 `;
 
 const MobileMenuTitle = styled.h3`
   margin: 0;
   color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSizes.lg};
+  font-size: ${props => props.theme.typography.fontSizes.cardTitle};
   font-weight: ${props => props.theme.typography.fontWeights.semiBold};
-`;
-
-const MobileMenuClose = styled(IconButton)`
-  padding: ${props => props.theme.spacing.s1};
 `;
 
 const MobileNavigation = styled.nav`
@@ -234,56 +350,21 @@ const MobileNavLink = styled(Link)`
   &:hover {
     background-color: ${props => props.theme.colors.hover};
     color: ${props => props.theme.colors.primary};
-    transform: translateX(5px);
+    transform: translateX(${props => props.theme.componentMeasures.header.translateHover});
   }
 `;
 
-const MobileUserSection = styled.div`
-  margin-top: auto;
-  padding-top: ${props => props.theme.spacing.s4};
-  border-top: 1px solid ${props => props.theme.colors.border};
-`;
-
-const MobileWelcome = styled.div`
-  padding: ${props => props.theme.spacing.s4};
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary}10, ${props => props.theme.colors.secondary}10);
-  border-radius: ${props => props.theme.borderRadius.medium};
-  margin-bottom: ${props => props.theme.spacing.s4};
-  text-align: center;
-`;
-
-const MobileWelcomeText = styled.p`
-  margin: 0;
-  color: ${props => props.theme.colors.primary};
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
-  font-size: ${props => props.theme.typography.fontSizes.sm};
-`;
-
-const MobileUserActions = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.s2};
-`;
-
-const MobileActionButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.s3};
-  padding: ${props => props.theme.spacing.s4};
-  background: ${props => props.variant === 'logout' ? props.theme.colors.danger + '10' : 'transparent'};
-  border: none;
-  color: ${props => props.variant === 'logout' ? props.theme.colors.danger : props.theme.colors.text};
-  text-decoration: none;
-  font-weight: ${props => props.theme.typography.fontWeights.medium};
-  border-radius: ${props => props.theme.borderRadius.medium};
-  transition: ${props => props.theme.transitions.normal};
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
+const AccesoGratuitoMobileLink = styled(MobileNavLink)`
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary}05, ${props => props.theme.colors.accent}05);
+  border: 1px solid ${props => props.theme.colors.primary}20;
+  animation: ${subtlePulse} 3s ease-in-out infinite;
   
   &:hover {
-    background-color: ${props => props.variant === 'logout' ? props.theme.colors.danger + '20' : props.theme.colors.hover};
-    transform: translateX(5px);
+    background: linear-gradient(135deg, ${props => props.theme.colors.primary}10, ${props => props.theme.colors.accent}10);
+    border-color: ${props => props.theme.colors.primary}40;
+    animation-play-state: paused;
+    color: ${props => props.theme.colors.primary};
+    transform: translateX(${props => props.theme.componentMeasures.header.translateHover}) scale(1.02);
   }
 `;
 
@@ -291,25 +372,28 @@ const Header = ({
   isAuthenticated = false, 
   userName = '', 
   onLogout,
-  showNavigation = true 
+  showNavigation = true,
+  currentTheme = 'light',
+  onThemeChange
 }) => {
-  const [showUserMenu, setShowUserMenu] = React.useState(false);
-  const [showMobileMenu, setShowMobileMenu] = React.useState(false);
-  
-  // Cerrar menús al hacer click fuera
-  React.useEffect(() => {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Cerrar dropdown al hacer click fuera
+  useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.user-menu') && !event.target.closest('.mobile-menu')) {
-        setShowUserMenu(false);
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
       }
     };
     
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-  
+
   // Prevenir scroll cuando el menú móvil está abierto
-  React.useEffect(() => {
+  useEffect(() => {
     if (showMobileMenu) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -325,24 +409,14 @@ const Header = ({
     <HeaderWrapper>
       <HeaderContent>
         <Logo to="/">
-          <img 
-            src={process.env.PUBLIC_URL + '/images/logo.png'} 
-            alt="StrateKaz" 
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.nextSibling.style.display = 'inline';
-            }}
-          />
-          <span style={{ display: 'none', fontWeight: 'bold', fontSize: '1.5rem' }}>
-            StrateKaz
-          </span>
+          <span className="logo-main">StrateKaz</span>
+          <span className="logo-sub">Suite Empresarial</span>
         </Logo>
 
         {showNavigation && (
           <Navigation>
-            <NavLink to="/">Inicio</NavLink>
-            <NavLink to="/portfolio">Servicios</NavLink>
-            <NavLink to="/acceso-gratuito">Herramientas</NavLink>
+            <NavLink to="/portfolio">Portafolio</NavLink>
+            <AccesoGratuitoLink to="/acceso-gratuito">Acceso Gratuito</AccesoGratuitoLink>
             {isAuthenticated && (
               <NavLink to="/dashboard">Dashboard</NavLink>
             )}
@@ -350,48 +424,67 @@ const Header = ({
         )}
 
         <UserSection>
-          {isAuthenticated ? (
-            <>
-              {userName && (
-                <WelcomeMessage>
-                  Hola, {userName}
-                </WelcomeMessage>
-              )}
-              <UserMenu className="user-menu">
-                <IconButton
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                >
-                  <Icon name="userCircle" size={24} />
-                </IconButton>
+          {/* Dropdown para usuario y temas */}
+          <div ref={dropdownRef} style={{ position: 'relative' }}>
+            <DropdownButton 
+              onClick={() => setShowDropdown(!showDropdown)}
+              className={showDropdown ? 'active' : ''}
+            >
+              <Icon name="menu" size={20} />
+              <ChevronDown size={16} />
+            </DropdownButton>
+            
+            {showDropdown && (
+              <DropdownMenu>
+                {/* Sección de navegación */}
+                <DropdownSection>
+                  <DropdownItem to="/login">
+                    <Icon name="login" size={18} />
+                    <span>Inicio de Sesión</span>
+                  </DropdownItem>
+                  {!isAuthenticated && (
+                    <DropdownItem to="/register">
+                      <UserPlus size={18} />
+                      <span>Registrarse</span>
+                    </DropdownItem>
+                  )}
+                </DropdownSection>
                 
-                {showUserMenu && (
-                  <div className="dropdown-menu">
-                    <Link to="/dashboard" className="dropdown-item">
-                      <Icon name="home" size={16} />
-                      Dashboard
-                    </Link>
-                    <Link to="/profile" className="dropdown-item">
-                      <Icon name="user" size={16} />
-                      Mi Perfil
-                    </Link>
-                    <button 
-                      className="dropdown-item"
-                      onClick={onLogout}
-                      style={{ border: 'none', background: 'none', width: '100%', textAlign: 'left' }}
-                    >
-                      <Icon name="logout" size={16} />
-                      Cerrar Sesión
-                    </button>
-                  </div>
-                )}
-              </UserMenu>
-            </>
-          ) : (
-            <>
-              <NavLink to="/login">Iniciar Sesión</NavLink>
-              <NavLink to="/register">Registrarse</NavLink>
-            </>
-          )}
+                {/* Selector de tema */}
+                <DropdownSection>
+                  <ThemeSelector>
+                    <ThemeLabel>
+                      <Palette size={16} />
+                      <span>Tema</span>
+                    </ThemeLabel>
+                    <ThemeOptions>
+                      <ThemeOption 
+                        active={currentTheme === 'light'}
+                        onClick={() => onThemeChange?.('light')}
+                      >
+                        <Sun size={18} />
+                        <span>Claro</span>
+                      </ThemeOption>
+                      <ThemeOption 
+                        active={currentTheme === 'black'}
+                        onClick={() => onThemeChange?.('black')}
+                      >
+                        <Moon size={18} />
+                        <span>Black</span>
+                      </ThemeOption>
+                      <ThemeOption 
+                        active={currentTheme === 'arkane'}
+                        onClick={() => onThemeChange?.('arkane')}
+                      >
+                        <Sparkles size={18} />
+                        <span>Arkane</span>
+                      </ThemeOption>
+                    </ThemeOptions>
+                  </ThemeSelector>
+                </DropdownSection>
+              </DropdownMenu>
+            )}
+          </div>
           
           {/* Botón del menú móvil */}
           <MobileMenuButton onClick={() => setShowMobileMenu(!showMobileMenu)}>
@@ -404,37 +497,37 @@ const Header = ({
       {showMobileMenu && (
         <>
           <MobileMenuOverlay onClick={() => setShowMobileMenu(false)} />
-          <MobileMenu className="mobile-menu">
+          <MobileMenu>
             <MobileMenuHeader>
               <MobileMenuTitle>Navegación</MobileMenuTitle>
-              <MobileMenuClose onClick={() => setShowMobileMenu(false)}>
+              <IconButton onClick={() => setShowMobileMenu(false)}>
                 <X size={20} />
-              </MobileMenuClose>
+              </IconButton>
             </MobileMenuHeader>
             
             {showNavigation && (
               <MobileNavigation>
                 <MobileNavLink 
-                  to="/" 
+                  to="/login" 
                   onClick={() => setShowMobileMenu(false)}
                 >
-                  <Icon name="home" size={20} />
-                  Inicio
+                  <Icon name="login" size={20} />
+                  Inicio de Sesión
                 </MobileNavLink>
                 <MobileNavLink 
                   to="/portfolio" 
                   onClick={() => setShowMobileMenu(false)}
                 >
                   <Icon name="briefcase" size={20} />
-                  Servicios
+                  Portafolio
                 </MobileNavLink>
-                <MobileNavLink 
+                <AccesoGratuitoMobileLink 
                   to="/acceso-gratuito" 
                   onClick={() => setShowMobileMenu(false)}
                 >
                   <Icon name="tool" size={20} />
-                  Herramientas
-                </MobileNavLink>
+                  Acceso Gratuito
+                </AccesoGratuitoMobileLink>
                 {isAuthenticated && (
                   <MobileNavLink 
                     to="/dashboard" 
@@ -446,59 +539,6 @@ const Header = ({
                 )}
               </MobileNavigation>
             )}
-            
-            <MobileUserSection>
-              {isAuthenticated ? (
-                <>
-                  {userName && (
-                    <MobileWelcome>
-                      <MobileWelcomeText>
-                        👋 Hola, {userName}
-                      </MobileWelcomeText>
-                    </MobileWelcome>
-                  )}
-                  <MobileUserActions>
-                    <MobileActionButton 
-                      as={Link}
-                      to="/profile"
-                      onClick={() => setShowMobileMenu(false)}
-                    >
-                      <Icon name="user" size={20} />
-                      Mi Perfil
-                    </MobileActionButton>
-                    <MobileActionButton 
-                      variant="logout"
-                      onClick={() => {
-                        onLogout?.();
-                        setShowMobileMenu(false);
-                      }}
-                    >
-                      <Icon name="logout" size={20} />
-                      Cerrar Sesión
-                    </MobileActionButton>
-                  </MobileUserActions>
-                </>
-              ) : (
-                <MobileUserActions>
-                  <MobileActionButton 
-                    as={Link}
-                    to="/login"
-                    onClick={() => setShowMobileMenu(false)}
-                  >
-                    <Icon name="login" size={20} />
-                    Iniciar Sesión
-                  </MobileActionButton>
-                  <MobileActionButton 
-                    as={Link}
-                    to="/register"
-                    onClick={() => setShowMobileMenu(false)}
-                  >
-                    <Icon name="userPlus" size={20} />
-                    Registrarse
-                  </MobileActionButton>
-                </MobileUserActions>
-              )}
-            </MobileUserSection>
           </MobileMenu>
         </>
       )}

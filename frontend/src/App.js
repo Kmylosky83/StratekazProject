@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from './design-system/themes/SimpleThemeProvider';
+import { ThemeManager } from './design-system/themes/ThemeManager';
 import { AuthProvider } from './context/AuthContext';
 import GlobalStyle from './styles/GlobalStyle';
 import { ErrorBoundary } from './design-system/components';
@@ -20,7 +20,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <ErrorBoundary>
-        <ThemeProvider>
+        <ThemeManager>
           <AuthProvider>
             <GlobalStyle />
             <Routes>
@@ -35,7 +35,7 @@ const App = () => {
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </AuthProvider>
-        </ThemeProvider>
+        </ThemeManager>
       </ErrorBoundary>
     </BrowserRouter>
   );

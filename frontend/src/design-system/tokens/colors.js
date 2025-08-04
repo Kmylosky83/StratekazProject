@@ -17,6 +17,7 @@ export const colors = {
   
   // Fondos
   background: '#ffffff',
+  backgroundLight: '#f8f9fa',
   surface: '#f8f9fa',
   surfaceDark: '#e9ecef',
   

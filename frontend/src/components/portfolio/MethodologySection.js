@@ -314,7 +314,7 @@ const MethodologySection = () => {
   ];
 
   return (
-    <Section size="large" variant="default">
+    <Section size="large" variant="light">
       <SectionHeader
         title="Nuestra Metodología"
         subtitle="Un enfoque estructurado y adaptable para asegurar resultados óptimos en cada proyecto."

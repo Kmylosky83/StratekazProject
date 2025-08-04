@@ -6,18 +6,26 @@ import styled, { css } from 'styled-components';
 import { Container } from '../Layout';
 import { H2, Text } from '../Typography';
 
-// Variantes de sección
+// Variantes de sección - Fondos consistentes sin gradientes
 const sectionVariants = {
   default: css`
-    background-color: ${props => props.theme.colors.background};
+    background-color: ${props => props.theme.colors.white};
     color: ${props => props.theme.colors.text};
   `,
   
+  light: css`
+    background-color: ${props => props.theme.colors.surface};
+    color: ${props => props.theme.colors.text};
+  `,
+  
+  white: css`
+    background-color: ${props => props.theme.colors.white};
+    color: ${props => props.theme.colors.text};
+  `,
+  
+  // Mantenemos solo estas variantes para casos específicos si se necesitan
   primary: css`
-    background: linear-gradient(135deg, 
-      ${props => props.theme.colors.primary} 0%, 
-      ${props => props.theme.colors.primaryDark} 100%
-    );
+    background-color: ${props => props.theme.colors.primary};
     color: ${props => props.theme.colors.white};
   `,
   
@@ -26,21 +34,8 @@ const sectionVariants = {
     color: ${props => props.theme.colors.white};
   `,
   
-  light: css`
-    background-color: ${props => props.theme.colors.backgroundLight || '#f8f9fa'};
-    color: ${props => props.theme.colors.text};
-  `,
-  
   dark: css`
     background-color: ${props => props.theme.colors.backgroundDark || '#343a40'};
-    color: ${props => props.theme.colors.white};
-  `,
-  
-  gradient: css`
-    background: linear-gradient(135deg, 
-      ${props => props.theme.colors.primary} 0%, 
-      ${props => props.theme.colors.secondary} 100%
-    );
     color: ${props => props.theme.colors.white};
   `
 };

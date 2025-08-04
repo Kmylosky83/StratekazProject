@@ -5,104 +5,224 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../icons';
-import { Container, Grid, Row, Col } from '../Layout';
+import { Container } from '../Layout';
 import { H1, Text } from '../Typography';
 import { Button } from '../Button';
-import { fadeInUp, slideInLeft, slideInRight } from '../../animations';
+import { fadeInUp } from '../../animations';
+import { useCountAnimation } from '../../hooks';
 
 const HeroWrapper = styled.section`
-  background: linear-gradient(135deg, 
-    ${props => props.theme.colors.primary} 0%, 
-    ${props => props.theme.colors.secondary} 100%
-  );
-  color: ${props => props.theme.colors.white};
-  padding: ${props => props.theme.spacing.s16} 0;
-  min-height: 70vh;
+  background: ${props => props.theme.colors.surface};
+  color: ${props => props.theme.colors.text};
+  padding: ${props => props.theme.spacing.s12} 0;
+  min-height: 85vh;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
-  overflow: hidden;
+  font-family: ${props => props.theme.typography.fontFamilies.primary};
   
-  &::before {
+  /* Línea sutil y difusa al final */
+  &::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.1);
-    z-index: 1;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      ${props => props.theme.colors.primary}40,
+      ${props => props.theme.colors.primary}60,
+      ${props => props.theme.colors.primary}40,
+      transparent
+    );
+    filter: blur(1px);
   }
 `;
 
 const HeroContent = styled(Container)`
   position: relative;
-  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${props => props.theme.spacing.s6};
 `;
 
 const HeroTitle = styled(H1)`
-  font-size: 3.5rem;
+  font-size: ${props => props.theme.typography.fontSizes.heroTitle};
   font-weight: ${props => props.theme.typography.fontWeights.bold};
+  text-align: center;
+  margin: 0;
+  margin-top: ${props => props.theme.spacing.s8};
   margin-bottom: ${props => props.theme.spacing.s4};
+  letter-spacing: -0.02em;
   animation: ${fadeInUp} 0.8s ease-out;
+  font-family: ${props => props.theme.typography.fontFamilies.primary};
   
   .highlight {
-    color: ${props => props.theme.colors.accent};
+    color: ${props => props.theme.colors.primary};
   }
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 2.5rem;
+    font-size: ${props => props.theme.typography.fontSizes.tablet.heroTitle};
   }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 2rem;
+    font-size: ${props => props.theme.typography.fontSizes.mobile.heroTitle};
   }
 `;
 
-const HeroSubtitle = styled(Text)`
-  font-size: 1.25rem;
-  line-height: 1.6;
-  margin-bottom: ${props => props.theme.spacing.s8};
-  opacity: 0.9;
+// Contenedor de dos columnas
+const ContentGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${props => props.theme.spacing.s16};
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
   animation: ${fadeInUp} 0.8s ease-out 0.2s both;
   
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 1.1rem;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing.s8};
+    text-align: center;
   }
 `;
 
+// Contenedor de información centrado
+const InfoSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: ${props => props.theme.spacing.s4};
+  text-align: center;
+`;
+
+// Subtítulo minimalista
+const HeroSubtitle = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.heroSubtitle};
+  line-height: ${props => props.theme.typography.lineHeights.relaxed};
+  color: ${props => props.theme.colors.textMuted};
+  margin: 0;
+  margin-top: -${props => props.theme.spacing.s3};
+  font-weight: ${props => props.theme.typography.fontWeights.regular};
+  font-family: ${props => props.theme.typography.fontFamilies.secondary};
+  max-width: 500px;
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: ${props => props.theme.typography.fontSizes.mobile.heroSubtitle};
+  }
+`;
+
+// Botones minimalistas
 const HeroButtons = styled.div`
   display: flex;
-  gap: ${props => props.theme.spacing.s4};
-  margin-bottom: ${props => props.theme.spacing.s12};
-  animation: ${fadeInUp} 0.8s ease-out 0.4s both;
+  justify-content: center;
+  gap: ${props => props.theme.spacing.s3};
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     flex-direction: column;
     gap: ${props => props.theme.spacing.s3};
+    width: 100%;
   }
 `;
 
-const StatsSection = styled.div`
-  animation: ${fadeInUp} 0.8s ease-out 0.6s both;
+// Contenedor de imagen
+const ImageSection = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
+// Imagen del dashboard sin contenedor
+const DashboardImage = styled.img`
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    max-width: 400px;
+  }
+`;
+
+// Frases flotantes con contenedores de color
+const FloatingQuote = styled.div`
+  position: absolute;
+  font-size: 0.875rem;
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  font-style: italic;
+  padding: ${props => props.theme.spacing.s2} ${props => props.theme.spacing.s3};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
+  &.top-right {
+    top: -10px;
+    right: -20px;
+    background: ${props => props.theme.colors.accent};
+    color: ${props => props.theme.colors.text};
+  }
+  
+  &.bottom-left {
+    bottom: -10px;
+    left: -20px;
+    background: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.white};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
+
+// Estadísticas centradas
+const StatsSection = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: ${props => props.theme.spacing.s12};
+  margin-top: ${props => props.theme.spacing.s6};
+  animation: ${fadeInUp} 0.8s ease-out 0.6s both;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    gap: ${props => props.theme.spacing.s8};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: ${props => props.theme.spacing.s6};
+    align-items: center;
+  }
+`;
+
+// Estadística individual minimalista
 const StatItem = styled.div`
   text-align: center;
-  padding: ${props => props.theme.spacing.s4};
   
   .stat-number {
+    display: block;
     font-size: 2.5rem;
     font-weight: ${props => props.theme.typography.fontWeights.bold};
-    color: ${props => props.theme.colors.accent};
-    margin-bottom: ${props => props.theme.spacing.s2};
-    display: block;
+    color: ${props => props.theme.colors.primary};
+    line-height: 1;
+    margin-bottom: ${props => props.theme.spacing.s1};
   }
   
   .stat-label {
-    font-size: 0.9rem;
-    opacity: 0.8;
+    display: block;
+    font-size: 0.875rem;
+    color: ${props => props.theme.colors.textMuted};
     line-height: 1.4;
+    font-weight: ${props => props.theme.typography.fontWeights.normal};
   }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
@@ -111,6 +231,18 @@ const StatItem = styled.div`
     }
   }
 `;
+
+// Componente para contador animado
+const StatCounter = ({ number, label }) => {
+  const { formattedValue, ref } = useCountAnimation(number, 2500);
+  
+  return (
+    <StatItem>
+      <span className="stat-number" ref={ref}>{formattedValue}</span>
+      <span className="stat-label">{label}</span>
+    </StatItem>
+  );
+};
 
 const HeroSection = ({ 
   variant = 'home', // 'home' | 'portfolio'
@@ -124,8 +256,8 @@ const HeroSection = ({
   // Default content for home variant
   const defaultContent = {
     home: {
-      title: 'Stratek',
-      subtitle: 'Gestiona tu organización de manera inteligente, diseña, implementa y audita, Sistemas Integrados de Gestión, Seguridad y Salud en el Trabajo y mucho mas. "Desde cualquier lugar del mundo".',
+      title: <>Sistemas <span className="highlight">Integrados</span></>,
+      subtitle: 'Plataforma integral para la gestión empresarial moderna. Diseña, implementa y audita sistemas de gestión con herramientas inteligentes que se adaptan a tu organización.',
       primaryButton: { text: 'Comenzar Ahora', to: '/register' },
       secondaryButton: { text: 'Portafolio de Servicios', to: '/portfolio' },
       stats: [
@@ -209,32 +341,53 @@ const HeroSection = ({
   return (
     <HeroWrapper>
       <HeroContent>
-        <Row align="center">
-          <Col lg={6}>
-            <HeroTitle>{finalTitle}</HeroTitle>
+        {/* Título centrado */}
+        <HeroTitle>{finalTitle}</HeroTitle>
+        
+        {/* Contenido en dos columnas */}
+        <ContentGrid>
+          {/* Columna de información */}
+          <InfoSection>
             <HeroSubtitle>{finalSubtitle}</HeroSubtitle>
             
             <HeroButtons>
               {renderButton(finalPrimaryButton, 'primary')}
-              {finalSecondaryButton && renderButton(finalSecondaryButton, 'secondary')}
+              {finalSecondaryButton && renderButton(finalSecondaryButton, 'outline')}
             </HeroButtons>
+          </InfoSection>
+          
+          {/* Columna de imagen */}
+          <ImageSection>
+            <DashboardImage 
+              src={`${process.env.PUBLIC_URL}/images/dashboard-mockup.png`}
+              alt="Dashboard StrateKaz"
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+            <div style={{ display: 'none', alignItems: 'center', justifyContent: 'center', width: '100%', height: '300px', background: '#f0f0f0', borderRadius: '12px', color: '#999' }}>
+              Dashboard Preview
+            </div>
             
-            {showStats && finalStats && (
-              <StatsSection>
-                <Row>
-                  {finalStats.map((stat, index) => (
-                    <Col key={index} md={12 / finalStats.length}>
-                      <StatItem>
-                        <span className="stat-number">{stat.number}</span>
-                        <span className="stat-label">{stat.label}</span>
-                      </StatItem>
-                    </Col>
-                  ))}
-                </Row>
-              </StatsSection>
-            )}
-          </Col>
-        </Row>
+            {/* Frases flotantes */}
+            <FloatingQuote className="top-right">
+              "Gestión inteligente"
+            </FloatingQuote>
+            <FloatingQuote className="bottom-left">
+              "Desde cualquier lugar"
+            </FloatingQuote>
+          </ImageSection>
+        </ContentGrid>
+        
+        {/* Estadísticas centradas */}
+        {showStats && finalStats && (
+          <StatsSection>
+            {finalStats.map((stat, index) => (
+              <StatCounter key={index} number={stat.number} label={stat.label} />
+            ))}
+          </StatsSection>
+        )}
       </HeroContent>
     </HeroWrapper>
   );

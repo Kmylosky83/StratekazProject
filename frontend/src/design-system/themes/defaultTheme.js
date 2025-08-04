@@ -3,7 +3,7 @@
 
 import colors from '../tokens/colors';
 import shadows from '../tokens/shadows';
-import spacing from '../tokens/spacing';
+import { spacing, componentMeasures } from '../tokens/spacing';
 import typography from '../tokens/typography';
 
 export const defaultTheme = {
@@ -11,6 +11,7 @@ export const defaultTheme = {
   shadows,
   spacing,
   typography,
+  componentMeasures,
   
   // Configuraciones adicionales del tema
   breakpoints: {
