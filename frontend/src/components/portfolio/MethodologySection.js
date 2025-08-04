@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../styles/portfolio.css';
 
 const MethodologySection = () => {
   const metodologiaPasos = [

@@ -2,7 +2,6 @@ import React from 'react';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 import ServiceSection from '../components/portfolio/ServiceSection';
-import '../styles/portfolio.css';
 
 const PortfolioPage = () => {
   const isAuthenticated = false; // This should come from AuthContext

@@ -1,7 +1,6 @@
 // frontend/src/components/modals/NormativaModal.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../../styles/modals.css';
 
 const NormativaModal = ({ show, handleClose, normativa }) => {
   // Si no debe mostrarse, retornar null

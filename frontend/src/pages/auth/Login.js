@@ -1,9 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignInAlt, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { Icon } from '../../design-system/icons';
 import authService from '../../services/auth/AuthService';
-import '../../styles/login.css';
 import { AuthContext } from '../../context/AuthContext';
 
 const Login = () => {
@@ -147,7 +145,7 @@ const Login = () => {
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
                     <label className="form-label">
-                      <FontAwesomeIcon icon={faEnvelope} className="me-2" />
+                      <Icon name="mail" className="me-2" />
                       Email
                     </label>
                     <input
@@ -164,7 +162,7 @@ const Login = () => {
                   <div className="mb-3">
                     <div className="d-flex justify-content-between align-items-center">
                       <label className="form-label">
-                        <FontAwesomeIcon icon={faLock} className="me-2" />
+                        <Icon name="lock" className="me-2" />
                         Contraseña
                       </label>
                       <Link to="/recuperar-contrasena" className="forgot-password">
@@ -204,7 +202,7 @@ const Login = () => {
                     {isLoading ? (
                       <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                     ) : (
-                      <FontAwesomeIcon icon={faSignInAlt} className="me-2" />
+                      <Icon name="login" className="me-2" />
                     )}
                     {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
                   </button>

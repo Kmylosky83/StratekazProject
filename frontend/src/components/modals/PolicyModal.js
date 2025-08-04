@@ -1,6 +1,5 @@
 // frontend/src/components/modals/PolicyModal.js
 import React from 'react';
-import '../../styles/modals.css';
 
 const PolicyModal = ({ show, handleClose, type }) => {
   // Si no debe mostrarse, retornar null

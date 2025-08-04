@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle, faChevronRight, faTimes } from '@fortawesome/free-solid-svg-icons';
-import '../../styles/portfolio.css';
+import { Icon } from '../../design-system/icons';
 
 const CasesSection = () => {
   const [showModal, setShowModal] = useState(false);

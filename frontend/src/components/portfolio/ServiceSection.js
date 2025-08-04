@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  ChevronRight, Award, Shield, Briefcase, BarChart2, 
-  Users, BookOpen, TrendingUp, CheckCircle, 
-  Target, PieChart, UserCheck 
-} from '../../design-system/icons';
+import { Icon } from '../../design-system/icons';
 import { H2, Text, Card, Button } from '../../design-system/components';
-import '../../styles/portfolio.css';
 
 const ServiceSection = () => {
   const [activeTab, setActiveTab] = useState('consultoria');
@@ -14,7 +9,7 @@ const ServiceSection = () => {
   const servicios = {
     consultoria: [
       {
-        icon: <Award size={32} />,
+        icon: <Icon name="award" size={32} />,
         title: "Sistemas de Gestión",
         description: "Diseño e implementación de sistemas de gestión basados en normas ISO 9001, ISO 45001, ISO 14001 e ISO/IEC 17020.",
         features: [
@@ -25,7 +20,7 @@ const ServiceSection = () => {
         ]
       },
       {
-        icon: <Shield size={32} />,
+        icon: <Icon name="shield" size={32} />,
         title: "SG-SST y PESV",
         description: "Diseño e implementación de Sistemas de Gestión de Seguridad y Salud en el Trabajo y Planes Estratégicos de Seguridad Vial.",
         features: [
@@ -36,7 +31,7 @@ const ServiceSection = () => {
         ]
       },
       {
-        icon: <Briefcase size={32} />,
+        icon: <Icon name="briefcase" size={32} />,
         title: "Gestión Estratégica",
         description: "Desarrollo de estrategias empresariales para la optimización de procesos y mejora de resultados.",
         features: [
@@ -49,7 +44,7 @@ const ServiceSection = () => {
     ],
     capacitacion: [
       {
-        icon: <BarChart2 size={32} />,
+        icon: <Icon name="barChart2" size={32} />,
         title: "Análisis de Datos",
         description: "Formación para equipos en extracción de valor de los datos para toma de decisiones basadas en evidencia.",
         features: [
@@ -60,7 +55,7 @@ const ServiceSection = () => {
         ]
       },
       {
-        icon: <Users size={32} />,
+        icon: <Icon name="users" size={32} />,
         title: "Liderazgo y Trabajo en Equipo",
         description: "Desarrollo de habilidades para la gestión eficiente de equipos de alto rendimiento.",
         features: [
@@ -71,7 +66,7 @@ const ServiceSection = () => {
         ]
       },
       {
-        icon: <BookOpen size={32} />,
+        icon: <Icon name="bookOpen" size={32} />,
         title: "Formación en Sistemas de Gestión",
         description: "Capacitación especializada en implementación y auditoría de sistemas de gestión.",
         features: [
@@ -84,7 +79,7 @@ const ServiceSection = () => {
     ],
     coaching: [
       {
-        icon: <TrendingUp size={32} />,
+        icon: <Icon name="trendingUp" size={32} />,
         title: "Coaching Gerencial",
         description: "Acompañamiento personalizado para directivos y equipos de alta dirección.",
         features: [
@@ -95,7 +90,7 @@ const ServiceSection = () => {
         ]
       },
       {
-        icon: <CheckCircle size={32} />,
+        icon: <Icon name="checkCircle" size={32} />,
         title: "Coaching en PNL",
         description: "Aplicación de técnicas de Programación Neurolingüística para el desarrollo personal y profesional.",
         features: [
@@ -106,7 +101,7 @@ const ServiceSection = () => {
         ]
       },
       {
-        icon: <Target size={32} />,
+        icon: <Icon name="target" size={32} />,
         title: "Coaching Estratégico",
         description: "Transformación de estrategias personales y organizacionales para potenciar el éxito.",
         features: [
@@ -166,7 +161,7 @@ const ServiceSection = () => {
               <ul className="service-features">
                 {servicio.features.map((feature, idx) => (
                   <li key={idx} className="feature-item">
-                    <ChevronRight className="feature-icon" size={16} />
+                    <Icon name="chevronRight" className="feature-icon" size={16} />
                     <span className="text-card-feature">{feature}</span>
                   </li>
                 ))}
