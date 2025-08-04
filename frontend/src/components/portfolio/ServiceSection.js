@@ -4,81 +4,82 @@ import { Section, SectionHeader, Grid, Container } from '../../design-system/com
 import { InteraccionCard, InteraccionIcon, InteraccionTitle, InteraccionDescription, InteraccionCTA } from '../../design-system/components/Card/Card.styled';
 import { Award, GraduationCap, Target, ArrowLeft, Shield, Briefcase, BarChart2, Users, BookOpen, TrendingUp, CheckCircle, Settings, FileCheck, Leaf } from 'lucide-react';
 import ServicioModal from '../modals/ServicioModal';
+import { colors } from '../../design-system/tokens/colors';
+import { spacing } from '../../design-system/tokens/spacing';
+import { typography } from '../../design-system/tokens/typography';
 
-// Contenedor principal estilo dashboard
 const PortfolioContainer = styled.div`
-  background: ${props => props.theme.colors.white};
-  border-radius: 16px;
+  background: ${colors.white};
+  border-radius: ${spacing.s4};
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  margin: 2rem 0;
-  border: 1px solid ${props => props.theme.colors.border};
+  margin: ${spacing.s8} 0;
+  border: 1px solid ${colors.border};
   max-width: 100%;
   width: 100%;
   box-sizing: border-box;
 `;
 
 const PortfolioHeader = styled.div`
-  background: linear-gradient(135deg, ${props => props.theme.colors.backgroundLight} 0%, ${props => props.theme.colors.white} 100%);
-  padding: 2rem;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  background: linear-gradient(135deg, ${colors.backgroundLight} 0%, ${colors.white} 100%);
+  padding: ${spacing.s8};
+  border-bottom: 1px solid ${colors.border};
   text-align: center;
 `;
 
 const PortfolioTitle = styled.h2`
-  font-size: 1.75rem;
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
-  color: ${props => props.theme.colors.text};
-  margin: 0 0 0.5rem 0;
+  font-size: ${typography.fontSizes.sectionTitle};
+  font-weight: ${typography.fontWeights.semiBold};
+  color: ${colors.text};
+  margin: 0 0 ${spacing.s2} 0;
   letter-spacing: -0.01em;
 `;
 
 const PortfolioSubtitle = styled.p`
-  font-size: 1rem;
-  color: ${props => props.theme.colors.textMuted};
+  font-size: ${typography.fontSizes.base};
+  color: ${colors.textMuted};
   margin: 0;
   line-height: 1.5;
   opacity: 0.9;
 `;
 
-// Contenedor de tabs estilo dashboard
 const TabsContainer = styled.div`
-  background: ${props => props.theme.colors.backgroundLight};
-  padding: 1rem 2rem;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  background: ${colors.backgroundLight};
+  padding: ${spacing.s4} ${spacing.s8};
+  border-bottom: 1px solid ${colors.border};
 `;
 
 const TabsWrapper = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: ${spacing.s2};
   justify-content: center;
   flex-wrap: wrap;
   max-width: 100%;
   
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+  @media (max-width: 768px) {
     flex-direction: column;
-    gap: 0.75rem;
+    gap: ${spacing.s3};
   }
 `;
 
 const TabButton = styled.button`
-  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.active ? props.theme.colors.white : props.theme.colors.textMuted};
-  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border};
-  border-radius: 8px;
-  padding: 12px 24px;
-  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  background: ${props => props.active ? colors.primary : 'transparent'};
+  color: ${props => props.active ? colors.white : colors.textMuted};
+  border: 1px solid ${props => props.active ? colors.primary : colors.border};
+  border-radius: ${spacing.s2};
+  padding: ${spacing.s3} ${spacing.s6};
+  font-weight: ${typography.fontWeights.medium};
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: ${spacing.s2};
   min-width: 140px;
   justify-content: center;
   
   &:hover:not(.active) {
-    background: ${props => props.theme.colors.hover};
-    border-color: ${props => props.theme.colors.borderDark};
+    background: ${colors.hover};
+    border-color: ${colors.borderDark};
     transform: translateY(-1px);
   }
   
@@ -91,25 +92,23 @@ const TabButton = styled.button`
   }
 `;
 
-// Contenido de servicios (fuera del contenedor)
 const ServicesContent = styled.div`
-  margin-top: 3rem;
+  margin-top: ${spacing.s12};
   max-width: 100%;
   overflow-x: hidden;
-  padding: 1rem 0 2rem 0; /* Padding para permitir elevación de cards */
+  padding: ${spacing.s4} 0 ${spacing.s8} 0;
 `;
 
-// Status indicator para mostrar categoría activa
 const StatusIndicator = styled.div`
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: ${props => props.theme.colors.primary};
-  color: ${props => props.theme.colors.white};
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  top: ${spacing.s4};
+  right: ${spacing.s4};
+  background: ${colors.primary};
+  color: ${colors.white};
+  padding: ${spacing.s1} ${spacing.s3};
+  border-radius: ${spacing.s3};
+  font-size: ${typography.fontSizes.note};
+  font-weight: ${typography.fontWeights.medium};
   opacity: 0;
   transform: translateY(-10px);
   transition: all 0.3s ease;

@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, UserCheck, Building2, Factory, Home } from 'lucide-react';
+import styled from 'styled-components';
 import authService from '../../services/auth/AuthService';
 import PolicyModal from '../../components/modals/PolicyModal';
 import { Card_Selection, Grid, Button, Container_Auth, Auth_Card, Auth_Header, Auth_Content, Auth_Footer, Auth_NavButtons } from '../../design-system/components';
+import { colors } from '../../design-system/tokens/colors';
+import { spacing } from '../../design-system/tokens/spacing';
+import { typography } from '../../design-system/tokens/typography';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -176,13 +180,12 @@ const [passwordStrength, setPasswordStrength] = useState({
 
         <Auth_Content>
           {errors.general && (
-            <div className="alert alert-danger">{errors.general}</div>
+            <ErrorAlert>{errors.general}</ErrorAlert>
           )}
 
-                {/* Paso 1: Selección de tipo de usuario */}
                 {currentStep === 1 && (
-                  <div className="step">
-                    <h5 className="text-center mb-4">¿Qué tipo de usuario eres?</h5>
+                  <StepContainer>
+                    <StepTitle>¿Qué tipo de usuario eres?</StepTitle>
                     <Grid columns={3} tablet={1} mobile={1} gap="large">
                       <Card_Selection
                         title="Profesional Independiente"
@@ -206,116 +209,105 @@ const [passwordStrength, setPasswordStrength] = useState({
                         onClick={() => selectUserType('direct_company')}
                       />
                     </Grid>
-                    {errors.userType && <div className="text-danger mt-2">{errors.userType}</div>}
-                  </div>
+                    {errors.userType && <ErrorText>{errors.userType}</ErrorText>}
+                  </StepContainer>
                 )}
 
-                {/* Paso 2: Formulario según tipo de usuario */}
                 {currentStep === 2 && (
-                  <div className="step">
-                    <h5 className="text-center mb-4">Información de acceso</h5>
+                  <StepContainer>
+                    <StepTitle>Información de acceso</StepTitle>
                     
-                    <div className="mb-3">
-                      <label className="form-label">Email</label>
-                      <input
+                    <FormGroup>
+                      <FormLabel>Email</FormLabel>
+                      <FormInput
                         type="email"
-                        className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                        $hasError={!!errors.email}
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
                         placeholder="tu@email.com"
                       />
-                      {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-                    </div>
+                      {errors.email && <ErrorText>{errors.email}</ErrorText>}
+                    </FormGroup>
                     
-                    <div className="row mb-3">
-                      <div className="col-md-6">
-                        <label className="form-label">Contraseña</label>
-                        <input
+                    <FormRow>
+                      <FormGroup>
+                        <FormLabel>Contraseña</FormLabel>
+                        <FormInput
                           type="password"
-                          className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                          $hasError={!!errors.password}
                           name="password"
                           value={formData.password}
                           onChange={handleInputChange}
                         />
-                        {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                        {errors.password && <ErrorText>{errors.password}</ErrorText>}
                         
-                        {/* Indicador de seguridad */}
                         {formData.password && (
-                          <div className="mt-2">
-                            <div className="password-strength">
-                              <span className={`strength-badge ${
-                                passwordStrength.score === 0 ? 'very-weak' :
-                                passwordStrength.score === 1 ? 'weak' :
-                                passwordStrength.score === 2 ? 'medium' :
-                                passwordStrength.score === 3 ? 'strong' :
-                                'very-strong'
-                              }`}>
-                                {passwordStrength.score === 0 ? 'Muy débil' :
-                                passwordStrength.score === 1 ? 'Débil' :
-                                passwordStrength.score === 2 ? 'Media' :
-                                passwordStrength.score === 3 ? 'Fuerte' :
-                                'Muy fuerte'}
-                              </span>
-                            </div>
-                            <ul className="password-checklist">
-                              <li className={passwordStrength.length ? 'valid' : 'invalid'}>
+                          <PasswordStrengthContainer>
+                            <PasswordStrengthBadge $score={passwordStrength.score}>
+                              {passwordStrength.score === 0 ? 'Muy débil' :
+                              passwordStrength.score === 1 ? 'Débil' :
+                              passwordStrength.score === 2 ? 'Media' :
+                              passwordStrength.score === 3 ? 'Fuerte' :
+                              'Muy fuerte'}
+                            </PasswordStrengthBadge>
+                            <PasswordChecklist>
+                              <ChecklistItem $valid={passwordStrength.length}>
                                 {passwordStrength.length ? '✓' : '✗'} Mínimo 8 caracteres
-                              </li>
-                              <li className={passwordStrength.lowercase ? 'valid' : 'invalid'}>
+                              </ChecklistItem>
+                              <ChecklistItem $valid={passwordStrength.lowercase}>
                                 {passwordStrength.lowercase ? '✓' : '✗'} Una letra minúscula
-                              </li>
-                              <li className={passwordStrength.uppercase ? 'valid' : 'invalid'}>
+                              </ChecklistItem>
+                              <ChecklistItem $valid={passwordStrength.uppercase}>
                                 {passwordStrength.uppercase ? '✓' : '✗'} Una letra mayúscula
-                              </li>
-                              <li className={passwordStrength.number ? 'valid' : 'invalid'}>
+                              </ChecklistItem>
+                              <ChecklistItem $valid={passwordStrength.number}>
                                 {passwordStrength.number ? '✓' : '✗'} Un número
-                              </li>
-                              <li className={passwordStrength.special ? 'valid' : 'invalid'}>
+                              </ChecklistItem>
+                              <ChecklistItem $valid={passwordStrength.special}>
                                 {passwordStrength.special ? '✓' : '✗'} Un carácter especial
-                              </li>
-                            </ul>
-                          </div>
+                              </ChecklistItem>
+                            </PasswordChecklist>
+                          </PasswordStrengthContainer>
                         )}
-                      </div>
-                      <div className="col-md-6">
-                        <label className="form-label">Confirmar Contraseña</label>
-                        <input
+                      </FormGroup>
+                      <FormGroup>
+                        <FormLabel>Confirmar Contraseña</FormLabel>
+                        <FormInput
                           type="password"
-                          className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
+                          $hasError={!!errors.confirmPassword}
                           name="confirmPassword"
                           value={formData.confirmPassword}
                           onChange={handleInputChange}
                         />
-                        {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
-                      </div>
-                    </div>
-                  </div>
+                        {errors.confirmPassword && <ErrorText>{errors.confirmPassword}</ErrorText>}
+                      </FormGroup>
+                    </FormRow>
+                  </StepContainer>
                 )}
                 
-                {/* Paso 3: Términos y condiciones */}
                 {currentStep === 3 && (
-                  <div className="step">
-                    <h5 className="text-center mb-4">Términos y Condiciones</h5>              
+                  <StepContainer>
+                    <StepTitle>Términos y Condiciones</StepTitle>              
                     
-                    <div className="form-check mb-3">
-                      <input
+                    <CheckboxGroup>
+                      <FormCheckbox
                         type="checkbox"
-                        className={`form-check-input ${errors.terms ? 'is-invalid' : ''}`}
+                        $hasError={!!errors.terms}
                         id="acceptTerms"
                         checked={termsAccepted}
                         onChange={() => setTermsAccepted(!termsAccepted)}
                       />
-                      <label className="form-check-label" htmlFor="acceptTerms">
-                        He leído y acepto los <button type="button" onClick={() => setPolicyModal({ show: true, type: 'terms' })} className="btn btn-link p-0" style={{ textDecoration: 'underline', color: 'var(--color-primary)' }}>Términos y Condiciones</button>
-                      </label>
-                      {errors.terms && <div className="invalid-feedback">{errors.terms}</div>}
-                    </div>
+                      <CheckboxLabel htmlFor="acceptTerms">
+                        He leído y acepto los <PolicyLink onClick={() => setPolicyModal({ show: true, type: 'terms' })}>Términos y Condiciones</PolicyLink>
+                      </CheckboxLabel>
+                      {errors.terms && <ErrorText>{errors.terms}</ErrorText>}
+                    </CheckboxGroup>
                     
-                    <p className="text-center mb-0">
-                      Al registrarte, también aceptas nuestra <button type="button" onClick={() => setPolicyModal({ show: true, type: 'privacy' })} className="btn btn-link p-0" style={{ textDecoration: 'underline', color: 'var(--color-primary)' }}>Política de Privacidad</button>
-                    </p>
-                    </div>
+                    <PrivacyText>
+                      Al registrarte, también aceptas nuestra <PolicyLink onClick={() => setPolicyModal({ show: true, type: 'privacy' })}>Política de Privacidad</PolicyLink>
+                    </PrivacyText>
+                  </StepContainer>
                 )}
 
           <PolicyModal 
@@ -365,15 +357,188 @@ const [passwordStrength, setPasswordStrength] = useState({
             }
           />
           
-          <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-            <p style={{ margin: 0, color: '#666' }}>
-              ¿Ya tienes una cuenta? <Link to="/login" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Inicia sesión aquí</Link>
-            </p>
-          </div>
+          <FooterText>
+            ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión aquí</Link>
+          </FooterText>
         </Auth_Footer>
       </Auth_Card>
     </Container_Auth>
   );
 };
+
+// Styled Components
+const ErrorAlert = styled.div`
+  background-color: ${colors.dangerLight};
+  color: ${colors.danger};
+  padding: ${spacing.medium};
+  border-radius: ${spacing.s1};
+  margin-bottom: ${spacing.medium};
+  border: 1px solid ${colors.danger};
+`;
+
+const StepContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const StepTitle = styled.h5`
+  text-align: center;
+  margin-bottom: ${spacing.large};
+  font-size: ${typography.fontSizes.cardTitle};
+  font-weight: ${typography.fontWeights.semiBold};
+  color: ${colors.text};
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: ${spacing.medium};
+`;
+
+const FormLabel = styled.label`
+  display: block;
+  margin-bottom: ${spacing.s1};
+  font-weight: ${typography.fontWeights.medium};
+  color: ${colors.text};
+`;
+
+const FormInput = styled.input`
+  width: 100%;
+  padding: ${spacing.small} ${spacing.medium};
+  border: 1px solid ${({ $hasError }) => $hasError ? colors.danger : colors.border};
+  border-radius: ${spacing.s1};
+  font-size: ${typography.fontSizes.base};
+  transition: border-color 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: ${colors.primary};
+    box-shadow: 0 0 0 2px ${colors.focus};
+  }
+  
+  &::placeholder {
+    color: ${colors.textMuted};
+  }
+`;
+
+const FormRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${spacing.medium};
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const ErrorText = styled.div`
+  color: ${colors.danger};
+  font-size: ${typography.fontSizes.note};
+  margin-top: ${spacing.s1};
+`;
+
+const PasswordStrengthContainer = styled.div`
+  margin-top: ${spacing.small};
+`;
+
+const PasswordStrengthBadge = styled.span`
+  display: inline-block;
+  padding: ${spacing.s1} ${spacing.small};
+  border-radius: ${spacing.s1};
+  font-size: ${typography.fontSizes.note};
+  font-weight: ${typography.fontWeights.medium};
+  
+  ${({ $score }) => {
+    if ($score === 0) return `
+      background-color: ${colors.passwordStrength.veryWeak.bg};
+      color: ${colors.passwordStrength.veryWeak.text};
+    `;
+    if ($score === 1) return `
+      background-color: ${colors.passwordStrength.weak.bg};
+      color: ${colors.passwordStrength.weak.text};
+    `;
+    if ($score === 2) return `
+      background-color: ${colors.passwordStrength.medium.bg};
+      color: ${colors.passwordStrength.medium.text};
+    `;
+    if ($score === 3) return `
+      background-color: ${colors.passwordStrength.strong.bg};
+      color: ${colors.passwordStrength.strong.text};
+    `;
+    return `
+      background-color: ${colors.passwordStrength.veryStrong.bg};
+      color: ${colors.passwordStrength.veryStrong.text};
+    `;
+  }}
+`;
+
+const PasswordChecklist = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: ${spacing.small} 0 0 0;
+`;
+
+const ChecklistItem = styled.li`
+  color: ${({ $valid }) => $valid ? colors.passwordChecklist.valid : colors.passwordChecklist.invalid};
+  font-size: ${typography.fontSizes.note};
+  margin-bottom: ${spacing.s1};
+`;
+
+const CheckboxGroup = styled.div`
+  margin-bottom: ${spacing.medium};
+`;
+
+const FormCheckbox = styled.input`
+  margin-right: ${spacing.small};
+  accent-color: ${colors.primary};
+  
+  ${({ $hasError }) => $hasError && `
+    border-color: ${colors.danger};
+  `}
+`;
+
+const CheckboxLabel = styled.label`
+  font-size: ${typography.fontSizes.base};
+  color: ${colors.text};
+  cursor: pointer;
+`;
+
+const PolicyLink = styled.button`
+  background: none;
+  border: none;
+  color: ${colors.primary};
+  text-decoration: underline;
+  padding: 0;
+  cursor: pointer;
+  font-size: inherit;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const PrivacyText = styled.p`
+  text-align: center;
+  margin: 0;
+  color: ${colors.textMuted};
+  font-size: ${typography.fontSizes.base};
+`;
+
+const FooterText = styled.div`
+  text-align: center;
+  margin-top: ${spacing.medium};
+  
+  p {
+    margin: 0;
+    color: ${colors.textMuted};
+  }
+  
+  a {
+    color: ${colors.primary};
+    text-decoration: none;
+    
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+`;
 
 export default Register;

@@ -1,6 +1,3 @@
-// Footer Component - Design System
-// Componente unificado que reemplaza el Footer de common
-
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -12,15 +9,18 @@ import TermsModal from '../../../components/modals/TermsModal';
 import PrivacyModal from '../../../components/modals/PrivacyModal';
 import CookiesModal from '../../../components/modals/CookiesModal';
 import NormativaModal from '../../../components/modals/NormativaModal';
+import { colors } from '../../tokens/colors';
+import { spacing } from '../../tokens/spacing';
+import { typography } from '../../tokens/typography';
 
 const FooterWrapper = styled.footer`
   background: linear-gradient(135deg, 
-    ${props => props.theme.colors.backgroundLight} 0%, 
-    ${props => props.theme.colors.white} 100%
+    ${colors.backgroundLight} 0%, 
+    ${colors.white} 100%
   );
   position: relative;
-  padding: ${props => props.theme.spacing.s8} 0 ${props => props.theme.spacing.s6} 0;
-  transition: ${props => props.theme.transitions.normal};
+  padding: ${spacing.s8} 0 ${spacing.s6} 0;
+  transition: all 0.3s ease;
   
   &::before {
     content: '';
@@ -31,10 +31,10 @@ const FooterWrapper = styled.footer`
     height: 1px;
     background: linear-gradient(90deg, 
       transparent 0%,
-      ${props => props.theme.colors.primary}20 20%,
-      ${props => props.theme.colors.borderSubtle} 30%,
-      ${props => props.theme.colors.borderSubtle} 70%,
-      ${props => props.theme.colors.primary}20 80%,
+      ${colors.primary}20 20%,
+      ${colors.borderSubtle} 30%,
+      ${colors.borderSubtle} 70%,
+      ${colors.primary}20 80%,
       transparent 100%
     );
     opacity: 0.6;
@@ -45,34 +45,34 @@ const FooterWrapper = styled.footer`
     opacity: 1;
     background: linear-gradient(90deg, 
       transparent 0%,
-      ${props => props.theme.colors.primary}40 15%,
-      ${props => props.theme.colors.primary} 25%,
-      ${props => props.theme.colors.primary} 75%,
-      ${props => props.theme.colors.primary}40 85%,
+      ${colors.primary}40 15%,
+      ${colors.primary} 25%,
+      ${colors.primary} 75%,
+      ${colors.primary}40 85%,
       transparent 100%
     );
-    box-shadow: 0 0 8px ${props => props.theme.colors.primary}30;
+    box-shadow: 0 0 8px ${colors.primary}30;
   }
 `;
 
 const FooterContent = styled(Container)``;
 
 const FooterSection = styled.div`
-  margin-bottom: ${props => props.theme.spacing.s4};
+  margin-bottom: ${spacing.s4};
   
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    margin-bottom: ${props => props.theme.spacing.s4};
+  @media (max-width: 768px) {
+    margin-bottom: ${spacing.s4};
   }
 `;
 
 const BrandSection = styled(FooterSection)`
   .description {
-    color: ${props => props.theme.colors.textMuted};
-    margin: ${props => props.theme.spacing.s3} 0 ${props => props.theme.spacing.s4} 0;
-    line-height: ${props => props.theme.typography.lineHeights.relaxed || 1.6};
-    font-size: ${props => props.theme.typography.fontSizes.base || '1rem'};
-    font-weight: ${props => props.theme.typography.fontWeights.normal || 400};
-    font-family: ${props => props.theme.typography.fontFamilies.secondary};
+    color: ${colors.textMuted};
+    margin: ${spacing.s3} 0 ${spacing.s4} 0;
+    line-height: 1.6;
+    font-size: ${typography.fontSizes.base};
+    font-weight: ${typography.fontWeights.regular};
+    font-family: ${typography.fontFamilies.secondary};
     max-width: 320px;
     letter-spacing: 0.01em;
   }
@@ -80,8 +80,8 @@ const BrandSection = styled(FooterSection)`
 
 const SocialLinks = styled.div`
   display: flex;
-  gap: ${props => props.theme.spacing.s2};
-  margin-top: ${props => props.theme.spacing.s2};
+  gap: ${spacing.s2};
+  margin-top: ${spacing.s2};
   justify-content: flex-start;
   flex-wrap: wrap;
 `;
@@ -92,20 +92,20 @@ const SocialLink = styled.a`
   justify-content: center;
   width: 44px;
   height: 44px;
-  background: ${props => props.theme.colors.white};
-  color: ${props => props.theme.colors.textMuted};
+  background: ${colors.white};
+  color: ${colors.textMuted};
   border-radius: 12px;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   text-decoration: none;
-  border: 1px solid ${props => props.theme.colors.border};
+  border: 1px solid ${colors.border};
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
   
   &:hover {
-    background: ${props => props.theme.colors.primary};
+    background: ${colors.primary};
     color: white;
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px ${props => props.theme.colors.primary}30;
-    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 8px 25px ${colors.primary}30;
+    border-color: ${colors.primary};
   }
   
   &:active {
@@ -114,15 +114,15 @@ const SocialLink = styled.a`
 `;
 
 const FooterTitle = styled(H6)`
-  color: ${props => props.theme.colors.text};
-  font-family: ${props => props.theme.typography.fontFamilies.primary};
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold || 600};
-  font-size: ${props => props.theme.typography.fontSizes.lg || '1.125rem'};
-  margin-bottom: ${props => props.theme.spacing.s4};
+  color: ${colors.text};
+  font-family: ${typography.fontFamilies.primary};
+  font-weight: ${typography.fontWeights.semiBold};
+  font-size: ${typography.fontSizes.cardTitle};
+  margin-bottom: ${spacing.s4};
   text-transform: none;
   letter-spacing: -0.01em;
   position: relative;
-  padding-bottom: ${props => props.theme.spacing.s2};
+  padding-bottom: ${spacing.s2};
   
   &::after {
     content: '';
@@ -132,26 +132,26 @@ const FooterTitle = styled(H6)`
     width: 40px;
     height: 3px;
     background: linear-gradient(90deg, 
-      ${props => props.theme.colors.primary} 0%, 
-      ${props => props.theme.colors.primary}60 100%
+      ${colors.primary} 0%, 
+      ${colors.primary}60 100%
     );
     border-radius: 2px;
   }
 `;
 
 const FooterLink = styled(Link)`
-  color: ${props => props.theme.colors.textMuted};
+  color: ${colors.textMuted};
   text-decoration: none;
   display: block;
-  margin-bottom: ${props => props.theme.spacing.s2};
+  margin-bottom: ${spacing.s2};
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: ${props => props.theme.spacing.s1} 0;
+  padding: ${spacing.s1} 0;
   position: relative;
-  font-size: ${props => props.theme.typography.fontSizes.base || '1rem'};
-  font-weight: ${props => props.theme.typography.fontWeights.normal || 400};
-  font-family: ${props => props.theme.typography.fontFamilies.secondary};
-  line-height: ${props => props.theme.typography.lineHeights.normal};
-  border-radius: ${props => props.theme.borderRadius.small};
+  font-size: ${typography.fontSizes.base};
+  font-weight: ${typography.fontWeights.regular};
+  font-family: ${typography.fontFamilies.secondary};
+  line-height: 1.4;
+  border-radius: ${spacing.s1};
   
   &::before {
     content: '';
@@ -162,16 +162,16 @@ const FooterLink = styled(Link)`
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: ${props => props.theme.colors.primary};
+    background: ${colors.primary};
     opacity: 0;
     transition: all 0.25s ease;
   }
   
   &:hover {
-    color: ${props => props.theme.colors.primary};
+    color: ${colors.primary};
     text-decoration: none;
-    padding-left: ${props => props.theme.spacing.s4};
-    background: ${props => props.theme.colors.primary}05;
+    padding-left: ${spacing.s4};
+    background: ${colors.primary}05;
     
     &::before {
       opacity: 1;
@@ -180,44 +180,44 @@ const FooterLink = styled(Link)`
 `;
 
 const FooterExternalLink = styled.a`
-  color: ${props => props.theme.colors.textMuted};
+  color: ${colors.textMuted};
   text-decoration: none;
-  font-size: ${props => props.theme.typography.fontSizes.base || '1rem'};
-  font-weight: ${props => props.theme.typography.fontWeights.normal || 400};
-  font-family: ${props => props.theme.typography.fontFamilies.secondary};
+  font-size: ${typography.fontSizes.base};
+  font-weight: ${typography.fontWeights.regular};
+  font-family: ${typography.fontFamilies.secondary};
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: ${props => props.theme.spacing.s1} ${props => props.theme.spacing.s2};
-  border-radius: ${props => props.theme.borderRadius.small};
+  padding: ${spacing.s1} ${spacing.s2};
+  border-radius: ${spacing.s1};
   
   &:hover {
-    color: ${props => props.theme.colors.primary};
+    color: ${colors.primary};
     text-decoration: none;
-    background: ${props => props.theme.colors.primary}05;
+    background: ${colors.primary}05;
   }
 `;
 
 const ContactItem = styled.div`
   display: flex;
   align-items: flex-start;
-  margin-bottom: ${props => props.theme.spacing.s2};
-  color: ${props => props.theme.colors.textMutedLight};
-  font-size: ${props => props.theme.typography.fontSizes.note || '0.875rem'};
-  font-family: ${props => props.theme.typography.fontFamilies.secondary};
-  line-height: ${props => props.theme.typography.lineHeights.normal};
+  margin-bottom: ${spacing.s2};
+  color: ${colors.textMutedLight};
+  font-size: ${typography.fontSizes.note};
+  font-family: ${typography.fontFamilies.secondary};
+  line-height: 1.4;
   transition: all 0.25s ease;
-  padding: ${props => props.theme.spacing.s1} 0;
-  border-radius: ${props => props.theme.borderRadius.small};
+  padding: ${spacing.s1} 0;
+  border-radius: ${spacing.s1};
   
   .icon {
-    margin-right: ${props => props.theme.spacing.s3};
+    margin-right: ${spacing.s3};
     margin-top: 2px;
-    color: ${props => props.theme.colors.primary};
+    color: ${colors.primary};
     transition: all 0.25s ease;
     flex-shrink: 0;
   }
   
   &:hover {
-    color: ${props => props.theme.colors.text};
+    color: ${colors.text};
     
     .icon {
       transform: scale(1.05);
@@ -230,22 +230,22 @@ const FooterDivider = styled.hr`
   height: 1px;
   background: linear-gradient(90deg, 
     transparent 0%,
-    ${props => props.theme.colors.primary}15 15%,
-    ${props => props.theme.colors.borderSubtle} 25%,
-    ${props => props.theme.colors.borderSubtle} 75%,
-    ${props => props.theme.colors.primary}15 85%,
+    ${colors.primary}15 15%,
+    ${colors.borderSubtle} 25%,
+    ${colors.borderSubtle} 75%,
+    ${colors.primary}15 85%,
     transparent 100%
   );
-  margin: ${props => props.theme.spacing.s5} 0 ${props => props.theme.spacing.s4} 0;
+  margin: ${spacing.s5} 0 ${spacing.s4} 0;
   opacity: 0.6;
 `;
 
 const BottomSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${props => props.theme.spacing.s4};
+  gap: ${spacing.s4};
   
-  @media (min-width: ${props => props.theme.breakpoints.tablet}) {
+  @media (min-width: 768px) {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -253,32 +253,101 @@ const BottomSection = styled.div`
 `;
 
 const Copyright = styled(Text)`
-  color: ${props => props.theme.colors.textMutedLight};
-  font-size: ${props => props.theme.typography.fontSizes.note || '0.875rem'};
-  font-family: ${props => props.theme.typography.fontFamilies.secondary};
+  color: ${colors.textMutedLight};
+  font-size: ${typography.fontSizes.note};
+  font-family: ${typography.fontFamilies.secondary};
   margin: 0;
 `;
 
 const LegalLinks = styled.div`
   display: flex;
-  gap: ${props => props.theme.spacing.s4};
+  gap: ${spacing.s4};
   flex-wrap: wrap;
 `;
 
 const LegalLink = styled.button`
   background: none;
   border: none;
-  color: ${props => props.theme.colors.textMutedLight};
+  color: ${colors.textMutedLight};
   text-decoration: none;
-  font-size: ${props => props.theme.typography.fontSizes.note || '0.875rem'};
-  font-family: ${props => props.theme.typography.fontFamilies.secondary};
+  font-size: ${typography.fontSizes.note};
+  font-family: ${typography.fontFamilies.secondary};
   transition: all 0.25s ease;
   cursor: pointer;
   padding: 0;
   
   &:hover {
-    color: ${props => props.theme.colors.primary};
+    color: ${colors.primary};
     text-decoration: none;
+  }
+`;
+
+const LogoContainer = styled.div`
+  margin-bottom: ${spacing.s4};
+`;
+
+const ServiceButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  color: ${colors.textMuted};
+  text-decoration: none;
+  display: block;
+  margin-bottom: ${spacing.s2};
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: ${spacing.s1} 0;
+  position: relative;
+  font-size: ${typography.fontSizes.base};
+  font-weight: ${typography.fontWeights.regular};
+  font-family: ${typography.fontFamilies.secondary};
+  line-height: 1.4;
+  border-radius: ${spacing.s1};
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${colors.primary};
+    opacity: 0;
+    transition: all 0.25s ease;
+  }
+  
+  &:hover {
+    color: ${colors.primary};
+    text-decoration: none;
+    padding-left: ${spacing.s4};
+    background: ${colors.primary}05;
+    
+    &::before {
+      opacity: 1;
+    }
+  }
+`;
+
+const ContactLink = styled.a`
+  display: inline;
+  margin: 0;
+  color: ${colors.textMuted};
+  text-decoration: none;
+  font-size: ${typography.fontSizes.base};
+  font-weight: ${typography.fontWeights.regular};
+  font-family: ${typography.fontFamilies.secondary};
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: ${spacing.s1} ${spacing.s2};
+  border-radius: ${spacing.s1};
+  
+  &:hover {
+    color: ${colors.primary};
+    text-decoration: none;
+    background: ${colors.primary}05;
   }
 `;
 
@@ -335,13 +404,13 @@ const Footer = ({ showSocial = true, showContact = true }) => {
           {/* Columna 1: Brand + Logo + Redes */}
           <Col lg={3} md={6} sm={12}>
             <BrandSection>
-              <div style={{ marginBottom: '16px' }}>
+              <LogoContainer>
                 <Logo_Footer 
                   hoverable 
                   clickable
                   onClick={() => window.location.href = '/'} 
                 />
-              </div>
+              </LogoContainer>
               <Text className="description">
                 Transformamos organizaciones a través de metodologías innovadoras en gestión empresarial, formación especializada y coaching estratégico. Más de 200 empresas confían en nuestras soluciones para optimizar procesos, desarrollar talento y acelerar su crecimiento sostenible.
               </Text>
@@ -381,21 +450,12 @@ const Footer = ({ showSocial = true, showContact = true }) => {
             <FooterSection>
               <FooterTitle>Servicios</FooterTitle>
               {serviceLinks.map((link, index) => (
-                <FooterLink 
+                <ServiceButton
                   key={index} 
-                  as="button"
                   onClick={() => handleServiceClick(link.id)}
-                  style={{ 
-                    background: 'none', 
-                    border: 'none', 
-                    padding: 0,
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                    width: '100%'
-                  }}
                 >
                   {link.text}
-                </FooterLink>
+                </ServiceButton>
               ))}
             </FooterSection>
           </Col>
@@ -408,14 +468,13 @@ const Footer = ({ showSocial = true, showContact = true }) => {
                 <ContactItem key={index}>
                   <Icon name={item.icon} size={16} className="icon" />
                   {item.href ? (
-                    <FooterExternalLink 
+                    <ContactLink 
                       href={item.href}
                       target={item.icon === 'mapPin' ? '_blank' : '_self'}
                       rel={item.icon === 'mapPin' ? 'noopener noreferrer' : undefined}
-                      style={{ display: 'inline', margin: 0 }}
                     >
                       {item.text}
-                    </FooterExternalLink>
+                    </ContactLink>
                   ) : (
                     item.text
                   )}

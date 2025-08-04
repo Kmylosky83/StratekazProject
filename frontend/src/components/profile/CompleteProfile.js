@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faUser, faBuilding, faPhone, faMapMarkerAlt, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import styled from 'styled-components';
+import { Save, User, Building, Phone, MapPin, Briefcase } from 'lucide-react';
 import authService from '../../services/auth/AuthService';
 import { AuthContext } from '../../context/AuthContext';
+import { colors } from '../../design-system/tokens/colors';
+import { spacing } from '../../design-system/tokens/spacing';
+import { typography } from '../../design-system/tokens/typography';
+import { Button } from '../../design-system/components';
 
 const CompleteProfile = () => {
   console.log("CompleteProfile: Componente montado");
@@ -303,95 +307,89 @@ const CompleteProfile = () => {
 
   if (isLoading) {
     return (
-      <div className="container mt-5 text-center">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Cargando...</span>
-        </div>
-        <p className="mt-3">Cargando información del perfil...</p>
-      </div>
+      <LoadingContainer>
+        <Spinner />
+        <LoadingText>Cargando información del perfil...</LoadingText>
+      </LoadingContainer>
     );
   }
 
   return (
-    <div className="container mt-5 mb-5">
-      <div className="row justify-content-center">
-        <div className="col-lg-8">
-          <div className="card shadow">
-            <div className="card-body p-4">
-              <div className="text-center mb-4">
-                <h4 className="fw-bold">Completa tu Perfil</h4>
-                <p className="text-muted">
-                  Añade información para personalizar tu experiencia en StrateKaz
-                </p>
-              </div>
+    <Container>
+      <ContentWrapper>
+        <FormCard>
+          <CardHeader>
+            <Title>Completa tu Perfil</Title>
+            <Subtitle>
+              Añade información para personalizar tu experiencia en StrateKaz
+            </Subtitle>
+          </CardHeader>
               
               {errors.general && (
-                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                <ErrorAlert>
                   {errors.general}
-                  <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                </ErrorAlert>
               )}
 
               {errors.success && (
-                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                <SuccessAlert>
                   {errors.success}
-                  <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                </SuccessAlert>
               )}              
                            
               <form onSubmit={handleSubmit}>
-                <div className="card mb-4 bg-light">
-                  <div className="card-body">
-                    <h5 className="mb-3 border-bottom pb-2 text-primary">
-                      <FontAwesomeIcon icon={faUser} className="me-2" />
-                      Información General
-                    </h5>
+                <SectionCard>
+                  <SectionHeader>
+                    <User size={20} />
+                    Información General
+                  </SectionHeader>
                     
-                    <div className="row g-3">
-                      <div className="col-md-6">
-                        <label className="form-label fw-bold">Teléfono</label>
-                        <div className="input-group">
-                          <span className="input-group-text bg-light">
-                            <FontAwesomeIcon icon={faPhone} />
-                          </span>
-                          <input
-                            type="tel"
-                            className={`form-control ${errors.phone ? 'is-invalid' : ''}`}
-                            name="phone"
-                            value={userData.phone}
-                            onChange={handleInputChange}
-                            placeholder="Teléfono de contacto"
-                          />
-                          {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
-                        </div>
-                      </div>
-                      
-                      <div className="col-md-6">
-                        <label className="form-label fw-bold">Ciudad</label>
-                        <div className="input-group">
-                          <span className="input-group-text bg-light">
-                            <FontAwesomeIcon icon={faMapMarkerAlt} />
-                          </span>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.city ? 'is-invalid' : ''}`}
-                            name="city"
-                            value={userData.city}
-                            onChange={handleInputChange}
-                            placeholder="Tu ciudad"
-                          />
-                          {errors.city && <div className="invalid-feedback">{errors.city}</div>}
-                        </div>
-                      </div>
-                      
-                      <div className="col-12">
-                        <label className="form-label fw-bold">Departamento</label>
-                        <select
-                          className={`form-select ${errors.department ? 'is-invalid' : ''}`}
-                          name="department"
-                          value={userData.department}
+                  <FormRow>
+                    <FormGroup>
+                      <FormLabel>Teléfono</FormLabel>
+                      <InputGroup>
+                        <InputAddon>
+                          <Phone size={16} />
+                        </InputAddon>
+                        <FormInput
+                          type="tel"
+                          $hasError={!!errors.phone}
+                          name="phone"
+                          value={userData.phone}
                           onChange={handleInputChange}
-                        >
+                          placeholder="Teléfono de contacto"
+                        />
+                      </InputGroup>
+                      {errors.phone && <ErrorText>{errors.phone}</ErrorText>}
+                    </FormGroup>
+                      
+                    <FormGroup>
+                      <FormLabel>Ciudad</FormLabel>
+                      <InputGroup>
+                        <InputAddon>
+                          <MapPin size={16} />
+                        </InputAddon>
+                        <FormInput
+                          type="text"
+                          $hasError={!!errors.city}
+                          name="city"
+                          value={userData.city}
+                          onChange={handleInputChange}
+                          placeholder="Tu ciudad"
+                        />
+                      </InputGroup>
+                      {errors.city && <ErrorText>{errors.city}</ErrorText>}
+                    </FormGroup>
+                  </FormRow>
+                      
+                  <FormGroup>
+                    <FormLabel>Departamento</FormLabel>
+                    <FormSelect
+                      $hasError={!!errors.department}
+                      name="department"
+                      value={userData.department}
+                      onChange={handleInputChange}
+                    >
                           <option value="">Seleccionar departamento...</option>
                           <option value="amazonas">Amazonas</option>
                           <option value="antioquia">Antioquia</option>
@@ -425,136 +423,132 @@ const CompleteProfile = () => {
                           <option value="valledelcauca">Valle del Cauca</option>
                           <option value="vaupes">Vaupés</option>
                           <option value="vichada">Vichada</option>
-                        </select>
-                        {errors.department && <div className="invalid-feedback">{errors.department}</div>}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                    </FormSelect>
+                    {errors.department && <ErrorText>{errors.department}</ErrorText>}
+                  </FormGroup>
+                </SectionCard>
                 
                 {(userType === 'professional' || !['consultant_company', 'direct_company'].includes(userType)) ? (
-                  <div className="card mb-4 bg-light">
-                    <div className="card-body">
-                      <h5 className="mb-3 border-bottom pb-2 text-primary">
-                        <FontAwesomeIcon icon={faBriefcase} className="me-2" />
-                        Información Profesional
-                      </h5>
+                  <SectionCard>
+                    <SectionHeader>
+                      <Briefcase size={20} />
+                      Información Profesional
+                    </SectionHeader>
                       
-                      <div className="row g-3">
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">Nombres</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-                            name="firstName"
-                            value={userData.firstName}
-                            onChange={handleInputChange}
-                            placeholder="Tus nombres"
-                          />
-                          {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
-                        </div>
+                    <FormRow>
+                      <FormGroup>
+                        <FormLabel>Nombres</FormLabel>
+                        <FormInput
+                          type="text"
+                          $hasError={!!errors.firstName}
+                          name="firstName"
+                          value={userData.firstName}
+                          onChange={handleInputChange}
+                          placeholder="Tus nombres"
+                        />
+                        {errors.firstName && <ErrorText>{errors.firstName}</ErrorText>}
+                      </FormGroup>
                         
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">Apellidos</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-                            name="lastName"
-                            value={userData.lastName}
-                            onChange={handleInputChange}
-                            placeholder="Tus apellidos"
-                          />
-                          {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
-                        </div>
+                      <FormGroup>
+                        <FormLabel>Apellidos</FormLabel>
+                        <FormInput
+                          type="text"
+                          $hasError={!!errors.lastName}
+                          name="lastName"
+                          value={userData.lastName}
+                          onChange={handleInputChange}
+                          placeholder="Tus apellidos"
+                        />
+                        {errors.lastName && <ErrorText>{errors.lastName}</ErrorText>}
+                      </FormGroup>
+                    </FormRow>
                         
-                        {/* Nuevos campos añadidos */}
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">Tipo de Identificación</label>
-                          <select
-                            className={`form-select ${errors.idType ? 'is-invalid' : ''}`}
-                            name="idType"
-                            value={userData.idType}
-                            onChange={handleInputChange}
-                          >
+                    <FormRow>
+                      <FormGroup>
+                        <FormLabel>Tipo de Identificación</FormLabel>
+                        <FormSelect
+                          $hasError={!!errors.idType}
+                          name="idType"
+                          value={userData.idType}
+                          onChange={handleInputChange}
+                        >
                             <option value="">Seleccionar tipo...</option>
                             <option value="CC">Cédula de Ciudadanía</option>
                             <option value="CE">Cédula de Extranjería</option>                            
                             <option value="PP">Pasaporte</option>
                             <option value="NIT">NIT</option>
-                          </select>
-                          {errors.idType && <div className="invalid-feedback">{errors.idType}</div>}
-                        </div>
+                        </FormSelect>
+                        {errors.idType && <ErrorText>{errors.idType}</ErrorText>}
+                      </FormGroup>
                         
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">Número de Identificación</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.idNumber ? 'is-invalid' : ''}`}
-                            name="idNumber"
-                            value={userData.idNumber}
-                            onChange={handleInputChange}
-                            placeholder="Número de identificación"
-                          />
-                          {errors.idNumber && <div className="invalid-feedback">{errors.idNumber}</div>}
-                        </div>
+                      <FormGroup>
+                        <FormLabel>Número de Identificación</FormLabel>
+                        <FormInput
+                          type="text"
+                          $hasError={!!errors.idNumber}
+                          name="idNumber"
+                          value={userData.idNumber}
+                          onChange={handleInputChange}
+                          placeholder="Número de identificación"
+                        />
+                        {errors.idNumber && <ErrorText>{errors.idNumber}</ErrorText>}
+                      </FormGroup>
+                    </FormRow>
                         
-                        <div className="col-12">
-                          <label className="form-label fw-bold">Profesión</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="profession"
-                            value={userData.profession}
-                            onChange={handleInputChange}
-                            placeholder="Tu profesión o especialidad"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    <FormGroup>
+                      <FormLabel>Profesión</FormLabel>
+                      <FormInput
+                        type="text"
+                        name="profession"
+                        value={userData.profession}
+                        onChange={handleInputChange}
+                        placeholder="Tu profesión o especialidad"
+                      />
+                    </FormGroup>
+                  </SectionCard>
                 ) : (
-                  <div className="card mb-4 bg-light">
-                    <div className="card-body">
-                      <h5 className="mb-3 border-bottom pb-2 text-primary">
-                        <FontAwesomeIcon icon={faBuilding} className="me-2" />
-                        Información Empresarial
-                      </h5>
+                  <SectionCard>
+                    <SectionHeader>
+                      <Building size={20} />
+                      Información Empresarial
+                    </SectionHeader>
                       
-                      <div className="row g-3">
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">Nombre de la Empresa</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.companyName ? 'is-invalid' : ''}`}
-                            name="companyName"
-                            value={userData.companyName}
-                            onChange={handleInputChange}
-                            placeholder="Nombre de la empresa"
-                          />
-                          {errors.companyName && <div className="invalid-feedback">{errors.companyName}</div>}
-                        </div>
+                    <FormRow>
+                      <FormGroup>
+                        <FormLabel>Nombre de la Empresa</FormLabel>
+                        <FormInput
+                          type="text"
+                          $hasError={!!errors.companyName}
+                          name="companyName"
+                          value={userData.companyName}
+                          onChange={handleInputChange}
+                          placeholder="Nombre de la empresa"
+                        />
+                        {errors.companyName && <ErrorText>{errors.companyName}</ErrorText>}
+                      </FormGroup>
                         
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">NIT</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.nit ? 'is-invalid' : ''}`}
-                            name="nit"
-                            value={userData.nit}
-                            onChange={handleInputChange}
-                            placeholder="NIT de la empresa"
-                          />
-                          {errors.nit && <div className="invalid-feedback">{errors.nit}</div>}
-                        </div>
+                      <FormGroup>
+                        <FormLabel>NIT</FormLabel>
+                        <FormInput
+                          type="text"
+                          $hasError={!!errors.nit}
+                          name="nit"
+                          value={userData.nit}
+                          onChange={handleInputChange}
+                          placeholder="NIT de la empresa"
+                        />
+                        {errors.nit && <ErrorText>{errors.nit}</ErrorText>}
+                      </FormGroup>
+                    </FormRow>
                         
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">Sector</label>
-                          <select
-                            className="form-select"
-                            name="industry"
-                            value={userData.industry}
-                            onChange={handleInputChange}
-                          >
+                    <FormRow>
+                      <FormGroup>
+                        <FormLabel>Sector</FormLabel>
+                        <FormSelect
+                          name="industry"
+                          value={userData.industry}
+                          onChange={handleInputChange}
+                        >
                             <option value="">Seleccionar sector...</option>
                             <option value="tecnologia">Tecnología</option>
                             <option value="construccion">Construcción</option>
@@ -565,111 +559,315 @@ const CompleteProfile = () => {
                             <option value="energia">Energía</option>
                             <option value="transporte">Transporte</option>
                             <option value="otros">Otros</option>
-                          </select>
-                        </div>
+                        </FormSelect>
+                      </FormGroup>
                         
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">Cargo del Contacto</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="contactPosition"
-                            value={userData.contactPosition}
-                            onChange={handleInputChange}
-                            placeholder="Tu cargo en la empresa"
-                          />
-                        </div>
+                      <FormGroup>
+                        <FormLabel>Cargo del Contacto</FormLabel>
+                        <FormInput
+                          type="text"
+                          name="contactPosition"
+                          value={userData.contactPosition}
+                          onChange={handleInputChange}
+                          placeholder="Tu cargo en la empresa"
+                        />
+                      </FormGroup>
+                    </FormRow>
                         
-                        {/* Nuevos campos añadidos para información de contacto */}
-                        <div className="col-12">
-                          <h6 className="mt-3 mb-3 text-secondary">Información del Contacto Principal</h6>
-                        </div>
+                    <SubsectionTitle>
+                      Información del Contacto Principal
+                    </SubsectionTitle>
                         
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">Nombres del Contacto</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.contactFirstName ? 'is-invalid' : ''}`}
-                            name="contactFirstName"
-                            value={userData.contactFirstName}
-                            onChange={handleInputChange}
-                            placeholder="Nombres del contacto"
-                          />
-                          {errors.contactFirstName && <div className="invalid-feedback">{errors.contactFirstName}</div>}
-                        </div>
+                    <FormRow>
+                      <FormGroup>
+                        <FormLabel>Nombres del Contacto</FormLabel>
+                        <FormInput
+                          type="text"
+                          $hasError={!!errors.contactFirstName}
+                          name="contactFirstName"
+                          value={userData.contactFirstName}
+                          onChange={handleInputChange}
+                          placeholder="Nombres del contacto"
+                        />
+                        {errors.contactFirstName && <ErrorText>{errors.contactFirstName}</ErrorText>}
+                      </FormGroup>
                         
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">Apellidos del Contacto</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.contactLastName ? 'is-invalid' : ''}`}
-                            name="contactLastName"
-                            value={userData.contactLastName}
-                            onChange={handleInputChange}
-                            placeholder="Apellidos del contacto"
-                          />
-                          {errors.contactLastName && <div className="invalid-feedback">{errors.contactLastName}</div>}
-                        </div>
+                      <FormGroup>
+                        <FormLabel>Apellidos del Contacto</FormLabel>
+                        <FormInput
+                          type="text"
+                          $hasError={!!errors.contactLastName}
+                          name="contactLastName"
+                          value={userData.contactLastName}
+                          onChange={handleInputChange}
+                          placeholder="Apellidos del contacto"
+                        />
+                        {errors.contactLastName && <ErrorText>{errors.contactLastName}</ErrorText>}
+                      </FormGroup>
+                    </FormRow>
                         
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">Tipo de Identificación</label>
-                          <select
-                            className={`form-select ${errors.contactIdType ? 'is-invalid' : ''}`}
-                            name="contactIdType"
-                            value={userData.contactIdType}
-                            onChange={handleInputChange}
-                          >
+                    <FormRow>
+                      <FormGroup>
+                        <FormLabel>Tipo de Identificación</FormLabel>
+                        <FormSelect
+                          $hasError={!!errors.contactIdType}
+                          name="contactIdType"
+                          value={userData.contactIdType}
+                          onChange={handleInputChange}
+                        >
                             <option value="">Seleccionar tipo...</option>
                             <option value="CC">Cédula de Ciudadanía</option>
                             <option value="CE">Cédula de Extranjería</option>
                             <option value="PP">Pasaporte</option>
-                          </select>
-                          {errors.contactIdType && <div className="invalid-feedback">{errors.contactIdType}</div>}
-                        </div>
+                        </FormSelect>
+                        {errors.contactIdType && <ErrorText>{errors.contactIdType}</ErrorText>}
+                      </FormGroup>
                         
-                        <div className="col-md-6">
-                          <label className="form-label fw-bold">Número de Identificación</label>
-                          <input
-                            type="text"
-                            className={`form-control ${errors.contactIdNumber ? 'is-invalid' : ''}`}
-                            name="contactIdNumber"
-                            value={userData.contactIdNumber}
-                            onChange={handleInputChange}
-                            placeholder="Número de identificación"
-                          />
-                          {errors.contactIdNumber && <div className="invalid-feedback">{errors.contactIdNumber}</div>}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                      <FormGroup>
+                        <FormLabel>Número de Identificación</FormLabel>
+                        <FormInput
+                          type="text"
+                          $hasError={!!errors.contactIdNumber}
+                          name="contactIdNumber"
+                          value={userData.contactIdNumber}
+                          onChange={handleInputChange}
+                          placeholder="Número de identificación"
+                        />
+                        {errors.contactIdNumber && <ErrorText>{errors.contactIdNumber}</ErrorText>}
+                      </FormGroup>
+                    </FormRow>
+                  </SectionCard>
                 )}
                 
-                <div className="text-center mt-4">
-                  <button 
-                    type="submit" 
-                    className="btn btn-primary btn-lg px-5"
+                <SubmitContainer>
+                  <SubmitButton
+                    type="submit"
+                    variant="primary"
+                    size="large"
                     disabled={isSaving}
                   >
                     {isSaving ? (
                       <>
-                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <Spinner />
                         Guardando...
                       </>
                     ) : (
                       <>
-                        <FontAwesomeIcon icon={faSave} className="me-2" />
+                        <Save size={20} />
                         Guardar y Continuar
                       </>
                     )}
-                  </button>
-                </div>
+                  </SubmitButton>
+                </SubmitContainer>
               </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        </FormCard>
+      </ContentWrapper>
+    </Container>
   );
 };
+
+// Styled Components
+const Container = styled.div`
+  min-height: 100vh;
+  padding: ${spacing.xlarge} ${spacing.medium};
+  background-color: ${colors.backgroundLight};
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const FormCard = styled.div`
+  background-color: ${colors.white};
+  border-radius: ${spacing.medium};
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: ${spacing.xlarge};
+`;
+
+const CardHeader = styled.div`
+  text-align: center;
+  margin-bottom: ${spacing.xlarge};
+`;
+
+const Title = styled.h4`
+  font-size: ${typography.fontSizes.sectionTitle};
+  font-weight: ${typography.fontWeights.bold};
+  color: ${colors.text};
+  margin-bottom: ${spacing.small};
+`;
+
+const Subtitle = styled.p`
+  font-size: ${typography.fontSizes.base};
+  color: ${colors.textMuted};
+  margin: 0;
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: ${spacing.medium};
+`;
+
+const LoadingText = styled.p`
+  font-size: ${typography.fontSizes.base};
+  color: ${colors.textMuted};
+  margin: 0;
+`;
+
+const Spinner = styled.div`
+  width: 32px;
+  height: 32px;
+  border: 3px solid ${colors.border};
+  border-top: 3px solid ${colors.primary};
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
+const ErrorAlert = styled.div`
+  background-color: ${colors.dangerLight};
+  color: ${colors.danger};
+  padding: ${spacing.medium};
+  border-radius: ${spacing.s1};
+  margin-bottom: ${spacing.medium};
+  border: 1px solid ${colors.danger};
+`;
+
+const SuccessAlert = styled.div`
+  background-color: ${colors.successLight};
+  color: ${colors.success};
+  padding: ${spacing.medium};
+  border-radius: ${spacing.s1};
+  margin-bottom: ${spacing.medium};
+  border: 1px solid ${colors.success};
+`;
+
+const SectionCard = styled.div`
+  background-color: ${colors.surface};
+  border-radius: ${spacing.medium};
+  padding: ${spacing.large};
+  margin-bottom: ${spacing.large};
+`;
+
+const SectionHeader = styled.h5`
+  display: flex;
+  align-items: center;
+  gap: ${spacing.small};
+  font-size: ${typography.fontSizes.cardTitle};
+  font-weight: ${typography.fontWeights.semiBold};
+  color: ${colors.primary};
+  margin-bottom: ${spacing.medium};
+  padding-bottom: ${spacing.small};
+  border-bottom: 2px solid ${colors.borderLight};
+`;
+
+const SubsectionTitle = styled.h6`
+  font-size: ${typography.fontSizes.cardSubtitle};
+  font-weight: ${typography.fontWeights.medium};
+  color: ${colors.textLight};
+  margin: ${spacing.medium} 0;
+`;
+
+const FormRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${spacing.medium};
+  margin-bottom: ${spacing.medium};
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: ${spacing.medium};
+`;
+
+const FormLabel = styled.label`
+  font-size: ${typography.fontSizes.base};
+  font-weight: ${typography.fontWeights.medium};
+  color: ${colors.text};
+  margin-bottom: ${spacing.s1};
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  align-items: stretch;
+`;
+
+const InputAddon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: ${spacing.small} ${spacing.medium};
+  background-color: ${colors.surface};
+  border: 1px solid ${colors.border};
+  border-right: none;
+  border-radius: ${spacing.s1} 0 0 ${spacing.s1};
+  color: ${colors.textMuted};
+`;
+
+const FormInput = styled.input`
+  flex: 1;
+  padding: ${spacing.small} ${spacing.medium};
+  border: 1px solid ${({ $hasError }) => $hasError ? colors.danger : colors.border};
+  border-radius: ${({ $hasError }) => $hasError ? spacing.s1 : '0 ' + spacing.s1 + ' ' + spacing.s1 + ' 0'};
+  font-size: ${typography.fontSizes.base};
+  transition: border-color 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: ${colors.primary};
+    box-shadow: 0 0 0 2px ${colors.focus};
+  }
+  
+  &::placeholder {
+    color: ${colors.textMuted};
+  }
+`;
+
+const FormSelect = styled.select`
+  width: 100%;
+  padding: ${spacing.small} ${spacing.medium};
+  border: 1px solid ${({ $hasError }) => $hasError ? colors.danger : colors.border};
+  border-radius: ${spacing.s1};
+  font-size: ${typography.fontSizes.base};
+  background-color: ${colors.white};
+  transition: border-color 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: ${colors.primary};
+    box-shadow: 0 0 0 2px ${colors.focus};
+  }
+`;
+
+const ErrorText = styled.div`
+  color: ${colors.danger};
+  font-size: ${typography.fontSizes.note};
+  margin-top: ${spacing.s1};
+`;
+
+const SubmitContainer = styled.div`
+  text-align: center;
+  margin-top: ${spacing.xlarge};
+`;
+
+const SubmitButton = styled(Button)`
+  display: flex;
+  align-items: center;
+  gap: ${spacing.small};
+  padding: ${spacing.medium} ${spacing.xlarge};
+`;
 
 export default CompleteProfile;

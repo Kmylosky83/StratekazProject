@@ -1,45 +1,44 @@
-// NormativaModal - Modal para mostrar información de normativas
-// Componente con diseño profesional y moderno
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { Modal, ModalBody } from '../../design-system/components/Modal/Modal';
 import { Button } from '../../design-system/components/Button';
 import { Award, Shield, Car, Lightbulb, CheckCircle, Target, Clock, FileText, Users, BarChart, Leaf } from 'lucide-react';
+import { colors } from '../../design-system/tokens/colors';
+import { spacing } from '../../design-system/tokens/spacing';
+import { typography } from '../../design-system/tokens/typography';
 
-// Styled Components con diseño profesional
 const LegalContent = styled.div`
-  padding: ${props => props.theme.spacing.s4} 0;
+  padding: ${spacing.s4} 0;
   max-width: 100%;
 `;
 
 const LegalHeader = styled.div`
   text-align: center;
-  margin-bottom: ${props => props.theme.spacing.s6};
-  padding-bottom: ${props => props.theme.spacing.s4};
-  border-bottom: 2px solid ${props => props.theme.colors.border};
+  margin-bottom: ${spacing.s6};
+  padding-bottom: ${spacing.s4};
+  border-bottom: 2px solid ${colors.border};
 `;
 
 const LegalTitle = styled.h2`
-  font-size: ${props => props.theme.typography.fontSizes.xl};
-  font-weight: ${props => props.theme.typography.fontWeights.bold};
-  color: ${props => props.theme.colors.text};
-  margin: 0 0 ${props => props.theme.spacing.s2} 0;
+  font-size: ${typography.fontSizes.sectionTitle};
+  font-weight: ${typography.fontWeights.bold};
+  color: ${colors.text};
+  margin: 0 0 ${spacing.s2} 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${props => props.theme.spacing.s3};
+  gap: ${spacing.s3};
 `;
 
 const LegalSubtitle = styled.p`
-  font-size: ${props => props.theme.typography.fontSizes.base};
-  color: ${props => props.theme.colors.textMuted};
+  font-size: ${typography.fontSizes.base};
+  color: ${colors.textMuted};
   margin: 0;
-  line-height: ${props => props.theme.typography.lineHeights.normal};
+  line-height: 1.4;
 `;
 
 const Section = styled.section`
-  margin-bottom: ${props => props.theme.spacing.s6};
+  margin-bottom: ${spacing.s6};
   
   &:last-child {
     margin-bottom: 0;
@@ -47,22 +46,22 @@ const Section = styled.section`
 `;
 
 const SectionTitle = styled.h3`
-  font-size: ${props => props.theme.typography.fontSizes.lg};
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
-  color: ${props => props.theme.colors.primary};
-  margin: 0 0 ${props => props.theme.spacing.s3} 0;
+  font-size: ${typography.fontSizes.cardTitle};
+  font-weight: ${typography.fontWeights.semiBold};
+  color: ${colors.primary};
+  margin: 0 0 ${spacing.s3} 0;
   display: flex;
   align-items: center;
-  gap: ${props => props.theme.spacing.s2};
+  gap: ${spacing.s2};
 `;
 
 const SectionContent = styled.div`
-  font-size: ${props => props.theme.typography.fontSizes.base};
-  color: ${props => props.theme.colors.text};
-  line-height: ${props => props.theme.typography.lineHeights.relaxed};
+  font-size: ${typography.fontSizes.base};
+  color: ${colors.text};
+  line-height: 1.6;
   
   p {
-    margin: 0 0 ${props => props.theme.spacing.s3} 0;
+    margin: 0 0 ${spacing.s3} 0;
     
     &:last-child {
       margin-bottom: 0;
@@ -70,12 +69,12 @@ const SectionContent = styled.div`
   }
   
   ul {
-    margin: ${props => props.theme.spacing.s2} 0;
-    padding-left: ${props => props.theme.spacing.s6};
+    margin: ${spacing.s2} 0;
+    padding-left: ${spacing.s6};
     
     li {
-      margin-bottom: ${props => props.theme.spacing.s2};
-      color: ${props => props.theme.colors.text};
+      margin-bottom: ${spacing.s2};
+      color: ${colors.text};
       position: relative;
       
       &:last-child {
@@ -83,23 +82,23 @@ const SectionContent = styled.div`
       }
       
       &::marker {
-        color: ${props => props.theme.colors.primary};
+        color: ${colors.primary};
       }
     }
   }
   
   strong {
-    color: ${props => props.theme.colors.text};
-    font-weight: ${props => props.theme.typography.fontWeights.semiBold};
+    color: ${colors.text};
+    font-weight: ${typography.fontWeights.semiBold};
   }
 `;
 
 const FeatureCard = styled.div`
-  background: ${props => props.theme.colors.backgroundLight || '#f8f9fa'};
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: ${props => props.theme.borderRadius.medium};
-  padding: ${props => props.theme.spacing.s4};
-  margin: ${props => props.theme.spacing.s3} 0;
+  background: ${colors.backgroundLight};
+  border: 1px solid ${colors.border};
+  border-radius: ${spacing.s2};
+  padding: ${spacing.s4};
+  margin: ${spacing.s3} 0;
   transition: all 0.3s ease;
   
   &:hover {
@@ -111,161 +110,161 @@ const FeatureCard = styled.div`
 const FeatureHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: ${props => props.theme.spacing.s3};
-  margin-bottom: ${props => props.theme.spacing.s2};
+  gap: ${spacing.s3};
+  margin-bottom: ${spacing.s2};
 `;
 
 const FeatureIcon = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: ${props => props.themeColor || props.theme.colors.primary}15;
+  background: ${props => props.themeColor || colors.primary}15;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${props => props.themeColor || props.theme.colors.primary};
+  color: ${props => props.themeColor || colors.primary};
   flex-shrink: 0;
 `;
 
 const FeatureTitle = styled.h4`
-  font-size: ${props => props.theme.typography.fontSizes.base};
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
-  color: ${props => props.theme.colors.text};
+  font-size: ${typography.fontSizes.base};
+  font-weight: ${typography.fontWeights.semiBold};
+  color: ${colors.text};
   margin: 0;
 `;
 
 const FeatureDescription = styled.p`
-  font-size: ${props => props.theme.typography.fontSizes.sm};
-  color: ${props => props.theme.colors.textMuted};
+  font-size: ${typography.fontSizes.note};
+  color: ${colors.textMuted};
   margin: 0;
-  line-height: ${props => props.theme.typography.lineHeights.normal};
+  line-height: 1.4;
 `;
 
 const InfoBox = styled.div`
   background: ${props => props.variant === 'success' 
-    ? props.theme.colors.success + '08'
+    ? colors.success + '08'
     : props.variant === 'warning'
-    ? props.theme.colors.warning + '08'
-    : props.theme.colors.primary + '08'};
+    ? colors.warning + '08'
+    : colors.primary + '08'};
   border: 1px solid ${props => props.variant === 'success'
-    ? props.theme.colors.success + '30'
+    ? colors.success + '30'
     : props.variant === 'warning'
-    ? props.theme.colors.warning + '30'
-    : props.theme.colors.primary + '30'};
-  border-radius: ${props => props.theme.borderRadius.medium};
-  padding: ${props => props.theme.spacing.s4};
-  margin: ${props => props.theme.spacing.s4} 0;
+    ? colors.warning + '30'
+    : colors.primary + '30'};
+  border-radius: ${spacing.s2};
+  padding: ${spacing.s4};
+  margin: ${spacing.s4} 0;
   display: flex;
   align-items: flex-start;
-  gap: ${props => props.theme.spacing.s3};
+  gap: ${spacing.s3};
 `;
 
 const InfoIcon = styled.div`
   color: ${props => props.variant === 'success'
-    ? props.theme.colors.success
+    ? colors.success
     : props.variant === 'warning'
-    ? props.theme.colors.warning
-    : props.theme.colors.primary};
+    ? colors.warning
+    : colors.primary};
   flex-shrink: 0;
 `;
 
 const InfoText = styled.div`
   flex: 1;
-  font-size: ${props => props.theme.typography.fontSizes.sm};
-  color: ${props => props.theme.colors.text};
-  line-height: ${props => props.theme.typography.lineHeights.normal};
+  font-size: ${typography.fontSizes.note};
+  color: ${colors.text};
+  line-height: 1.4;
 `;
 
 const BenefitsList = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: ${props => props.theme.spacing.s3};
-  margin: ${props => props.theme.spacing.s4} 0;
+  gap: ${spacing.s3};
+  margin: ${spacing.s4} 0;
 `;
 
 const BenefitCard = styled.div`
   background: white;
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: ${props => props.theme.borderRadius.medium};
-  padding: ${props => props.theme.spacing.s3};
+  border: 1px solid ${colors.border};
+  border-radius: ${spacing.s2};
+  padding: ${spacing.s3};
   display: flex;
   align-items: flex-start;
-  gap: ${props => props.theme.spacing.s2};
+  gap: ${spacing.s2};
   transition: all 0.3s ease;
   
   &:hover {
-    border-color: ${props => props.theme.colors.primary}40;
-    background: ${props => props.theme.colors.primary}02;
+    border-color: ${colors.primary}40;
+    background: ${colors.primary}02;
   }
 `;
 
 const BenefitIcon = styled.div`
-  color: ${props => props.theme.colors.success};
+  color: ${colors.success};
   flex-shrink: 0;
   margin-top: 2px;
 `;
 
 const BenefitText = styled.div`
   flex: 1;
-  font-size: ${props => props.theme.typography.fontSizes.sm};
-  color: ${props => props.theme.colors.text};
-  line-height: ${props => props.theme.typography.lineHeights.normal};
+  font-size: ${typography.fontSizes.note};
+  color: ${colors.text};
+  line-height: 1.4;
 `;
 
 const TimelineBox = styled.div`
   background: linear-gradient(135deg, 
-    ${props => props.theme.colors.primary}08 0%, 
-    ${props => props.theme.colors.primary}03 100%
+    ${colors.primary}08 0%, 
+    ${colors.primary}03 100%
   );
-  border: 1px solid ${props => props.theme.colors.primary}20;
-  border-radius: ${props => props.theme.borderRadius.medium};
-  padding: ${props => props.theme.spacing.s4};
-  margin: ${props => props.theme.spacing.s4} 0;
+  border: 1px solid ${colors.primary}20;
+  border-radius: ${spacing.s2};
+  padding: ${spacing.s4};
+  margin: ${spacing.s4} 0;
   text-align: center;
 `;
 
 const TimelineTitle = styled.h4`
-  font-size: ${props => props.theme.typography.fontSizes.base};
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
-  color: ${props => props.theme.colors.text};
-  margin: 0 0 ${props => props.theme.spacing.s2} 0;
+  font-size: ${typography.fontSizes.base};
+  font-weight: ${typography.fontWeights.semiBold};
+  color: ${colors.text};
+  margin: 0 0 ${spacing.s2} 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${props => props.theme.spacing.s2};
+  gap: ${spacing.s2};
 `;
 
 const TimelineText = styled.p`
-  font-size: ${props => props.theme.typography.fontSizes.sm};
-  color: ${props => props.theme.colors.primary};
+  font-size: ${typography.fontSizes.note};
+  color: ${colors.primary};
   margin: 0;
-  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  font-weight: ${typography.fontWeights.medium};
 `;
 
 const ContactBox = styled.div`
-  background: ${props => props.theme.colors.backgroundLight};
-  border-radius: ${props => props.theme.borderRadius.medium};
-  padding: ${props => props.theme.spacing.s4};
-  margin-top: ${props => props.theme.spacing.s5};
+  background: ${colors.backgroundLight};
+  border-radius: ${spacing.s2};
+  padding: ${spacing.s4};
+  margin-top: ${spacing.s5};
   text-align: center;
 `;
 
 const ContactTitle = styled.h4`
-  font-size: ${props => props.theme.typography.fontSizes.base};
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
-  color: ${props => props.theme.colors.text};
-  margin: 0 0 ${props => props.theme.spacing.s2} 0;
+  font-size: ${typography.fontSizes.base};
+  font-weight: ${typography.fontWeights.semiBold};
+  color: ${colors.text};
+  margin: 0 0 ${spacing.s2} 0;
 `;
 
 const ContactInfo = styled.p`
-  font-size: ${props => props.theme.typography.fontSizes.sm};
-  color: ${props => props.theme.colors.textMuted};
+  font-size: ${typography.fontSizes.note};
+  color: ${colors.textMuted};
   margin: 0;
   
   a {
-    color: ${props => props.theme.colors.primary};
+    color: ${colors.primary};
     text-decoration: none;
-    font-weight: ${props => props.theme.typography.fontWeights.medium};
+    font-weight: ${typography.fontWeights.medium};
     
     &:hover {
       text-decoration: underline;
@@ -274,12 +273,12 @@ const ContactInfo = styled.p`
 `;
 
 const ModalFooter = styled.div`
-  padding: ${props => props.theme.spacing.s4} ${props => props.theme.spacing.s6} ${props => props.theme.spacing.s6};
-  border-top: 1px solid ${props => props.theme.colors.border};
+  padding: ${spacing.s4} ${spacing.s6} ${spacing.s6};
+  border-top: 1px solid ${colors.border};
   display: flex;
   justify-content: center;
-  gap: ${props => props.theme.spacing.s3};
-  margin-top: ${props => props.theme.spacing.s4};
+  gap: ${spacing.s3};
+  margin-top: ${spacing.s4};
 `;
 
 // Datos de las normativas
@@ -680,8 +679,8 @@ const NormativaModal = ({ isOpen, onClose, normativaId }) => {
           Cerrar
         </Button>
         <Button 
-          as={Link} 
-          to="/registro" 
+          as="a"
+          href="/registro"
           variant="primary"
           onClick={onClose}
         >

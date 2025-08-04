@@ -2,7 +2,6 @@
 // Componente con diseño profesional y moderno
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { Modal, ModalBody } from '../../design-system/components/Modal/Modal';
 import { Button } from '../../design-system/components/Button';
 import { 
@@ -793,20 +792,13 @@ const ServicioModal = ({ isOpen, onClose, servicioId }) => {
           Cerrar
         </Button>
         <Button 
-          as={Link} 
-          to="/registro" 
-          variant="outline"
-          onClick={onClose}
+          as="a"
+          href="https://wa.me/573115351944?text=Hola, me interesa obtener información sobre los servicios de StrateKaz"
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="primary"
         >
           Solicitar Información
-        </Button>
-        <Button 
-          as={Link} 
-          to="/registro" 
-          variant="primary"
-          onClick={onClose}
-        >
-          Contratar Servicio
         </Button>
       </ModalFooter>
     </Modal>

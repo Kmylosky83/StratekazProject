@@ -1,9 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Icon } from '../../design-system/icons';
+import styled from 'styled-components';
+import { Mail, Lock, LogIn } from 'lucide-react';
 import { Container_Auth, Auth_Card, Auth_Header, Auth_Content, Auth_Footer, Button } from '../../design-system/components';
 import authService from '../../services/auth/AuthService';
 import { AuthContext } from '../../context/AuthContext';
+import { colors } from '../../design-system/tokens/colors';
+import { spacing } from '../../design-system/tokens/spacing';
+import { typography } from '../../design-system/tokens/typography';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -127,99 +131,225 @@ const Login = () => {
 
         <Auth_Content>
           {successMessage && (
-            <div className="alert alert-success alert-dismissible fade show" role="alert">
+            <SuccessAlert>
               {successMessage}
-              <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            </SuccessAlert>
           )}
           
           {errors.general && (
-            <div className="alert alert-danger alert-dismissible fade show" role="alert">
+            <ErrorAlert>
               {errors.general}
-              <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            </ErrorAlert>
           )}
           
           <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label">
-                <Icon name="mail" className="me-2" />
+            <FormGroup>
+              <FormLabel>
+                <Mail size={16} />
                 Email
-              </label>
-              <input
+              </FormLabel>
+              <FormInput
                 type="email"
-                className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                $hasError={!!errors.email}
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="tu@correo.com"
               />
-              {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-            </div>
+              {errors.email && <ErrorText>{errors.email}</ErrorText>}
+            </FormGroup>
             
-            <div className="mb-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <label className="form-label">
-                  <Icon name="lock" className="me-2" />
+            <FormGroup>
+              <LabelRow>
+                <FormLabel>
+                  <Lock size={16} />
                   Contraseña
-                </label>
-                <Link to="/recuperar-contrasena" className="forgot-password">
+                </FormLabel>
+                <ForgotPasswordLink to="/recuperar-contrasena">
                   ¿Olvidaste tu contraseña?
-                </Link>
-              </div>
-              <input
+                </ForgotPasswordLink>
+              </LabelRow>
+              <FormInput
                 type="password"
-                className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                $hasError={!!errors.password}
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
                 placeholder="Tu contraseña"
               />
-              {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-            </div>
+              {errors.password && <ErrorText>{errors.password}</ErrorText>}
+            </FormGroup>
             
-            <div className="mb-3 form-check">
-              <input
+            <CheckboxGroup>
+              <FormCheckbox
                 type="checkbox"
-                className="form-check-input"
                 id="rememberCheck"
                 name="remember"
                 checked={formData.remember}
                 onChange={handleInputChange}
               />
-              <label className="form-check-label" htmlFor="rememberCheck">
+              <CheckboxLabel htmlFor="rememberCheck">
                 Recordarme
-              </label>
-            </div>
+              </CheckboxLabel>
+            </CheckboxGroup>
             
-            <Button 
+            <SubmitButton
               type="submit"
               variant="primary"
               size="large"
               fullWidth
               disabled={isLoading}
-              style={{ marginTop: '1rem' }}
             >
               {isLoading ? (
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <Spinner />
               ) : (
-                <Icon name="login" className="me-2" />
+                <LogIn size={20} />
               )}
               {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-            </Button>
+            </SubmitButton>
           </form>
         </Auth_Content>
 
         <Auth_Footer>
-          <div style={{ textAlign: 'center' }}>
-            <p style={{ margin: 0, color: '#666' }}>
-              ¿No tienes una cuenta? <Link to="/register" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Regístrate aquí</Link>
-            </p>
-          </div>
+          <FooterText>
+            ¿No tienes una cuenta? <Link to="/register">Regístrate aquí</Link>
+          </FooterText>
         </Auth_Footer>
       </Auth_Card>
     </Container_Auth>
   );
 };
+
+// Styled Components
+const SuccessAlert = styled.div`
+  background-color: ${colors.successLight};
+  color: ${colors.success};
+  padding: ${spacing.medium};
+  border-radius: ${spacing.s1};
+  margin-bottom: ${spacing.medium};
+  border: 1px solid ${colors.success};
+`;
+
+const ErrorAlert = styled.div`
+  background-color: ${colors.dangerLight};
+  color: ${colors.danger};
+  padding: ${spacing.medium};
+  border-radius: ${spacing.s1};
+  margin-bottom: ${spacing.medium};
+  border: 1px solid ${colors.danger};
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: ${spacing.medium};
+`;
+
+const FormLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: ${spacing.s1};
+  margin-bottom: ${spacing.s1};
+  font-weight: ${typography.fontWeights.medium};
+  color: ${colors.text};
+  font-size: ${typography.fontSizes.base};
+`;
+
+const LabelRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${spacing.s1};
+`;
+
+const ForgotPasswordLink = styled(Link)`
+  color: ${colors.primary};
+  text-decoration: none;
+  font-size: ${typography.fontSizes.note};
+  
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const FormInput = styled.input`
+  width: 100%;
+  padding: ${spacing.small} ${spacing.medium};
+  border: 1px solid ${({ $hasError }) => $hasError ? colors.danger : colors.border};
+  border-radius: ${spacing.s1};
+  font-size: ${typography.fontSizes.base};
+  transition: border-color 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: ${colors.primary};
+    box-shadow: 0 0 0 2px ${colors.focus};
+  }
+  
+  &::placeholder {
+    color: ${colors.textMuted};
+  }
+`;
+
+const ErrorText = styled.div`
+  color: ${colors.danger};
+  font-size: ${typography.fontSizes.note};
+  margin-top: ${spacing.s1};
+`;
+
+const CheckboxGroup = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: ${spacing.medium};
+`;
+
+const FormCheckbox = styled.input`
+  margin-right: ${spacing.small};
+  accent-color: ${colors.primary};
+`;
+
+const CheckboxLabel = styled.label`
+  font-size: ${typography.fontSizes.base};
+  color: ${colors.text};
+  cursor: pointer;
+`;
+
+const SubmitButton = styled(Button)`
+  margin-top: ${spacing.medium};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${spacing.s1};
+`;
+
+const Spinner = styled.div`
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
+const FooterText = styled.div`
+  text-align: center;
+  
+  p {
+    margin: 0;
+    color: ${colors.textMuted};
+  }
+  
+  a {
+    color: ${colors.primary};
+    text-decoration: none;
+    
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+`;
 
 export default Login;
