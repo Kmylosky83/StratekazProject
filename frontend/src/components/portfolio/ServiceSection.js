@@ -2,88 +2,126 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Section, SectionHeader, Grid, Container } from '../../design-system/components';
 import { InteraccionCard, InteraccionIcon, InteraccionTitle, InteraccionDescription, InteraccionCTA } from '../../design-system/components/Card/Card.styled';
-import { Award, GraduationCap, Target } from 'lucide-react';
+import { Award, GraduationCap, Target, ArrowLeft, Shield, Briefcase, BarChart2, Users, BookOpen, TrendingUp, CheckCircle, Settings, FileCheck, Leaf } from 'lucide-react';
 import ServicioModal from '../modals/ServicioModal';
 
-// Componentes styled para la navegación
-const BackButton = styled.button`
-  background: transparent;
-  border: 2px solid ${props => props.theme.colors.primary};
-  color: ${props => props.theme.colors.primary};
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: ${props => props.theme.typography.fontWeights.medium};
-  cursor: pointer;
-  margin-bottom: 2rem;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    background: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.white};
-    transform: translateX(-4px);
-  }
+// Contenedor principal estilo dashboard
+const PortfolioContainer = styled.div`
+  background: ${props => props.theme.colors.white};
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin: 2rem 0;
+  border: 1px solid ${props => props.theme.colors.border};
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
-const CategoryTitle = styled.h2`
-  font-size: 2rem;
+const PortfolioHeader = styled.div`
+  background: linear-gradient(135deg, ${props => props.theme.colors.backgroundLight} 0%, ${props => props.theme.colors.white} 100%);
+  padding: 2rem;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  text-align: center;
+`;
+
+const PortfolioTitle = styled.h2`
+  font-size: 1.75rem;
   font-weight: ${props => props.theme.typography.fontWeights.semiBold};
   color: ${props => props.theme.colors.text};
-  text-align: center;
-  margin-bottom: 2rem;
+  margin: 0 0 0.5rem 0;
   letter-spacing: -0.01em;
 `;
 
-// Componentes para las cards de servicios individuales
-const ServiceCard = styled.div`
-  background: ${props => props.theme.colors.white};
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 12px;
-  padding: 2rem;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  height: 100%;
+const PortfolioSubtitle = styled.p`
+  font-size: 1rem;
+  color: ${props => props.theme.colors.textMuted};
+  margin: 0;
+  line-height: 1.5;
+  opacity: 0.9;
+`;
+
+// Contenedor de tabs estilo dashboard
+const TabsContainer = styled.div`
+  background: ${props => props.theme.colors.backgroundLight};
+  padding: 1rem 2rem;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+`;
+
+const TabsWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 100%;
   
-  &:hover {
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 8px 25px rgba(236, 38, 143, 0.15);
-    transform: translateY(-4px);
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    flex-direction: column;
+    gap: 0.75rem;
   }
 `;
 
-const ServiceTitle = styled.h3`
-  font-size: 1.25rem;
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
-  color: ${props => props.theme.colors.text};
-  margin: 0 0 1rem 0;
-  line-height: 1.4;
+const TabButton = styled.button`
+  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
+  color: ${props => props.active ? props.theme.colors.white : props.theme.colors.textMuted};
+  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border};
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 140px;
+  justify-content: center;
+  
+  &:hover:not(.active) {
+    background: ${props => props.theme.colors.hover};
+    border-color: ${props => props.theme.colors.borderDark};
+    transform: translateY(-1px);
+  }
+  
+  svg {
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover svg {
+    transform: scale(1.1);
+  }
 `;
 
-const ServiceDescription = styled.p`
-  font-size: 0.95rem;
-  color: ${props => props.theme.colors.textMuted};
-  line-height: 1.6;
-  margin: 0 0 1.5rem 0;
-  flex-grow: 1;
+// Contenido de servicios (fuera del contenedor)
+const ServicesContent = styled.div`
+  margin-top: 3rem;
+  max-width: 100%;
+  overflow-x: hidden;
+  padding: 1rem 0 2rem 0; /* Padding para permitir elevación de cards */
 `;
 
-const ServiceCTA = styled.span`
-  color: ${props => props.theme.colors.primary};
-  font-size: 0.9rem;
+// Status indicator para mostrar categoría activa
+const StatusIndicator = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.white};
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
   font-weight: ${props => props.theme.typography.fontWeights.medium};
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(-10px);
   transition: all 0.3s ease;
   
-  ${ServiceCard}:hover & {
+  ${PortfolioContainer}:hover & {
     opacity: 1;
     transform: translateY(0);
   }
 `;
 
 const ServiceSection = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [activeCategory, setActiveCategory] = useState('sistemas-gestion');
   const [selectedService, setSelectedService] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -91,7 +129,7 @@ const ServiceSection = () => {
   const categories = [
     {
       id: 'sistemas-gestion',
-      icon: Award,
+      icon: Settings,
       title: 'Sistemas de Gestión',
       description: 'Diseño e implementación de sistemas de gestión basados en normas internacionales ISO.',
       themeColor: '#2563eb', // Azul profesional
@@ -99,6 +137,8 @@ const ServiceSection = () => {
         {
           title: "ISO 9001 - Calidad",
           description: "Implementación completa del Sistema de Gestión de Calidad",
+          icon: Award,
+          iconColor: '#f59e0b', // Dorado para calidad
           features: [
             "Diagnóstico inicial y planificación",
             "Desarrollo y documentación de procesos",
@@ -109,6 +149,8 @@ const ServiceSection = () => {
         {
           title: "ISO 45001 - Seguridad",
           description: "Sistema de Gestión de Seguridad y Salud en el Trabajo",
+          icon: Shield,
+          iconColor: '#dc2626', // Rojo para seguridad
           features: [
             "Identificación de peligros y riesgos",
             "Planes de emergencia y contingencia",
@@ -119,6 +161,8 @@ const ServiceSection = () => {
         {
           title: "ISO 14001 - Ambiental",
           description: "Gestión Ambiental para organizaciones sostenibles",
+          icon: Leaf,
+          iconColor: '#10b981', // Verde para ambiental
           features: [
             "Aspectos e impactos ambientales",
             "Cumplimiento legal ambiental",
@@ -138,6 +182,8 @@ const ServiceSection = () => {
         {
           title: "Análisis de Datos",
           description: "Formación en extracción de valor de datos para decisiones basadas en evidencia",
+          icon: BarChart2,
+          iconColor: '#3b82f6', // Azul para datos
           features: [
             "Análisis descriptivo y predictivo",
             "Visualización efectiva de datos",
@@ -148,6 +194,8 @@ const ServiceSection = () => {
         {
           title: "Liderazgo y Equipos",
           description: "Desarrollo de habilidades para gestión de equipos de alto rendimiento",
+          icon: Users,
+          iconColor: '#8b5cf6', // Púrpura para liderazgo
           features: [
             "Liderazgo disruptivo",
             "Comunicación efectiva",
@@ -158,6 +206,8 @@ const ServiceSection = () => {
         {
           title: "Auditoría Interna",
           description: "Capacitación especializada en auditoría de sistemas de gestión",
+          icon: FileCheck,
+          iconColor: '#059669', // Verde para auditoría
           features: [
             "Interpretación de requisitos normativos",
             "Técnicas de auditoría efectiva",
@@ -177,6 +227,8 @@ const ServiceSection = () => {
         {
           title: "Coaching Gerencial",
           description: "Acompañamiento personalizado para directivos y equipos de alta dirección",
+          icon: TrendingUp,
+          iconColor: '#0ea5e9', // Azul cielo para gerencial
           features: [
             "Definición de visión y metas",
             "Desarrollo de competencias directivas",
@@ -187,6 +239,8 @@ const ServiceSection = () => {
         {
           title: "Coaching en PNL",
           description: "Programación Neurolingüística para desarrollo personal y profesional",
+          icon: CheckCircle,
+          iconColor: '#ec4899', // Rosa para PNL
           features: [
             "Comunicación efectiva",
             "Gestión emocional",
@@ -197,6 +251,8 @@ const ServiceSection = () => {
         {
           title: "Coaching Estratégico",
           description: "Transformación de estrategias personales y organizacionales",
+          icon: Target,
+          iconColor: '#f59e0b', // Dorado para estratégico
           features: [
             "Análisis de potencial individual",
             "Diseño de planes de desarrollo",
@@ -208,20 +264,30 @@ const ServiceSection = () => {
     }
   ];
 
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
+  const handleCategoryClick = (categoryId) => {
+    setActiveCategory(categoryId);
   };
 
   const handleServiceClick = (service, category) => {
-    // Crear el ID para el modal basado en el servicio
-    const serviceId = service.title.toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/ñ/g, 'n')
-      .replace(/[áéíóú]/g, (match) => {
-        const accents = { 'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u' };
-        return accents[match];
-      });
+    // Mapeo directo de servicios a IDs del modal
+    const serviceIdMap = {
+      // Sistemas de Gestión
+      'ISO 9001 - Calidad': 'sistemas-gestion',
+      'ISO 45001 - Seguridad': 'iso-45001',
+      'ISO 14001 - Ambiental': 'iso-14001',
+      
+      // Formación
+      'Análisis de Datos': 'analisis-datos',
+      'Liderazgo y Equipos': 'liderazgo-equipos',
+      'Auditoría Interna': 'formacion-sistemas',
+      
+      // Coaching
+      'Coaching Gerencial': 'coaching-gerencial',
+      'Coaching en PNL': 'coaching-pnl',
+      'Coaching Estratégico': 'coaching-estrategico'
+    };
     
+    const serviceId = serviceIdMap[service.title];
     setSelectedService(serviceId);
     setModalOpen(true);
   };
@@ -231,65 +297,71 @@ const ServiceSection = () => {
     setSelectedService(null);
   };
 
+  // Obtener la categoría activa
+  const activeCategories = categories.find(cat => cat.id === activeCategory);
+
   return (
     <Section variant="light" size="large">
       <Container>
-        <SectionHeader
-          title="Portafolio de Servicios"
-          subtitle="Soluciones personalizadas para impulsar el crecimiento sostenible de su organización a través de estrategias integrales y herramientas de gestión innovadoras."
-          centered
-        />
-        
-        {!selectedCategory ? (
-          // Vista de categorías principales
+        {/* Contenedor principal estilo dashboard */}
+        <PortfolioContainer>
+          {/* Header del contenedor - simplificado */}
+          <PortfolioHeader>
+            <PortfolioTitle>Categorías de Servicios</PortfolioTitle>
+          </PortfolioHeader>
+
+          {/* Tabs de categorías */}
+          <TabsContainer>
+            <TabsWrapper>
+              {categories.map((category) => {
+                const IconComponent = category.icon;
+                return (
+                  <TabButton
+                    key={category.id}
+                    active={activeCategory === category.id}
+                    onClick={() => handleCategoryClick(category.id)}
+                  >
+                    <IconComponent size={18} />
+                    {category.title}
+                  </TabButton>
+                );
+              })}
+            </TabsWrapper>
+          </TabsContainer>
+        </PortfolioContainer>
+      </Container>
+
+      {/* Contenido de servicios - completamente fuera del Container */}
+      <ServicesContent>
+        <Container>
           <Grid columns={3} tablet={2} mobile={1} gap="large">
-            {categories.map((category, index) => {
-              const IconComponent = category.icon;
+            {activeCategories?.services.map((service, index) => {
+              const ServiceIcon = service.icon;
               return (
                 <InteraccionCard
                   key={index}
-                  themeColor={category.themeColor}
-                  onClick={() => handleCategoryClick(category)}
+                  themeColor={service.iconColor}
+                  onClick={() => handleServiceClick(service, activeCategories)}
                 >
-                  <InteraccionIcon themeColor={category.themeColor}>
-                    <IconComponent size={32} />
+                  <InteraccionIcon themeColor={service.iconColor}>
+                    <ServiceIcon size={32} />
                   </InteraccionIcon>
-                  <InteraccionTitle>{category.title}</InteraccionTitle>
-                  <InteraccionDescription>{category.description}</InteraccionDescription>
-                  <InteraccionCTA>Ver servicios →</InteraccionCTA>
+                  <InteraccionTitle>{service.title}</InteraccionTitle>
+                  <InteraccionDescription>{service.description}</InteraccionDescription>
+                  <InteraccionCTA>Ver detalles →</InteraccionCTA>
                 </InteraccionCard>
               );
             })}
           </Grid>
-        ) : (
-          // Vista de servicios de la categoría seleccionada
-          <div>
-            <BackButton onClick={() => setSelectedCategory(null)}>
-              ← Volver a categorías
-            </BackButton>
-            <CategoryTitle>{selectedCategory.title}</CategoryTitle>
-            <Grid columns={3} tablet={2} mobile={1} gap="large">
-              {selectedCategory.services.map((service, index) => (
-                <ServiceCard
-                  key={index}
-                  onClick={() => handleServiceClick(service, selectedCategory)}
-                >
-                  <ServiceTitle>{service.title}</ServiceTitle>
-                  <ServiceDescription>{service.description}</ServiceDescription>
-                  <ServiceCTA>Ver detalles →</ServiceCTA>
-                </ServiceCard>
-              ))}
-            </Grid>
-          </div>
-        )}
+        </Container>
+      </ServicesContent>
 
-        {/* Modal explicativo */}
-        <ServicioModal
-          isOpen={modalOpen}
-          onClose={handleCloseModal}
-          servicioId={selectedService}
-        />
-      </Container>
+      {/* Modal explicativo */}
+      <ServicioModal
+        isOpen={modalOpen}
+        onClose={handleCloseModal}
+        servicioId={selectedService}
+      />
     </Section>
   );
 };

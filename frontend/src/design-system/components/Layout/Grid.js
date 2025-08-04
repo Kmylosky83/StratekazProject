@@ -15,6 +15,9 @@ export const Grid = styled.div`
     return props.gap || props.theme.spacing.s4;
   }};
   
+  /* Padding adicional para cards que se elevan en hover */
+  padding: 0.5rem 0;
+  
   /* Columnas básicas */
   ${props => props.columns && css`
     grid-template-columns: repeat(${props.columns}, 1fr);

@@ -48,19 +48,21 @@ const slideOut = keyframes`
   }
 `;
 
-// Overlay de fondo - Optimizado para evitar parpadeo
+// Overlay de fondo - Optimizado para evitar parpadeo y saltos
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100vw;
+  height: 100vh;
   background: ${props => props.theme.overlays?.backgrounds?.dark || overlays.backgrounds.dark};
   backdrop-filter: ${props => props.theme.overlays?.backdrop?.medium || overlays.backdrop.medium};
   z-index: ${props => props.theme.base?.zIndex?.modal || props.theme.zIndex?.modal || base.zIndex.modal};
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   /* Evitar parpadeo inicial */
   opacity: 0;
   visibility: hidden;
@@ -219,14 +221,35 @@ const useEscapeKey = (onClose) => {
   }, [onClose]);
 };
 
-// Hook para bloquear scroll del body
+// Hook para bloquear scroll del body mejorado - sin saltos
 const useBodyScrollLock = (isOpen) => {
   useEffect(() => {
     if (isOpen) {
-      const originalStyle = window.getComputedStyle(document.body).overflow;
-      document.body.style.overflow = 'hidden';
+      const body = document.body;
+      const html = document.documentElement;
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+      
+      // Guardar estilos originales
+      const originalBodyOverflow = body.style.overflow;
+      const originalBodyPaddingRight = body.style.paddingRight;
+      const originalHtmlOverflow = html.style.overflow;
+      
+      // Método más suave: solo overflow hidden sin position fixed
+      // Esto evita el salto de la página
+      body.style.overflow = 'hidden';
+      html.style.overflow = 'hidden';
+      
+      // Agregar padding solo si hay scrollbar visible
+      if (scrollBarWidth > 0) {
+        const currentPadding = parseInt(window.getComputedStyle(body).paddingRight, 10) || 0;
+        body.style.paddingRight = `${currentPadding + scrollBarWidth}px`;
+      }
+      
       return () => {
-        document.body.style.overflow = originalStyle;
+        // Restaurar estilos originales
+        body.style.overflow = originalBodyOverflow || '';
+        body.style.paddingRight = originalBodyPaddingRight || '';
+        html.style.overflow = originalHtmlOverflow || '';
       };
     }
   }, [isOpen]);

@@ -21,18 +21,18 @@ const NormativasSection = () => {
   const normativas = [
     {
       id: 'iso',
-      title: 'ISO 9001: Gestión de Calidad',
-      subtitle: 'Sistema de Gestión de Calidad',
+      title: 'ISO 9001 | 45001 | 14001',
+      subtitle: 'Sistemas de Gestión Integrados',
       icon: 'fa-certificate',
       iconClass: 'iso-icon',
-      description: 'La norma ISO 9001 es un estándar internacional que establece los requisitos para un sistema de gestión de calidad. Esta norma ayuda a las organizaciones a:',
+      description: 'Implementación integral de las principales normas ISO: Calidad (9001), Seguridad y Salud (45001) y Gestión Ambiental (14001). Estas normas ayudan a las organizaciones a:',
       benefits: [
-        'Mejorar la satisfacción del cliente',
-        'Optimizar procesos internos',
-        'Aumentar la eficiencia operativa',
-        'Reducir errores y aumentar la consistencia'
+        'ISO 9001: Mejorar la satisfacción del cliente y optimizar procesos',
+        'ISO 45001: Prevenir accidentes laborales y proteger a los trabajadores',
+        'ISO 14001: Reducir impacto ambiental y promover sostenibilidad',
+        'Sistema integrado: Optimizar recursos y mejorar eficiencia operativa'
       ],
-      conclusion: 'Con StrateKaz, implementar y mantener ISO 9001 es más sencillo gracias a nuestras herramientas especializadas y sistemas de seguimiento automático.'
+      conclusion: 'Con StrateKaz, implementar y mantener las tres normas ISO de forma integrada es más sencillo gracias a nuestras herramientas especializadas y sistemas de seguimiento automático unificado.'
     },
     {
       id: 'sgsst',
@@ -142,9 +142,9 @@ const NormativasSection = () => {
 
       {/* Modal de Normativa */}
       <NormativaModal 
-        show={showModal} 
-        handleClose={handleCloseModal} 
-        normativa={currentNormativa} 
+        isOpen={showModal} 
+        onClose={handleCloseModal} 
+        normativaId={currentNormativa?.id} 
       />
     </Section>
   );

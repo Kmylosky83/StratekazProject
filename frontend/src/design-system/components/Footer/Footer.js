@@ -1,13 +1,17 @@
 // Footer Component - Design System
 // Componente unificado que reemplaza el Footer de common
 
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Icon } from '../../icons';
 import { Container, Row, Col } from '../Layout';
 import { H6, Text } from '../Typography';
 import { Logo_Footer } from '../Logo';
+import TermsModal from '../../../components/modals/TermsModal';
+import PrivacyModal from '../../../components/modals/PrivacyModal';
+import CookiesModal from '../../../components/modals/CookiesModal';
+import NormativaModal from '../../../components/modals/NormativaModal';
 
 const FooterWrapper = styled.footer`
   background: linear-gradient(135deg, 
@@ -15,7 +19,7 @@ const FooterWrapper = styled.footer`
     ${props => props.theme.colors.white} 100%
   );
   position: relative;
-  padding: ${props => props.theme.spacing.s12} 0 ${props => props.theme.spacing.s8} 0;
+  padding: ${props => props.theme.spacing.s8} 0 ${props => props.theme.spacing.s6} 0;
   transition: ${props => props.theme.transitions.normal};
   
   &::before {
@@ -54,89 +58,69 @@ const FooterWrapper = styled.footer`
 const FooterContent = styled(Container)``;
 
 const FooterSection = styled.div`
-  margin-bottom: ${props => props.theme.spacing.s6};
-  position: relative;
-  padding-right: ${props => props.theme.spacing.s4};
-  
-  @media (min-width: ${props => props.theme.breakpoints.desktop}) {
-    &:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: linear-gradient(to bottom, 
-        transparent 0%, 
-        ${props => props.theme.colors.primary}15 15%, 
-        ${props => props.theme.colors.borderSubtle} 20%, 
-        ${props => props.theme.colors.borderSubtle} 80%, 
-        ${props => props.theme.colors.primary}15 85%, 
-        transparent 100%
-      );
-      opacity: 0.6;
-    }
-  }
+  margin-bottom: ${props => props.theme.spacing.s4};
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    margin-bottom: ${props => props.theme.spacing.s6};
-    padding-right: 0;
-    
-    &:not(:last-child)::after {
-      display: none;
-    }
+    margin-bottom: ${props => props.theme.spacing.s4};
   }
 `;
 
 const BrandSection = styled(FooterSection)`
   .description {
-    color: ${props => props.theme.colors.textMutedLight};
-    margin: ${props => props.theme.spacing.s4} 0 ${props => props.theme.spacing.s5} 0;
+    color: ${props => props.theme.colors.textMuted};
+    margin: ${props => props.theme.spacing.s3} 0 ${props => props.theme.spacing.s4} 0;
     line-height: ${props => props.theme.typography.lineHeights.relaxed || 1.6};
-    font-size: ${props => props.theme.typography.fontSizes.note || '0.875rem'};
+    font-size: ${props => props.theme.typography.fontSizes.base || '1rem'};
     font-weight: ${props => props.theme.typography.fontWeights.normal || 400};
     font-family: ${props => props.theme.typography.fontFamilies.secondary};
-    max-width: 280px;
+    max-width: 320px;
+    letter-spacing: 0.01em;
   }
 `;
 
 const SocialLinks = styled.div`
   display: flex;
-  gap: ${props => props.theme.spacing.s3};
-  margin-top: ${props => props.theme.spacing.s4};
+  gap: ${props => props.theme.spacing.s2};
+  margin-top: ${props => props.theme.spacing.s2};
   justify-content: flex-start;
+  flex-wrap: wrap;
 `;
 
 const SocialLink = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: ${props => props.theme.colors.borderVeryLight};
-  color: ${props => props.theme.colors.muted};
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  background: ${props => props.theme.colors.white};
+  color: ${props => props.theme.colors.textMuted};
+  border-radius: 12px;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   text-decoration: none;
-  border: 2px solid transparent;
+  border: 1px solid ${props => props.theme.colors.border};
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
   
   &:hover {
     background: ${props => props.theme.colors.primary};
     color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px ${props => props.theme.colors.primary}40;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px ${props => props.theme.colors.primary}30;
     border-color: ${props => props.theme.colors.primary};
+  }
+  
+  &:active {
+    transform: translateY(-1px) scale(1.02);
   }
 `;
 
 const FooterTitle = styled(H6)`
   color: ${props => props.theme.colors.text};
   font-family: ${props => props.theme.typography.fontFamilies.primary};
-  font-weight: ${props => props.theme.typography.fontWeights.bold || 700};
-  font-size: ${props => props.theme.typography.fontSizes.base || '1rem'};
+  font-weight: ${props => props.theme.typography.fontWeights.semiBold || 600};
+  font-size: ${props => props.theme.typography.fontSizes.lg || '1.125rem'};
   margin-bottom: ${props => props.theme.spacing.s4};
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
+  text-transform: none;
+  letter-spacing: -0.01em;
   position: relative;
   padding-bottom: ${props => props.theme.spacing.s2};
   
@@ -145,37 +129,40 @@ const FooterTitle = styled(H6)`
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 30px;
-    height: 2px;
-    background: ${props => props.theme.colors.primary};
-    border-radius: 1px;
+    width: 40px;
+    height: 3px;
+    background: linear-gradient(90deg, 
+      ${props => props.theme.colors.primary} 0%, 
+      ${props => props.theme.colors.primary}60 100%
+    );
+    border-radius: 2px;
   }
 `;
 
 const FooterLink = styled(Link)`
-  color: ${props => props.theme.colors.textMutedLight};
+  color: ${props => props.theme.colors.textMuted};
   text-decoration: none;
   display: block;
   margin-bottom: ${props => props.theme.spacing.s2};
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   padding: ${props => props.theme.spacing.s1} 0;
   position: relative;
-  font-size: ${props => props.theme.typography.fontSizes.note || '0.875rem'};
-  font-weight: ${props => props.theme.typography.fontWeights.medium || 500};
+  font-size: ${props => props.theme.typography.fontSizes.base || '1rem'};
+  font-weight: ${props => props.theme.typography.fontWeights.normal || 400};
   font-family: ${props => props.theme.typography.fontFamilies.secondary};
   line-height: ${props => props.theme.typography.lineHeights.normal};
+  border-radius: ${props => props.theme.borderRadius.small};
   
   &::before {
     content: '';
     position: absolute;
-    left: -8px;
+    left: -12px;
     top: 50%;
     transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    border-left: 4px solid ${props => props.theme.colors.primary};
-    border-top: 2px solid transparent;
-    border-bottom: 2px solid transparent;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: ${props => props.theme.colors.primary};
     opacity: 0;
     transition: all 0.25s ease;
   }
@@ -183,7 +170,8 @@ const FooterLink = styled(Link)`
   &:hover {
     color: ${props => props.theme.colors.primary};
     text-decoration: none;
-    padding-left: ${props => props.theme.spacing.s2};
+    padding-left: ${props => props.theme.spacing.s4};
+    background: ${props => props.theme.colors.primary}05;
     
     &::before {
       opacity: 1;
@@ -192,23 +180,26 @@ const FooterLink = styled(Link)`
 `;
 
 const FooterExternalLink = styled.a`
-  color: ${props => props.theme.colors.textMutedLight};
+  color: ${props => props.theme.colors.textMuted};
   text-decoration: none;
-  font-size: ${props => props.theme.typography.fontSizes.note || '0.875rem'};
-  font-weight: ${props => props.theme.typography.fontWeights.medium || 500};
+  font-size: ${props => props.theme.typography.fontSizes.base || '1rem'};
+  font-weight: ${props => props.theme.typography.fontWeights.normal || 400};
   font-family: ${props => props.theme.typography.fontFamilies.secondary};
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: ${props => props.theme.spacing.s1} ${props => props.theme.spacing.s2};
+  border-radius: ${props => props.theme.borderRadius.small};
   
   &:hover {
     color: ${props => props.theme.colors.primary};
     text-decoration: none;
+    background: ${props => props.theme.colors.primary}05;
   }
 `;
 
 const ContactItem = styled.div`
   display: flex;
   align-items: flex-start;
-  margin-bottom: ${props => props.theme.spacing.s3};
+  margin-bottom: ${props => props.theme.spacing.s2};
   color: ${props => props.theme.colors.textMutedLight};
   font-size: ${props => props.theme.typography.fontSizes.note || '0.875rem'};
   font-family: ${props => props.theme.typography.fontFamilies.secondary};
@@ -245,7 +236,7 @@ const FooterDivider = styled.hr`
     ${props => props.theme.colors.primary}15 85%,
     transparent 100%
   );
-  margin: ${props => props.theme.spacing.s8} 0 ${props => props.theme.spacing.s6} 0;
+  margin: ${props => props.theme.spacing.s5} 0 ${props => props.theme.spacing.s4} 0;
   opacity: 0.6;
 `;
 
@@ -274,12 +265,16 @@ const LegalLinks = styled.div`
   flex-wrap: wrap;
 `;
 
-const LegalLink = styled.a`
+const LegalLink = styled.button`
+  background: none;
+  border: none;
   color: ${props => props.theme.colors.textMutedLight};
   text-decoration: none;
   font-size: ${props => props.theme.typography.fontSizes.note || '0.875rem'};
   font-family: ${props => props.theme.typography.fontFamilies.secondary};
   transition: all 0.25s ease;
+  cursor: pointer;
+  padding: 0;
   
   &:hover {
     color: ${props => props.theme.colors.primary};
@@ -290,33 +285,47 @@ const LegalLink = styled.a`
 const Footer = ({ showSocial = true, showContact = true }) => {
   const currentYear = new Date().getFullYear();
   
+  // Estados para los modales legales
+  const [termsOpen, setTermsOpen] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [cookiesOpen, setCookiesOpen] = useState(false);
+  
+  // Estados para los modales de servicios
+  const [selectedNormativa, setSelectedNormativa] = useState(null);
+  const [normativaModalOpen, setNormativaModalOpen] = useState(false);
+  
   const socialLinks = [
-    { name: 'x', href: '#', label: 'X (Twitter)' },
-    { name: 'facebook', href: '#', label: 'Facebook' },
-    { name: 'instagram', href: '#', label: 'Instagram' },
-    { name: 'whatsapp', href: '#', label: 'WhatsApp' },
-    { name: 'tiktok', href: '#', label: 'TikTok' },
+    { name: 'x', href: 'https://x.com/Kmylosky', label: 'X (Twitter)' },
+    { name: 'facebook', href: 'https://web.facebook.com/Kmylosky', label: 'Facebook' },
+    { name: 'instagram', href: 'https://www.instagram.com/kmylosky', label: 'Instagram' },
+    { name: 'whatsapp', href: 'https://wa.me/573115351944', label: 'WhatsApp' },
+    { name: 'tiktok', href: 'https://www.tiktok.com/@kmylosky', label: 'TikTok' },
   ];
   
   const navigationLinks = [
-    { to: '/', text: 'Inicio' },
-    { to: '/acceso-gratuito', text: 'Acceso Gratuito' },
-    { to: '/portfolio', text: 'Portafolio' },
-    { to: '/register', text: 'Crear Cuenta' },
+    { to: '/#hero', text: 'Inicio' },
+    { to: '/acceso-gratuito#hero', text: 'Acceso Gratuito' },
+    { to: '/portfolio#hero', text: 'Portafolio' },
+    { to: '/registro#hero', text: 'Crear Cuenta' },
   ];
   
   const serviceLinks = [
-    { to: '/servicios/iso-9001', text: 'ISO 9001', isInternal: true },
-    { to: '/servicios/sg-sst', text: 'SG-SST', isInternal: true },
-    { to: '/servicios/pesv', text: 'PESV', isInternal: true },
-    { to: '/servicios/innovacion', text: 'Innovación', isInternal: true },
+    { id: 'iso', text: 'ISO 9001 | 45001 | 14001' },
+    { id: 'sgsst', text: 'SG-SST' },
+    { id: 'pesv', text: 'PESV' },
+    { id: 'innovation', text: 'Innovación' },
   ];
+  
+  const handleServiceClick = (serviceId) => {
+    setSelectedNormativa(serviceId);
+    setNormativaModalOpen(true);
+  };
   
   
   const contactInfo = [
-    { icon: 'mail', text: 'info@stratekaz.com', href: 'mailto:info@stratekaz.com' },
-    { icon: 'phone', text: '+57 311 535 1944', href: 'tel:+573115351944' },
-    { icon: 'mapPin', text: 'Cúcuta, Colombia', href: 'https://maps.google.com/?q=Cucuta,Colombia' },
+    { icon: 'mail', text: 'info@stratekaz.com', href: 'https://wa.me/573115351944?text=Hola, me interesa conocer más sobre los servicios de StrateKaz' },
+    { icon: 'phone', text: '+57 311 535 1944', href: 'https://wa.me/573115351944?text=Hola, me gustaría solicitar información sobre sus servicios' },
+    { icon: 'mapPin', text: 'Cúcuta, Colombia', href: 'https://wa.me/573115351944?text=Hola, me interesa contactar con StrateKaz desde Cúcuta' },
   ];
   
   return (
@@ -326,7 +335,7 @@ const Footer = ({ showSocial = true, showContact = true }) => {
           {/* Columna 1: Brand + Logo + Redes */}
           <Col lg={3} md={6} sm={12}>
             <BrandSection>
-              <div style={{ marginBottom: '20px' }}>
+              <div style={{ marginBottom: '16px' }}>
                 <Logo_Footer 
                   hoverable 
                   clickable
@@ -334,7 +343,7 @@ const Footer = ({ showSocial = true, showContact = true }) => {
                 />
               </div>
               <Text className="description">
-                Soluciones profesionales para el crecimiento empresarial.
+                Transformamos organizaciones a través de metodologías innovadoras en gestión empresarial, formación especializada y coaching estratégico. Más de 200 empresas confían en nuestras soluciones para optimizar procesos, desarrollar talento y acelerar su crecimiento sostenible.
               </Text>
               {showSocial && (
                 <SocialLinks>
@@ -345,8 +354,9 @@ const Footer = ({ showSocial = true, showContact = true }) => {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
+                      title={social.label}
                     >
-                      <Icon name={social.name} size={18} />
+                      <Icon name={social.name} size={20} />
                     </SocialLink>
                   ))}
                 </SocialLinks>
@@ -371,7 +381,19 @@ const Footer = ({ showSocial = true, showContact = true }) => {
             <FooterSection>
               <FooterTitle>Servicios</FooterTitle>
               {serviceLinks.map((link, index) => (
-                <FooterLink key={index} to={link.to}>
+                <FooterLink 
+                  key={index} 
+                  as="button"
+                  onClick={() => handleServiceClick(link.id)}
+                  style={{ 
+                    background: 'none', 
+                    border: 'none', 
+                    padding: 0,
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    width: '100%'
+                  }}
+                >
                   {link.text}
                 </FooterLink>
               ))}
@@ -411,12 +433,38 @@ const Footer = ({ showSocial = true, showContact = true }) => {
             &copy; {currentYear} StrateKaz. Todos los derechos reservados.
           </Copyright>
           <LegalLinks>
-            <LegalLink as={Link} to="/terminos">Términos de Uso</LegalLink>
-            <LegalLink as={Link} to="/privacidad">Política de Privacidad</LegalLink>
-            <LegalLink as={Link} to="/cookies">Cookies</LegalLink>
+            <LegalLink onClick={() => setTermsOpen(true)}>Términos de Uso</LegalLink>
+            <LegalLink onClick={() => setPrivacyOpen(true)}>Política de Privacidad</LegalLink>
+            <LegalLink onClick={() => setCookiesOpen(true)}>Cookies</LegalLink>
           </LegalLinks>
         </BottomSection>
       </FooterContent>
+      
+      {/* Modales Legales */}
+      <TermsModal 
+        isOpen={termsOpen} 
+        onClose={() => setTermsOpen(false)} 
+      />
+      
+      <PrivacyModal 
+        isOpen={privacyOpen} 
+        onClose={() => setPrivacyOpen(false)} 
+      />
+      
+      <CookiesModal 
+        isOpen={cookiesOpen} 
+        onClose={() => setCookiesOpen(false)} 
+      />
+      
+      {/* Modal de Normativas/Servicios */}
+      <NormativaModal
+        isOpen={normativaModalOpen}
+        onClose={() => {
+          setNormativaModalOpen(false);
+          setSelectedNormativa(null);
+        }}
+        normativaId={selectedNormativa}
+      />
     </FooterWrapper>
   );
 };

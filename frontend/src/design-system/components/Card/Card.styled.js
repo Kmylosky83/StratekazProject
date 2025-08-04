@@ -624,35 +624,16 @@ export const InteraccionIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: ${props => props.theme.spacing.s4};
+  margin-bottom: ${props => props.theme.spacing.s4 || '1rem'};
   color: ${props => props.theme.colors.white};
   position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease-out; /* Transición más rápida */
+  will-change: transform;
   
-  /* Círculo de glow sutil */
-  &::after {
-    content: '';
-    position: absolute;
-    top: -3px;
-    left: -3px;
-    right: -3px;
-    bottom: -3px;
-    border-radius: 50%;
-    background: ${props => props.themeColor || props.theme.colors.primary};
-    opacity: 0.2;
-    z-index: -1;
-    transition: all 0.3s ease;
-  }
-  
-  /* Hover Effects */
+  /* Hover Effects optimizados */
   ${InteraccionCard}:hover & {
-    transform: scale(1.1);
-    box-shadow: 0 8px 25px ${props => props.themeColor || props.theme.colors.primary}40;
-    
-    &::after {
-      opacity: 0.3;
-      transform: scale(1.1);
-    }
+    transform: scale(1.05); /* Escala más sutil */
+    box-shadow: 0 6px 20px ${props => props.themeColor || props.theme.colors.primary}30;
   }
 `;
 
@@ -691,12 +672,12 @@ export const InteraccionCTA = styled.span`
   color: ${props => props.theme.colors.primary};
   font-size: ${props => props.theme.typography.fontSizes.sm || '0.875rem'};
   font-weight: ${props => props.theme.typography.fontWeights.medium || 500};
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
+  opacity: 0.7; /* Visible por defecto pero sutil */
+  transform: translateY(0); /* Sin desplazamiento inicial */
+  transition: all 0.15s ease-out; /* Transición muy rápida */
   
   ${InteraccionCard}:hover & {
     opacity: 1;
-    transform: translateY(0);
+    color: ${props => props.themeColor || props.theme.colors.primary};
   }
 `;
