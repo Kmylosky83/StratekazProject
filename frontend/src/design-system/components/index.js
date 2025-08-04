@@ -40,8 +40,8 @@ export { Container, Grid, Row, Col } from './Layout';
 // Componentes de Header
 export { Header } from './Header';
 
-// Componentes de HeroSection
-export { default as HeroSection } from './HeroSection/HeroSection';
+// HeroSection movido a components/home (no es un componente genérico reutilizable)
+// export { HeroSection } from './HeroSection';  // Ahora está en components/home
 
 // Componentes de Footer
 export { default as Footer } from './Footer/Footer';

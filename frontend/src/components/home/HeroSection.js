@@ -1,15 +1,15 @@
-// HeroSection Component - Design System
-// Componente unificado que reemplaza todos los HeroSection duplicados
+// HeroSection Component - HomePage
+// Componente específico para la página de inicio
 
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Icon } from '../../icons';
-import { Container } from '../Layout';
-import { H1, Text } from '../Typography';
-import { Button } from '../Button';
-import { fadeInUp } from '../../animations';
-import { useCountAnimation } from '../../hooks';
+import { Icon } from '../../design-system/icons';
+import { Container } from '../../design-system/components/Layout';
+import { H1, Text } from '../../design-system/components/Typography';
+import { Button } from '../../design-system/components/Button';
+import { fadeInUp } from '../../design-system/animations';
+import { useCountAnimation } from '../../design-system/hooks';
 
 const HeroWrapper = styled.section`
   background: ${props => props.theme.colors.surface};
@@ -244,55 +244,17 @@ const StatCounter = ({ number, label }) => {
   );
 };
 
-const HeroSection = ({ 
-  variant = 'home', // 'home' | 'portfolio'
-  title,
-  subtitle,
-  primaryButton,
-  secondaryButton,
-  stats,
-  showStats = true 
-}) => {
-  // Default content for home variant
-  const defaultContent = {
-    home: {
-      title: <>Sistemas <span className="highlight">Integrados</span></>,
-      subtitle: 'Plataforma integral para la gestión empresarial moderna. Diseña, implementa y audita sistemas de gestión con herramientas inteligentes que se adaptan a tu organización.',
-      primaryButton: { text: 'Comenzar Ahora', to: '/register' },
-      secondaryButton: { text: 'Portafolio de Servicios', to: '/portfolio' },
-      stats: [
-        { number: '40%', label: 'Menos tiempo de implementación' },
-        { number: '95%', label: 'Reducción de errores' },
-        { number: '100%', label: 'Cumplimiento normativo' }
-      ]
-    },
-    portfolio: {
-      title: <>
-        <span className="highlight">Soluciones</span> Estratégicas Empresariales
-      </>,
-      subtitle: 'Impulse la eficiencia, innovación y crecimiento sostenible de su organización con estrategias personalizadas que integran Inteligencia Artificial, Tecnología y procesos optimizados.',
-      primaryButton: { 
-        text: 'Solicitar Consulta', 
-        href: 'https://wa.me/573115351944',
-        external: true,
-        icon: 'arrowRight'
-      },
-      secondaryButton: { text: 'Explorar Servicios', href: '#servicios' },
-      stats: [
-        { number: '20+', label: 'Años de experiencia' },
-        { number: '17+', label: 'Certificaciones' },
-        { number: '30+', label: 'Proyectos exitosos' },
-        { number: '2000+', label: 'Clientes satisfechos' }
-      ]
-    }
-  };
-
-  const content = defaultContent[variant];
-  const finalTitle = title || content.title;
-  const finalSubtitle = subtitle || content.subtitle;
-  const finalPrimaryButton = primaryButton || content.primaryButton;
-  const finalSecondaryButton = secondaryButton || content.secondaryButton;
-  const finalStats = stats || content.stats;
+const HeroSection = () => {
+  // Contenido específico para HomePage
+  const title = <>Sistemas <span className="highlight">Integrados</span></>;
+  const subtitle = 'Plataforma integral para la gestión empresarial moderna. Diseña, implementa y audita sistemas de gestión con herramientas inteligentes que se adaptan a tu organización.';
+  const primaryButton = { text: 'Comenzar Ahora', to: '/register' };
+  const secondaryButton = { text: 'Portafolio de Servicios', to: '/portfolio' };
+  const stats = [
+    { number: '40%', label: 'Menos tiempo de implementación' },
+    { number: '95%', label: 'Reducción de errores' },
+    { number: '100%', label: 'Cumplimiento normativo' }
+  ];
 
   const renderButton = (buttonConfig, variant) => {
     if (buttonConfig.external) {
@@ -342,17 +304,17 @@ const HeroSection = ({
     <HeroWrapper>
       <HeroContent>
         {/* Título centrado */}
-        <HeroTitle>{finalTitle}</HeroTitle>
+        <HeroTitle>{title}</HeroTitle>
         
         {/* Contenido en dos columnas */}
         <ContentGrid>
           {/* Columna de información */}
           <InfoSection>
-            <HeroSubtitle>{finalSubtitle}</HeroSubtitle>
+            <HeroSubtitle>{subtitle}</HeroSubtitle>
             
             <HeroButtons>
-              {renderButton(finalPrimaryButton, 'primary')}
-              {finalSecondaryButton && renderButton(finalSecondaryButton, 'outline')}
+              {renderButton(primaryButton, 'primary')}
+              {renderButton(secondaryButton, 'outline')}
             </HeroButtons>
           </InfoSection>
           
@@ -381,13 +343,11 @@ const HeroSection = ({
         </ContentGrid>
         
         {/* Estadísticas centradas */}
-        {showStats && finalStats && (
-          <StatsSection>
-            {finalStats.map((stat, index) => (
-              <StatCounter key={index} number={stat.number} label={stat.label} />
-            ))}
-          </StatsSection>
-        )}
+        <StatsSection>
+          {stats.map((stat, index) => (
+            <StatCounter key={index} number={stat.number} label={stat.label} />
+          ))}
+        </StatsSection>
       </HeroContent>
     </HeroWrapper>
   );

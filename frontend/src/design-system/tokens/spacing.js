@@ -69,4 +69,23 @@ export const spacing = {
   }
 };
 
-// Medidas específicas para componentes\nconst componentMeasures = {\n  header: {\n    logoSubMargin: '2px',\n    dropdownOffset: '8px', \n    dropdownMinWidth: '250px',\n    iconSize: '18px',\n    iconSizeSmall: '16px',\n    mobileMenuWidth: '300px',\n    mobileMenuMaxWidth: '80vw',\n    translateHover: '5px',\n    borderWidth: '1px',\n    blurRadius: '4px',\n    overlayBackground: 'rgba(0, 0, 0, 0.5)',\n    shadowMobile: '-10px 0 30px rgba(0, 0, 0, 0.1)'\n  }\n};\n\nexport { spacing, componentMeasures };\nexport default spacing;
+// Medidas específicas para componentes
+const componentMeasures = {
+  header: {
+    logoSubMargin: '2px',
+    dropdownOffset: '8px', 
+    dropdownMinWidth: '250px',
+    iconSize: '18px',
+    iconSizeSmall: '16px',
+    mobileMenuWidth: '300px',
+    mobileMenuMaxWidth: '80vw',
+    translateHover: '5px',
+    borderWidth: '1px',
+    blurRadius: '4px',
+    overlayBackground: 'rgba(0, 0, 0, 0.5)',
+    shadowMobile: '-10px 0 30px rgba(0, 0, 0, 0.1)'
+  }
+};
+
+export { componentMeasures };
+export default spacing;
