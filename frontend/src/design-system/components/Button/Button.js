@@ -1,204 +1,280 @@
 // Sistema de Diseño - Componente Button
-// Botón reutilizable con variantes basadas en tokens del tema
+// Botón profesional y minimalista para plataforma B2B
 
 import styled, { css } from 'styled-components';
 
-// Variantes de botones
+// Variantes de botones optimizadas para profesionalismo
 const buttonVariants = {
   primary: css`
-    background-color: ${props => props.theme.colors.primary};
+    background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.primaryDark} 100%);
     color: ${props => props.theme.colors.white};
-    border: none;
+    border: 1px solid ${props => props.theme.colors.primary};
+    position: relative;
+    overflow: hidden;
     
-    &:hover {
-      background-color: ${props => props.theme.colors.primaryDark};
-      color: ${props => props.theme.colors.white};
-      transform: translateY(-3px);
-      box-shadow: ${props => props.theme.shadows.button};
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, ${props => props.theme.colors.primaryDark} 0%, #b91c6b 100%);
+      border-color: ${props => props.theme.colors.primaryDark};
+      box-shadow: 0 4px 12px rgba(236, 38, 143, 0.3);
+      transform: translateY(-1px);
+      
+      &::before {
+        left: 100%;
+      }
+    }
+    
+    &:focus:not(:disabled) {
+      box-shadow: 0 0 0 3px ${props => props.theme.colors.focus}, 0 4px 12px rgba(236, 38, 143, 0.2);
+      outline: none;
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0px);
+      box-shadow: 0 2px 6px rgba(236, 38, 143, 0.4);
     }
   `,
   
   secondary: css`
-    background-color: transparent;
-    color: ${props => props.theme.colors.secondary};
-    border: 1px solid ${props => props.theme.colors.secondary};
+    background: linear-gradient(135deg, ${props => props.theme.colors.surface} 0%, #f1f3f5 100%);
+    color: ${props => props.theme.colors.text};
+    border: 1px solid ${props => props.theme.colors.border};
+    position: relative;
     
-    &:hover {
-      background-color: ${props => props.theme.colors.secondary};
-      color: ${props => props.theme.colors.white};
-      transform: translateY(-3px);
-      box-shadow: ${props => props.theme.shadows.buttonSecondary};
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-color: ${props => props.theme.colors.borderDark};
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-1px);
     }
-  `,
-  
-  cta: css`
-    background-color: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.white};
-    border: none;
-    border-radius: ${props => props.theme.borderRadius.xlarge};
-    font-size: ${props => props.theme.typography.fontSizes.buttonCta};
     
-    &:hover {
-      background-color: ${props => props.theme.colors.primaryDark};
-      transform: translateY(-3px);
-      box-shadow: ${props => props.theme.shadows.button};
-      color: ${props => props.theme.colors.white};
+    &:focus:not(:disabled) {
+      box-shadow: 0 0 0 3px ${props => props.theme.colors.focus};
+      outline: none;
+    }
+    
+    &:active:not(:disabled) {
+      background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+      transform: translateY(0px);
     }
   `,
   
   outline: css`
-    background-color: transparent;
+    background: transparent;
     color: ${props => props.theme.colors.primary};
     border: 2px solid ${props => props.theme.colors.primary};
+    position: relative;
+    overflow: hidden;
     
-    &:hover {
-      background-color: ${props => props.theme.colors.primary};
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.primaryDark} 100%);
+      transition: width 0.3s ease;
+      z-index: -1;
+    }
+    
+    &:hover:not(:disabled) {
       color: ${props => props.theme.colors.white};
-      transform: translateY(-2px);
-      box-shadow: ${props => props.theme.shadows.button};
+      border-color: ${props => props.theme.colors.primary};
+      box-shadow: 0 2px 8px rgba(236, 38, 143, 0.2);
+      transform: translateY(-1px);
+      
+      &::before {
+        width: 100%;
+      }
+    }
+    
+    &:focus:not(:disabled) {
+      box-shadow: 0 0 0 3px ${props => props.theme.colors.focus};
+      outline: none;
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0px);
     }
   `,
   
   ghost: css`
-    background-color: transparent;
+    background: transparent;
     color: ${props => props.theme.colors.primary};
     border: 1px solid transparent;
-    
-    &:hover {
-      background-color: ${props => props.theme.colors.primaryLight || props.theme.colors.hover};
-      border-color: ${props => props.theme.colors.primary};
-      transform: translateY(-1px);
-    }
-  `,
-  
-  link: css`
-    background-color: transparent;
-    color: ${props => props.theme.colors.primary};
-    border: none;
-    padding: 0;
-    font-weight: ${props => props.theme.typography.fontWeights.medium};
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    
-    &:hover {
-      color: ${props => props.theme.colors.primaryDark};
-      text-decoration-color: currentColor;
-    }
-  `,
-  
-  success: css`
-    background-color: ${props => props.theme.colors.success || '#28a745'};
-    color: ${props => props.theme.colors.white};
-    border: none;
-    
-    &:hover {
-      background-color: ${props => props.theme.colors.successDark || '#218838'};
-      transform: translateY(-2px);
-      box-shadow: ${props => props.theme.shadows.button};
-    }
-  `,
-  
-  danger: css`
-    background-color: ${props => props.theme.colors.danger || '#dc3545'};
-    color: ${props => props.theme.colors.white};
-    border: none;
-    
-    &:hover {
-      background-color: ${props => props.theme.colors.dangerDark || '#c82333'};
-      transform: translateY(-2px);
-      box-shadow: ${props => props.theme.shadows.button};
-    }
-  `,
-  
-  text: css`
-    background-color: transparent;
-    color: ${props => props.theme.colors.primary};
-    border: none;
-    
-    &:hover {
-      color: ${props => props.theme.colors.primaryDark};
-      text-decoration: underline;
-    }
-  `,
-  
-  card: css`
-    background-color: transparent;
-    color: ${props => props.theme.colors.secondary};
-    border: 1px solid ${props => props.theme.colors.secondary};
-    opacity: 0.7;
+    position: relative;
     
     &:hover:not(:disabled) {
-      border-color: ${props => props.theme.colors.primary};
-      color: ${props => props.theme.colors.primary};
-      opacity: 0.9;
+      background: linear-gradient(135deg, rgba(236, 38, 143, 0.05) 0%, rgba(236, 38, 143, 0.08) 100%);
+      color: ${props => props.theme.colors.primaryDark};
+      border-color: rgba(236, 38, 143, 0.15);
+      transform: translateY(-1px);
     }
     
-    &.active {
-      background-color: ${props => props.theme.colors.primary};
-      color: ${props => props.theme.colors.white};
-      border-color: ${props => props.theme.colors.primary};
-      opacity: 1;
-      transform: translateY(-3px);
-      box-shadow: ${props => props.theme.shadows.cardButtonActive};
+    &:focus:not(:disabled) {
+      box-shadow: 0 0 0 3px ${props => props.theme.colors.focus};
+      outline: none;
     }
     
-    &:disabled {
-      opacity: 0.5;
-      pointer-events: none;
-      cursor: not-allowed;
+    &:active:not(:disabled) {
+      background: linear-gradient(135deg, rgba(236, 38, 143, 0.08) 0%, rgba(236, 38, 143, 0.12) 100%);
+      transform: translateY(0px);
+    }
+  `,
+  
+  // CTA Button - Diseño especial para call-to-action
+  cta: css`
+    background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.primaryDark} 100%);
+    color: ${props => props.theme.colors.white};
+    border: 1px solid ${props => props.theme.colors.primary};
+    border-radius: 12px; /* Más redondeado para destacar */
+    font-weight: ${props => props.theme.typography.fontWeights.bold};
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(236, 38, 143, 0.25);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.6s ease;
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, ${props => props.theme.colors.primaryDark} 0%, #b91c6b 100%);
+      border-color: ${props => props.theme.colors.primaryDark};
+      box-shadow: 0 8px 30px rgba(236, 38, 143, 0.4);
+      transform: translateY(-2px) scale(1.02);
+      
+      &::before {
+        left: 100%;
+      }
+      
+      &::after {
+        opacity: 1;
+      }
+    }
+    
+    &:focus:not(:disabled) {
+      box-shadow: 0 0 0 3px ${props => props.theme.colors.focus}, 0 8px 30px rgba(236, 38, 143, 0.3);
+      outline: none;
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 4px 15px rgba(236, 38, 143, 0.5);
+    }
+  `,
+
+  danger: css`
+    background: linear-gradient(135deg, ${props => props.theme.colors.danger} 0%, #c82333 100%);
+    color: ${props => props.theme.colors.white};
+    border: 1px solid ${props => props.theme.colors.danger};
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+      border-color: #c82333;
+      box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+      transform: translateY(-1px);
+      
+      &::before {
+        left: 100%;
+      }
+    }
+    
+    &:focus:not(:disabled) {
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25), 0 4px 12px rgba(220, 53, 69, 0.2);
+      outline: none;
+    }
+    
+    &:active:not(:disabled) {
+      background: linear-gradient(135deg, #bd2130 0%, #a71e2a 100%);
+      transform: translateY(0px);
+      box-shadow: 0 2px 6px rgba(220, 53, 69, 0.4);
     }
   `
 };
 
-// Tamaños de botones
+// Tamaños de botones simplificados y profesionales
 const buttonSizes = {
-  xs: css`
-    padding: ${props => props.theme.spacing.s1} ${props => props.theme.spacing.s3};
-    font-size: ${props => props.theme.typography.fontSizes.sm};
-    min-height: 24px;
-  `,
-  
   small: css`
-    padding: ${props => props.theme.spacing.padding.buttonSmall || `${props.theme.spacing.s2} ${props.theme.spacing.s4}`};
-    font-size: ${props => props.theme.typography.fontSizes.buttonSmall || props.theme.typography.fontSizes.sm};
+    padding: 8px 16px;
+    font-size: 14px;
     min-height: 32px;
+    font-weight: ${props => props.theme.typography.fontWeights.medium};
   `,
   
   medium: css`
-    padding: ${props => props.theme.spacing.padding.buttonRegular || `${props.theme.spacing.s3} ${props.theme.spacing.s6}`};
-    font-size: ${props => props.theme.typography.fontSizes.buttonBase || props.theme.typography.fontSizes.base};
+    padding: 12px 24px;
+    font-size: 16px;
     min-height: 40px;
+    font-weight: ${props => props.theme.typography.fontWeights.semiBold};
   `,
   
   large: css`
-    padding: ${props => props.theme.spacing.padding.buttonLarge || `${props.theme.spacing.s4} ${props.theme.spacing.s8}`};
-    font-size: ${props => props.theme.typography.fontSizes.buttonLarge || props.theme.typography.fontSizes.lg};
+    padding: 16px 32px;
+    font-size: 16px;
     min-height: 48px;
-  `,
-  
-  xl: css`
-    padding: ${props => props.theme.spacing.s5} ${props => props.theme.spacing.s10};
-    font-size: ${props => props.theme.typography.fontSizes.xl};
-    min-height: 56px;
-  `,
-  
-  cta: css`
-    padding: ${props => props.theme.spacing.padding.buttonCta || `${props.theme.spacing.s4} ${props.theme.spacing.s10}`};
-    font-size: ${props => props.theme.typography.fontSizes.buttonCta || props.theme.typography.fontSizes.lg};
-    min-height: 52px;
+    font-weight: ${props => props.theme.typography.fontWeights.semiBold};
   `
 };
 
-// Componente Button estilizado
+// Componente Button estilizado con diseño profesional
 export const Button = styled.button`
-  /* Estilos base */
+  /* Estilos base profesionales */
   font-family: ${props => props.theme.typography.fontFamilies.primary};
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
-  border-radius: ${props => props.theme.borderRadius.medium};
-  transition: ${props => props.theme.transitions.normal};
-  display: inline-block;
+  border-radius: 6px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   text-decoration: none;
   cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  line-height: 1.2;
   
   /* Aplicar variante */
   ${props => buttonVariants[props.variant || 'primary']}
@@ -206,24 +282,50 @@ export const Button = styled.button`
   /* Aplicar tamaño */
   ${props => buttonSizes[props.size || 'medium']}
   
-  /* Estado disabled */
+  /* Estado disabled mejorado */
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
     transform: none !important;
     box-shadow: none !important;
+    pointer-events: none;
   }
   
-  /* Clase active para botones de tarjeta */
-  &.active {
-    ${props => props.variant === 'card' && css`
-      background-color: ${props => props.theme.colors.primary};
-      color: ${props => props.theme.colors.white};
-      border-color: ${props => props.theme.colors.primary};
-      opacity: 1;
-      transform: translateY(-3px);
-      box-shadow: ${props => props.theme.shadows.cardButtonActive};
-    `}
+  /* Mejoras de accesibilidad */
+  &:focus-visible {
+    outline: 2px solid ${props => props.theme.colors.primary};
+    outline-offset: 2px;
+  }
+  
+  /* Soporte para iconos */
+  svg {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+  }
+  
+  /* Estado loading */
+  &.loading {
+    color: transparent;
+    pointer-events: none;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 16px;
+      height: 16px;
+      margin: -8px 0 0 -8px;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+      border-right-color: transparent;
+      animation: button-spin 0.8s linear infinite;
+    }
+  }
+  
+  @keyframes button-spin {
+    to { transform: rotate(360deg); }
   }
 `;
 

@@ -2,64 +2,110 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Button, Section, SectionContent, H2, Text } from '../../design-system/components';
+import { Button, Section, SectionHeader, SectionContent } from '../../design-system/components';
 
-const CTAContent = styled(SectionContent)`
-  max-width: 800px;
+const CTAContainer = styled(SectionContent)`
+  max-width: 900px;
+  margin: 0 auto;
   text-align: center;
-  padding: ${props => props.theme.spacing.s8};
+  padding: ${props => props.theme.spacing.s10};
   border-radius: ${props => props.theme.borderRadius.large};
-  background: linear-gradient(135deg, 
-    ${props => props.theme.colors.primary}05, 
-    ${props => props.theme.colors.secondary}05
-  );
-  border: 1px solid ${props => props.theme.colors.primary}20;
-`;
-
-const CTATitle = styled(H2)`
-  color: ${props => props.theme.colors.text};
-  margin-bottom: ${props => props.theme.spacing.s4};
-  font-size: 2.5rem;
-  font-weight: ${props => props.theme.typography.fontWeights.bold};
+  background: ${props => props.theme.colors.white};
+  border: 1px solid ${props => props.theme.colors.borderSubtle};
+  transition: ${props => props.theme.transitions.normal};
   
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 2rem;
+  &:hover {
+    box-shadow: ${props => props.theme.shadows.ctaHover(props.theme.colors.primary)};
   }
 `;
 
-const CTASubtitle = styled(Text)`
-  color: ${props => props.theme.colors.muted};
-  font-size: 1.25rem;
-  line-height: 1.6;
+const CTAQuote = styled.p`
+  color: ${props => props.theme.colors.textMuted};
+  font-size: ${props => props.theme.typography.fontSizes.heroSubtitle || '1.25rem'};
+  font-family: ${props => props.theme.typography.fontFamilies.secondary};
+  line-height: ${props => props.theme.typography.lineHeights.relaxed};
   margin-bottom: ${props => props.theme.spacing.s8};
   font-style: italic;
+  position: relative;
+  
+  &::before,
+  &::after {
+    content: '"';
+    color: ${props => props.theme.colors.primary};
+    font-size: 3rem;
+    font-weight: ${props => props.theme.typography.fontWeights.bold};
+    position: absolute;
+    line-height: 1;
+  }
+  
+  &::before {
+    top: -10px;
+    left: -20px;
+  }
+  
+  &::after {
+    bottom: -30px;
+    right: -10px;
+  }
   
   @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 1.1rem;
+    font-size: ${props => props.theme.typography.fontSizes.base};
+    
+    &::before,
+    &::after {
+      font-size: 2rem;
+    }
+    
+    &::before {
+      left: -10px;
+    }
+    
+    &::after {
+      right: -5px;
+    }
   }
+`;
+
+const CTAButtonWrapper = styled.div`
+  margin-top: ${props => props.theme.spacing.s6};
 `;
 
 const CTAButton = styled(Button)`
   font-weight: ${props => props.theme.typography.fontWeights.bold};
+  font-size: ${props => props.theme.typography.fontSizes.buttonCta};
+  padding: ${props => props.theme.spacing.s4} ${props => props.theme.spacing.s8};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  box-shadow: 0 4px 14px 0 ${props => props.theme.colors.primary}30;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px 0 ${props => props.theme.colors.primary}40;
+  }
+  
+  &:active {
+    transform: translateY(0);
   }
 `;
 
 const CTASection = () => {
   return (
     <Section variant="light" size="large" centered>
-      <CTAContent>
-        <CTATitle>¿Estás listo para el siguiente nivel?</CTATitle>
-        <CTASubtitle>
-          "No diseñamos sistemas de gestión. Desatamos el potencial de tu empresa. Únete a StrateKaz."
-        </CTASubtitle>
-        <CTAButton as={Link} to="/register" size="large" variant="primary">
-          Comenzar Ahora
-        </CTAButton>
-      </CTAContent>
+      <CTAContainer>
+        <SectionHeader
+          title="¿Estás listo para el siguiente nivel?"
+          centered
+          spacing={props => props.theme.spacing.s6}
+        />
+        <CTAQuote>
+          No diseñamos sistemas de gestión. Desatamos el potencial de tu empresa. Únete a StrateKaz.
+        </CTAQuote>
+        <CTAButtonWrapper>
+          <CTAButton as={Link} to="/register" size="large" variant="primary">
+            Comenzar Ahora
+          </CTAButton>
+        </CTAButtonWrapper>
+      </CTAContainer>
     </Section>
   );
 };

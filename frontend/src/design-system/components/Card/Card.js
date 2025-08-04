@@ -17,7 +17,20 @@ import {
   StatCard,
   ActionCard,
   LoadingCard,
-  ErrorCard
+  ErrorCard,
+  InformativaCard,
+  InformativaIcon,
+  InformativaTitle,
+  InformativaDescription,
+  SelectionCardNew,
+  SelectionIcon,
+  SelectionTitle,
+  SelectionDescription,
+  InteraccionCard,
+  InteraccionIcon,
+  InteraccionTitle,
+  InteraccionDescription,
+  InteraccionCTA
 } from './Card.styled';
 
 /**
@@ -53,34 +66,37 @@ export const Card = ({
 };
 
 /**
- * Card de selección - Para formularios y opciones
+ * Card de Selección - Para formularios y opciones seleccionables
+ * Uso: Formularios, configuraciones, opciones múltiples
  */
 export const Card_Selection = ({
-  children,
   selected = false,
   disabled = false,
   onClick,
   icon,
   title,
-  subtitle,
+  description,
   ...props
 }) => {
   return (
-    <SelectionCard
+    <SelectionCardNew
       selected={selected}
       disabled={disabled}
       onClick={onClick}
       {...props}
     >
-      {icon && (
-        <CardIcon variant="primary" size="large">
-          {icon}
-        </CardIcon>
+      <SelectionIcon selected={selected} disabled={disabled}>
+        {icon}
+      </SelectionIcon>
+      <SelectionTitle selected={selected} disabled={disabled}>
+        {title}
+      </SelectionTitle>
+      {description && (
+        <SelectionDescription disabled={disabled}>
+          {description}
+        </SelectionDescription>
       )}
-      {title && <CardTitle center>{title}</CardTitle>}
-      {subtitle && <CardSubtitle center>{subtitle}</CardSubtitle>}
-      {children}
-    </SelectionCard>
+    </SelectionCardNew>
   );
 };
 
@@ -254,6 +270,27 @@ export const Card_Error = ({
 };
 
 /**
+ * Card Informativa - Para mostrar información sin interacción
+ * Uso: CaracteristicasSection, MethodologySection
+ */
+export const Card_Informativa = ({
+  title,
+  description,
+  icon,
+  ...props
+}) => {
+  return (
+    <InformativaCard {...props}>
+      <InformativaIcon>
+        {icon}
+      </InformativaIcon>
+      <InformativaTitle>{title}</InformativaTitle>
+      <InformativaDescription>{description}</InformativaDescription>
+    </InformativaCard>
+  );
+};
+
+/**
  * Card de herramienta/característica
  */
 export const Card_Feature = ({
@@ -312,13 +349,12 @@ Card.propTypes = {
 };
 
 Card_Selection.propTypes = {
-  children: PropTypes.node,
   selected: PropTypes.bool,
   disabled: PropTypes.bool,
   onClick: PropTypes.func,
-  icon: PropTypes.node,
-  title: PropTypes.string,
-  subtitle: PropTypes.string,
+  icon: PropTypes.node.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
 };
 
 Card_Stat.propTypes = {
@@ -360,6 +396,12 @@ Card_Error.propTypes = {
   retryText: PropTypes.string,
 };
 
+Card_Informativa.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired,
+};
+
 Card_Feature.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
@@ -383,4 +425,43 @@ export {
 export { CardBody, ToolIcon } from './Card.styled';
 
 // Export default
+/**
+ * Card de Interacción - Para elementos clickeables con información detallada
+ * Usado en: NormativasSection
+ */
+export const Card_Interaccion = ({
+  title,
+  description,
+  icon,
+  themeColor,
+  onClick,
+  className,
+  ...props
+}) => {
+  return (
+    <InteraccionCard 
+      onClick={onClick}
+      themeColor={themeColor}
+      className={className}
+      {...props}
+    >
+      <InteraccionIcon themeColor={themeColor}>
+        {icon}
+      </InteraccionIcon>
+      <InteraccionTitle>{title}</InteraccionTitle>
+      <InteraccionDescription>{description}</InteraccionDescription>
+      <InteraccionCTA>Conocer más →</InteraccionCTA>
+    </InteraccionCard>
+  );
+};
+
+Card_Interaccion.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired,
+  themeColor: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+  className: PropTypes.string,
+};
+
 export default Card;

@@ -22,24 +22,23 @@ const HeroWrapper = styled.section`
   position: relative;
   font-family: ${props => props.theme.typography.fontFamilies.primary};
   
-  /* Línea sutil y difusa al final */
+  /* Línea sutil consistente con el Footer */
   &::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 400px;
-    height: 2px;
-    background: linear-gradient(
-      to right,
-      transparent,
-      ${props => props.theme.colors.primary}40,
-      ${props => props.theme.colors.primary}60,
-      ${props => props.theme.colors.primary}40,
-      transparent
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent 0%,
+      ${props => props.theme.colors.primary}10 20%,
+      ${props => props.theme.colors.borderSubtle} 30%,
+      ${props => props.theme.colors.borderSubtle} 70%,
+      ${props => props.theme.colors.primary}10 80%,
+      transparent 100%
     );
-    filter: blur(1px);
+    opacity: 0.4;
   }
 `;
 
@@ -249,7 +248,7 @@ const HeroSection = () => {
   const title = <>Sistemas <span className="highlight">Integrados</span></>;
   const subtitle = 'Plataforma integral para la gestión empresarial moderna. Diseña, implementa y audita sistemas de gestión con herramientas inteligentes que se adaptan a tu organización.';
   const primaryButton = { text: 'Comenzar Ahora', to: '/register' };
-  const secondaryButton = { text: 'Portafolio de Servicios', to: '/portfolio' };
+  const secondaryButton = { text: 'Ver Nuestros Servicios', to: '/portfolio' };
   const stats = [
     { number: '40%', label: 'Menos tiempo de implementación' },
     { number: '95%', label: 'Reducción de errores' },

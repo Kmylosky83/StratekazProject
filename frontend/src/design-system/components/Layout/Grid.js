@@ -75,7 +75,9 @@ export const Grid = styled.div`
 export const Row = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: ${props => props.gap || props.theme.spacing.s4};
+  ${props => props.gap && css`
+    gap: ${props.gap};
+  `}
   
   ${props => props.align && css`
     align-items: ${props.align};
@@ -115,6 +117,12 @@ export const Col = styled.div`
   ${props => props.lg && css`
     @media (min-width: ${props => props.theme.breakpoints.desktop}) {
       flex: 0 0 ${(props.lg / 12) * 100}%;
+    }
+  `}
+  
+  ${props => props.xl && css`
+    @media (min-width: 1200px) {
+      flex: 0 0 ${(props.xl / 12) * 100}%;
     }
   `}
 `;

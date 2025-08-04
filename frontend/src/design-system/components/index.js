@@ -22,6 +22,7 @@ export {
 // Componentes de Card
 export { 
   Card,
+  Card_Informativa,
   Card_Selection,
   Card_Stat,
   Card_Action,
@@ -29,6 +30,7 @@ export {
   Card_Loading,
   Card_Error,
   Card_Feature,
+  Card_Interaccion,
   CardGrid,
   CardBody,
   ToolIcon
@@ -50,7 +52,7 @@ export { default as Footer } from './Footer/Footer';
 export { default as ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
 
 // Componentes de Section
-export { Section, SectionHeader, SectionContent } from './Section/Section';
+export { Section, SectionHeader, SectionContent, SectionDivider } from './Section';
 
 // Componentes de Modal
 export { Modal, ModalBody, ModalFooter, ConfirmModal, AlertModal } from './Modal/Modal';
@@ -79,3 +81,13 @@ export {
   Logo_Sidebar,
   Logo_Loading
 } from './Logo';
+
+// Componentes de Auth
+export {
+  Container_Auth,
+  Auth_Card,
+  Auth_Header,
+  Auth_Content,
+  Auth_Footer,
+  Auth_NavButtons
+} from './Auth';

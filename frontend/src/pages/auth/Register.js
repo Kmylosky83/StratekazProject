@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, UserCheck, Building2, Factory, Home } from 'lucide-react';
 import authService from '../../services/auth/AuthService';
 import PolicyModal from '../../components/modals/PolicyModal';
+import { Card_Selection, Grid, Button, Container_Auth, Auth_Card, Auth_Header, Auth_Content, Auth_Footer, Auth_NavButtons } from '../../design-system/components';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -81,12 +82,6 @@ const [passwordStrength, setPasswordStrength] = useState({
       ...formData,
       user_type: type
     });
-    
-    // Habilitar el botón de siguiente
-    const nextBtn = document.getElementById('nextBtn');
-    if (nextBtn) {
-      nextBtn.classList.remove('disabled');
-    }
   };
 
   const validateStep = (step) => {
@@ -171,74 +166,46 @@ const [passwordStrength, setPasswordStrength] = useState({
   });
 
   return (
-    <div className="register-container">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-lg-10">
-            <div className="auth-card">
-              <div className="card-body p-3">
-                <div className="text-center mb-4">
-                  <h4 className="titulo-seccion">Crea tu cuenta</h4>
-                  <p className="subtitulo-seccion">Únete a StrateKaz y gestiona tus sistemas de forma eficiente</p>
-                </div>
+    <Container_Auth>
+      <Auth_Card>
+        <Auth_Header
+          title="Crea tu cuenta"
+          subtitle="Únete a StrateKaz y gestiona tus sistemas de forma eficiente"
+          progress={progress}
+        />
 
-                <div className="progress mb-4" style={{ height: '4px' }}>
-                  <div 
-                    className="progress-bar" 
-                    role="progressbar" 
-                    style={{ width: `${progress}%` }} 
-                    aria-valuenow={progress} 
-                    aria-valuemin="0" 
-                    aria-valuemax="100">
-                  </div>
-                </div>
-
-                {errors.general && (
-                  <div className="alert alert-danger">{errors.general}</div>
-                )}
+        <Auth_Content>
+          {errors.general && (
+            <div className="alert alert-danger">{errors.general}</div>
+          )}
 
                 {/* Paso 1: Selección de tipo de usuario */}
                 {currentStep === 1 && (
                   <div className="step">
                     <h5 className="text-center mb-4">¿Qué tipo de usuario eres?</h5>
-                    <div className="row g-4">
-                      <div className="col-md-4">
-                        <div 
-                          className={`tarjeta-seleccion ${userType === 'professional' ? 'selected' : ''}`}
-                          onClick={() => selectUserType('professional')}
-                        >
-                          <div className="card-body text-center p-4">
-                            <UserCheck size={48} className="mb-3" />
-                            <h6>Profesional Independiente</h6>
-                            <p className="subtitulo-tarjeta">Para profesionales que trabajan de manera independiente</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div 
-                          className={`tarjeta-seleccion ${userType === 'consultant_company' ? 'selected' : ''}`}
-                          onClick={() => selectUserType('consultant_company')}
-                        >
-                          <div className="card-body text-center p-4">
-                            <Building2 size={48} className="mb-3" />
-                            <h6>Empresa Consultora</h6>
-                            <p className="subtitulo-tarjeta">Para empresas que ofrecen servicios de consultoría</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div 
-                          className={`tarjeta-seleccion ${userType === 'direct_company' ? 'selected' : ''}`}
-                          onClick={() => selectUserType('direct_company')}
-                        >
-                          <div className="card-body text-center p-4">
-                            <Factory size={48} className="mb-3" />
-                            <h6>Empresa Directa</h6>
-                            <p className="subtitulo-tarjeta">Para empresas que utilizan la herramienta para su autogestión</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <Grid columns={3} tablet={1} mobile={1} gap="large">
+                      <Card_Selection
+                        title="Profesional Independiente"
+                        description="Para profesionales que trabajan de manera independiente"
+                        icon={<UserCheck size={32} />}
+                        selected={userType === 'professional'}
+                        onClick={() => selectUserType('professional')}
+                      />
+                      <Card_Selection
+                        title="Empresa Consultora"
+                        description="Para empresas que ofrecen servicios de consultoría"
+                        icon={<Building2 size={32} />}
+                        selected={userType === 'consultant_company'}
+                        onClick={() => selectUserType('consultant_company')}
+                      />
+                      <Card_Selection
+                        title="Empresa Directa"
+                        description="Para empresas que utilizan la herramienta para su autogestión"
+                        icon={<Factory size={32} />}
+                        selected={userType === 'direct_company'}
+                        onClick={() => selectUserType('direct_company')}
+                      />
+                    </Grid>
                     {errors.userType && <div className="text-danger mt-2">{errors.userType}</div>}
                   </div>
                 )}
@@ -340,84 +307,72 @@ const [passwordStrength, setPasswordStrength] = useState({
                         onChange={() => setTermsAccepted(!termsAccepted)}
                       />
                       <label className="form-check-label" htmlFor="acceptTerms">
-                        He leído y acepto los <a href="#" onClick={(e) => { 
-                          e.preventDefault(); 
-                          setPolicyModal({ show: true, type: 'terms' }); 
-                        }} className="boton-texto">Términos y Condiciones</a>
+                        He leído y acepto los <button type="button" onClick={() => setPolicyModal({ show: true, type: 'terms' })} className="btn btn-link p-0" style={{ textDecoration: 'underline', color: 'var(--color-primary)' }}>Términos y Condiciones</button>
                       </label>
                       {errors.terms && <div className="invalid-feedback">{errors.terms}</div>}
                     </div>
                     
                     <p className="text-center mb-0">
-                      Al registrarte, también aceptas nuestra <a href="#" onClick={(e) => { 
-                        e.preventDefault(); 
-                        setPolicyModal({ show: true, type: 'privacy' }); 
-                      }} className="text-decoration-underline">Política de Privacidad</a>
+                      Al registrarte, también aceptas nuestra <button type="button" onClick={() => setPolicyModal({ show: true, type: 'privacy' })} className="btn btn-link p-0" style={{ textDecoration: 'underline', color: 'var(--color-primary)' }}>Política de Privacidad</button>
                     </p>
                     </div>
                 )}
 
-                    <PolicyModal 
-                      show={policyModal.show} 
-                      handleClose={() => setPolicyModal({ ...policyModal, show: false })} 
-                      type={policyModal.type} 
-                    />
+          <PolicyModal 
+            show={policyModal.show} 
+            handleClose={() => setPolicyModal({ ...policyModal, show: false })} 
+            type={policyModal.type} 
+          />
+        </Auth_Content>
 
-                {/* Botones de navegación */}
-                <div className="nav-buttons d-flex justify-content-between mt-4">
-                  {/* Lado izquierdo */}
-                  <div>
-                    {currentStep === 1 ? (
-                      <Link 
-                        to="/" 
-                        className="boton-secundario"
-                      >
-                        <Home size={20} className="me-2" />
-                        Ir al Home
-                      </Link>
-                    ) : (
-                      <button 
-                        className="boton-secundario"
-                        onClick={prevStep}
-                      >
-                        <ArrowLeft size={20} className="me-2" />
-                        Anterior
-                      </button>
-                    )}
-                  </div>
-                  
-                  {/* Lado derecho */}
-                  <div>
-                    {currentStep < 3 ? (
-                      <button 
-                        id="nextBtn"
-                        className={`boton-tarjeta ${userType ? 'activo' : 'disabled'}`}
-                        onClick={nextStep}
-                        disabled={!userType && currentStep === 1}
-                      >
-                        Siguiente
-                        <ArrowRight size={20} className="ms-2" />
-                      </button>
-                    ) : (
-                      <button 
-                        className="boton-primario"
-                        onClick={handleSubmit}
-                      >
-                        Completar Registro
-                      </button>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="subtitulo-tarjeta">
-                  <p>¿Ya tienes una cuenta? <Link to="/login" className="boton-texto">Inicia sesión aquí</Link></p>
-                </div>
-              </div>
-            </div>
+        <Auth_Footer>
+          <Auth_NavButtons
+            leftButton={
+              currentStep === 1 ? (
+                <Link to="/" style={{ textDecoration: 'none' }}>
+                  <Button variant="outline" size="medium">
+                    <Home size={20} style={{ marginRight: '8px' }} />
+                    Ir al Home
+                  </Button>
+                </Link>
+              ) : (
+                <Button variant="outline" size="medium" onClick={prevStep}>
+                  <ArrowLeft size={20} style={{ marginRight: '8px' }} />
+                  Anterior
+                </Button>
+              )
+            }
+            rightButton={
+              currentStep < 3 ? (
+                <Button 
+                  variant="primary"
+                  size="medium"
+                  onClick={nextStep}
+                  disabled={!userType && currentStep === 1}
+                >
+                  Siguiente
+                  <ArrowRight size={20} style={{ marginLeft: '8px' }} />
+                </Button>
+              ) : (
+                <Button 
+                  variant="primary"
+                  size="medium"
+                  onClick={handleSubmit}
+                >
+                  Completar Registro
+                </Button>
+              )
+            }
+          />
+          
+          <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+            <p style={{ margin: 0, color: '#666' }}>
+              ¿Ya tienes una cuenta? <Link to="/login" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Inicia sesión aquí</Link>
+            </p>
           </div>
-        </div>
-      </div>
-    </div>
+        </Auth_Footer>
+      </Auth_Card>
+    </Container_Auth>
   );
 };
 

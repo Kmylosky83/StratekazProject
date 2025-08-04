@@ -18,14 +18,23 @@ if env('DB_ENGINE', default='').endswith('sqlite3'):
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+    
+    # Desactivar django-tenants para SQLite
+    INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django_tenants' and app != 'tenants']
+    MIDDLEWARE = [mw for mw in MIDDLEWARE if 'django_tenants' not in mw and 'SecurityMiddleware' not in mw]
+    DATABASE_ROUTERS = ()
+    
+    # Usar todas las apps normalmente sin separación tenant/shared (excepto tenants)
+    DEVELOPMENT_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS and app != 'tenants']
+    INSTALLED_APPS = [app for app in DEVELOPMENT_APPS if app != 'django_tenants']
 
 # Email backend para desarrollo (muestra emails en consola)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Django Debug Toolbar
-INSTALLED_APPS += ['debug_toolbar']
-MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
-INTERNAL_IPS = ['127.0.0.1', 'localhost']
+# Django Debug Toolbar - Comentado temporalmente para pruebas de API
+# INSTALLED_APPS += ['debug_toolbar']
+# MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+# INTERNAL_IPS = ['127.0.0.1', 'localhost']
 
 # CORS más permisivo para desarrollo
 CORS_ALLOW_ALL_ORIGINS = True

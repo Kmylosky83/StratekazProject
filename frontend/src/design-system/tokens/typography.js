@@ -56,8 +56,9 @@ export const typography = {
     }
   },
   
-  // Pesos de fuente
+  // Pesos de fuente optimizados para legibilidad profesional
   fontWeights: {
+    light: 300,
     regular: 400,
     medium: 500,
     semiBold: 600,
@@ -73,42 +74,55 @@ export const typography = {
   
   // Estilos de texto
   textStyles: {
-    // Títulos
+    // Títulos con pesos más sutiles y legibles
     heroTitle: {
       fontSize: '3.5rem',
-      fontWeight: 700,
-      lineHeight: 1.2,
-      marginBottom: '1.5rem'
+      fontWeight: 600, // Reducido de 700 a 600
+      lineHeight: 1.3, // Mejorado de 1.2 a 1.3
+      marginBottom: '1.5rem',
+      letterSpacing: '-0.02em' // Mejor espaciado
     },
     
     heroSubtitle: {
       fontSize: '1.25rem',
-      marginBottom: '2rem'
+      fontWeight: 400, // Añadido peso específico
+      lineHeight: 1.5, // Mejorada legibilidad
+      marginBottom: '2rem',
+      opacity: 0.9 // Menos invasivo
     },
     
     sectionTitle: {
       fontSize: '2.25rem',
-      fontWeight: 700,
+      fontWeight: 600, // Reducido de 700 a 600
+      lineHeight: 1.3, // Mejorada legibilidad
       marginBottom: '1rem',
-      textAlign: 'center'
+      textAlign: 'center',
+      letterSpacing: '-0.01em'
     },
     
     sectionSubtitle: {
       fontSize: '1.125rem',
+      fontWeight: 400,
+      lineHeight: 1.6, // Más espacio entre líneas
       maxWidth: '1000px',
       margin: '0 auto',
-      textAlign: 'center'
+      textAlign: 'center',
+      opacity: 0.85 // Menos invasivo
     },
     
     cardTitle: {
       fontSize: '1.5rem',
-      fontWeight: 700,
+      fontWeight: 600, // Reducido de 700 a 600
+      lineHeight: 1.4, // Mejorada legibilidad
       marginBottom: '1rem'
     },
     
     cardSubtitle: {
       fontSize: '0.9rem',
-      textAlign: 'center'
+      fontWeight: 400,
+      lineHeight: 1.5, // Añadida altura de línea
+      textAlign: 'center',
+      opacity: 0.8 // Menos invasivo
     },
     
     // Texto base

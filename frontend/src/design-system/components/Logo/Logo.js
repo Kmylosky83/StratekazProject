@@ -7,39 +7,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-// SVG del logo de StrateKaz
+// Logo real de StrateKaz
 const LogoSVG = ({ color = 'currentColor', ...props }) => (
-  <svg
-    viewBox="0 0 200 50"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
+  <img
+    src="https://i.postimg.cc/gnGzQtsY/logo-png-1.png"
+    alt="StrateKaz - Estrategias y Capacitación de la A a la Z"
+    style={{ maxHeight: '100%', width: 'auto' }}
     {...props}
-  >
-    {/* Icono de StrateKaz */}
-    <g id="icon">
-      <circle cx="25" cy="25" r="20" fill={color} fillOpacity="0.1" />
-      <path
-        d="M25 10 L35 20 L30 25 L35 30 L25 40 L15 30 L20 25 L15 20 Z"
-        fill={color}
-        stroke={color}
-        strokeWidth="1"
-      />
-    </g>
-    
-    {/* Texto StrateKaz */}
-    <g id="text">
-      <text
-        x="55"
-        y="32"
-        fontFamily="Montserrat, sans-serif"
-        fontSize="20"
-        fontWeight="700"
-        fill={color}
-      >
-        StrateKaz
-      </text>
-    </g>
-  </svg>
+  />
 );
 
 // Componente estilizado

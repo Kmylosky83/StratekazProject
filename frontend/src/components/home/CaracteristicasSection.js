@@ -2,7 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { GitBranch, Activity, CheckSquare, PieChart } from 'lucide-react';
-import { Section, SectionHeader, Grid, Card_Feature, H4, Text } from '../../design-system/components';
+import { Section, SectionHeader, Grid, Card_Informativa } from '../../design-system/components';
 import { Icon } from '../../design-system/icons';
 
 const FeatureGrid = styled(Grid)`
@@ -12,50 +12,6 @@ const FeatureGrid = styled(Grid)`
   @media (min-width: ${props => props.theme.breakpoints.desktop}) {
     grid-template-columns: repeat(4, 1fr);
   }
-`;
-
-const FeatureCard = styled.div`
-  background: ${props => props.theme.colors.white};
-  border-radius: ${props => props.theme.borderRadius.large};
-  padding: ${props => props.theme.spacing.s8};
-  text-align: center;
-  box-shadow: ${props => props.theme.shadows.card};
-  transition: ${props => props.theme.transitions.normal};
-  
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: ${props => props.theme.shadows.hover};
-  }
-`;
-
-const FeatureIcon = styled.div`
-  width: 64px;
-  height: 64px;
-  border-radius: ${props => props.theme.borderRadius.full};
-  background: ${props => props.theme.colors.backgroundLight || '#f8f9fa'};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto ${props => props.theme.spacing.s4};
-  color: ${props => props.theme.colors.primary};
-  transition: ${props => props.theme.transitions.normal};
-  
-  ${FeatureCard}:hover & {
-    background: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.white};
-  }
-`;
-
-const FeatureTitle = styled(H4)`
-  color: ${props => props.theme.colors.text};
-  margin-bottom: ${props => props.theme.spacing.s3};
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
-`;
-
-const FeatureDescription = styled(Text)`
-  color: ${props => props.theme.colors.muted};
-  line-height: 1.6;
-  font-size: 0.95rem;
 `;
 
 const features = [
@@ -92,13 +48,12 @@ const CaracteristicasSection = () => {
       
       <FeatureGrid>
         {features.map((feature, index) => (
-          <FeatureCard key={index}>
-            <FeatureIcon>
-              <feature.icon size={32} />
-            </FeatureIcon>
-            <FeatureTitle>{feature.title}</FeatureTitle>
-            <FeatureDescription>{feature.description}</FeatureDescription>
-          </FeatureCard>
+          <Card_Informativa
+            key={index}
+            title={feature.title}
+            description={feature.description}
+            icon={<feature.icon size={32} />}
+          />
         ))}
       </FeatureGrid>
     </Section>

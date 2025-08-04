@@ -1,86 +1,124 @@
 // RecursosSection - Componente específico para AccesoGratuitoPage
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Section, SectionHeader, Grid, Container } from '../../design-system/components';
-import { Button, Card, H3, Text } from '../../design-system/components';
-import { Award, HardHat, Navigation, Lightbulb } from 'lucide-react';
+import { Section, SectionHeader, Grid, Container, Card_Selection } from '../../design-system/components';
+import { Award, HardHat, Car, Lightbulb } from 'lucide-react';
+// import RecursoLibreModal from '../modals/RecursoLibreModal'; // No usado en esta sección
+import RecursosLibresInfoModal from '../modals/RecursosLibresInfoModal';
+import { Icon } from '../../design-system/icons';
 
 const ToolGrid = styled(Grid)`
   max-width: 1200px;
   margin: 0 auto;
 `;
 
-const ToolCard = styled(Card)`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: ${props => props.theme.colors.white};
-  border-radius: ${props => props.theme.borderRadius.large};
-  padding: ${props => props.theme.spacing.s8};
-  text-align: center;
-  box-shadow: ${props => props.theme.shadows.card};
-  transition: ${props => props.theme.transitions.normal};
-  
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: ${props => props.theme.shadows.hover};
-  }
+const HeaderContainer = styled.div`
+  position: relative;
 `;
 
-const ToolIcon = styled.div`
-  width: 80px;
-  height: 80px;
-  border-radius: ${props => props.theme.borderRadius.full};
-  background: ${props => props.backgroundColor || props.theme.colors.primary};
+const InfoButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: ${props => props.theme.colors.white};
+  border: 2px solid ${props => props.theme.colors.border};
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto ${props => props.theme.spacing.s4};
-  color: ${props => props.theme.colors.white};
-`;
-
-const ToolTitle = styled(H3)`
-  color: ${props => props.theme.colors.text};
-  margin-bottom: ${props => props.theme.spacing.s3};
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
-`;
-
-const ToolDescription = styled(Text)`
   color: ${props => props.theme.colors.textMuted};
-  line-height: 1.6;
-  flex-grow: 1;
-  margin-bottom: ${props => props.theme.spacing.s6};
-`;
-
-const ToolButton = styled(Button)`
-  margin-top: auto;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  
+  /* Efecto de resplandor sutil */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle, ${props => props.theme.colors.primary}20 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Estados de interacción mejorados */
+  &:hover {
+    background: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.white};
+    border-color: ${props => props.theme.colors.primary};
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(236, 38, 143, 0.25);
+    
+    &::before {
+      opacity: 1;
+    }
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.focus}, 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  &:active {
+    transform: translateY(-1px) scale(1.02);
+    transition: all 0.1s ease;
+  }
+  
+  /* Icono con micro-animación */
+  svg {
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover svg {
+    transform: rotate(15deg) scale(1.1);
+  }
+  
+  /* Responsive mejorado */
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    position: static;
+    margin: ${props => props.theme.spacing.s4} auto 0;
+    width: 48px;
+    height: 48px;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    width: 52px;
+    height: 52px;
+  }
 `;
 
 const tools = [
   {
+    id: 'iso',
     icon: Award,
-    iconColor: "#3498db",
     title: "ISO 9001",
     description: "Sistema de Gestión de Calidad. Herramientas básicas para implementar ISO 9001 en tu organización.",
     available: true
   },
   {
+    id: 'sgsst',
     icon: HardHat,
-    iconColor: "#e74c3c", 
     title: "SG-SST",
     description: "Sistema de Gestión de Seguridad y Salud en el Trabajo. Cumple con la normatividad colombiana.",
     available: true
   },
   {
-    icon: Navigation,
-    iconColor: "#9b59b6",
+    id: 'pesv',
+    icon: Car,
     title: "PESV",
     description: "Plan Estratégico de Seguridad Vial. Herramientas para implementar PESV en tu empresa.",
     available: true
   },
   {
+    id: 'innovation',
     icon: Lightbulb,
-    iconColor: "#f39c12",
     title: "Innovación",
     description: "Herramientas de gestión de la innovación. Impulsa la creatividad en tu organización.",
     available: true
@@ -88,35 +126,74 @@ const tools = [
 ];
 
 const RecursosSection = () => {
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
+
+  // Verificar si es la primera visita y mostrar modal automáticamente
+  useEffect(() => {
+    const hasSeenIntro = localStorage.getItem('hasSeenRecursosLibresIntro');
+    if (!hasSeenIntro) {
+      // Mostrar el modal después de un pequeño delay para mejor UX
+      const timer = setTimeout(() => {
+        setInfoModalOpen(true);
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleToolClick = (tool) => {
+    // Función principal para acceder al recurso
+    console.log(`Accediendo directamente al recurso: ${tool.id}`);
+    // Aquí puedes agregar lógica para navegar a la herramienta específica
+    // Ejemplo: window.location.href = `/herramientas/${tool.id}`;
+    // O navegar con React Router: navigate(`/herramientas/${tool.id}`);
+  };
+
+  // Función para mostrar información general sobre recursos libres
+
+  const handleShowInfo = () => {
+    setInfoModalOpen(true);
+  };
+
   return (
     <Section variant="light" size="large">
       <Container>
-        <SectionHeader
-          title="Herramientas Gratuitas"
-          subtitle="Accede a nuestras herramientas básicas de gestión empresarial completamente gratis"
-          centered
-        />
-        <ToolGrid columns={2} gap="large">
+        <HeaderContainer>
+          <SectionHeader
+            title="Recursos Libres"
+            subtitle="Accede a nuestras herramientas básicas de gestión empresarial completamente gratis"
+            centered
+          />
+          <InfoButton 
+            onClick={handleShowInfo}
+            title="¿Cómo funcionan los recursos libres?"
+          >
+            <Icon name="help-circle" size={20} />
+          </InfoButton>
+        </HeaderContainer>
+        
+        <ToolGrid columns={4} tablet={2} mobile={1} gap="large">
           {tools.map((tool, index) => {
             const IconComponent = tool.icon;
             return (
-              <ToolCard key={index}>
-                <ToolIcon backgroundColor={tool.iconColor}>
-                  <IconComponent size={40} />
-                </ToolIcon>
-                <ToolTitle>{tool.title}</ToolTitle>
-                <ToolDescription>{tool.description}</ToolDescription>
-                <ToolButton
-                  variant={tool.available ? "primary" : "outline"}
-                  size="medium"
-                  disabled={!tool.available}
-                >
-                  {tool.available ? "Acceder Gratis" : "Próximamente"}
-                </ToolButton>
-              </ToolCard>
+              <Card_Selection
+                key={index}
+                title={tool.title}
+                description={tool.description}
+                icon={<IconComponent size={32} />}
+                selected={false}
+                disabled={!tool.available}
+                onClick={() => handleToolClick(tool)}
+              />
             );
           })}
         </ToolGrid>
+
+        {/* Modal Informativo de Primera Visita */}
+        <RecursosLibresInfoModal
+          isOpen={infoModalOpen}
+          onClose={() => setInfoModalOpen(false)}
+        />
       </Container>
     </Section>
   );

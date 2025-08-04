@@ -7,106 +7,126 @@ import { createPortal } from 'react-dom';
 import { Icon } from '../../icons';
 import { H3, H4, Text } from '../Typography';
 import { Button } from '../Button';
+import { base } from '../../tokens/base';
+import { overlays } from '../../tokens/overlays';
 
-// Animaciones
+// Animaciones mejoradas para evitar parpadeo
 const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { 
+    opacity: 0; 
+    visibility: hidden;
+  }
+  to { 
+    opacity: 1; 
+    visibility: visible;
+  }
 `;
 
 const slideIn = keyframes`
   from { 
     opacity: 0;
-    transform: translate(-50%, -60%) scale(0.9);
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
   }
   to { 
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    visibility: visible;
+    transform: translateY(0) scale(1);
   }
 `;
 
 const slideOut = keyframes`
   from { 
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    visibility: visible;
+    transform: translateY(0) scale(1);
   }
   to { 
     opacity: 0;
-    transform: translate(-50%, -60%) scale(0.9);
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.98);
   }
 `;
 
-// Overlay de fondo
+// Overlay de fondo - Optimizado para evitar parpadeo
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  z-index: ${props => props.theme.zIndex.modal || 1000};
+  background: ${props => props.theme.overlays?.backgrounds?.dark || overlays.backgrounds.dark};
+  backdrop-filter: ${props => props.theme.overlays?.backdrop?.medium || overlays.backdrop.medium};
+  z-index: ${props => props.theme.base?.zIndex?.modal || props.theme.zIndex?.modal || base.zIndex.modal};
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: ${fadeIn} 0.2s ease-out;
+  /* Evitar parpadeo inicial */
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1);
+  animation: ${fadeIn} ${props => props.theme.base?.duration?.fast || base.duration.fast} ${props => props.theme.base?.easing?.easeOut || base.easing.easeOut} forwards;
   
   ${props => props.closing && css`
-    animation: fadeIn 0.2s ease-out reverse;
+    animation: fadeIn ${props => props.theme.base?.duration?.fast || base.duration.fast} ${props => props.theme.base?.easing?.easeOut || base.easing.easeOut} reverse forwards;
   `}
 `;
 
-// Tamaños de modal
+// Tamaños de modal usando tokens
 const modalSizes = {
   xs: css`
-    width: 90%;
-    max-width: 400px;
+    width: ${props => props.theme.overlays?.modalSizes?.xs?.width || overlays.modalSizes.xs.width};
+    max-width: ${props => props.theme.overlays?.modalSizes?.xs?.maxWidth || overlays.modalSizes.xs.maxWidth};
   `,
   
   small: css`
-    width: 90%;
-    max-width: 500px;
+    width: ${props => props.theme.overlays?.modalSizes?.sm?.width || overlays.modalSizes.sm.width};
+    max-width: ${props => props.theme.overlays?.modalSizes?.sm?.maxWidth || overlays.modalSizes.sm.maxWidth};
   `,
   
   medium: css`
-    width: 90%;
-    max-width: 600px;
+    width: ${props => props.theme.overlays?.modalSizes?.md?.width || overlays.modalSizes.md.width};
+    max-width: ${props => props.theme.overlays?.modalSizes?.md?.maxWidth || overlays.modalSizes.md.maxWidth};
   `,
   
   large: css`
-    width: 90%;
-    max-width: 800px;
+    width: ${props => props.theme.overlays?.modalSizes?.lg?.width || overlays.modalSizes.lg.width};
+    max-width: ${props => props.theme.overlays?.modalSizes?.lg?.maxWidth || overlays.modalSizes.lg.maxWidth};
   `,
   
   xl: css`
-    width: 90%;
-    max-width: 1000px;
+    width: ${props => props.theme.overlays?.modalSizes?.xl?.width || overlays.modalSizes.xl.width};
+    max-width: ${props => props.theme.overlays?.modalSizes?.xl?.maxWidth || overlays.modalSizes.xl.maxWidth};
   `,
   
   full: css`
-    width: 95%;
-    height: 95%;
-    max-width: none;
-    max-height: none;
+    width: ${props => props.theme.overlays?.modalSizes?.full?.width || overlays.modalSizes.full.width};
+    height: ${props => props.theme.overlays?.modalSizes?.full?.height || overlays.modalSizes.full.height};
+    max-width: ${props => props.theme.overlays?.modalSizes?.full?.maxWidth || overlays.modalSizes.full.maxWidth};
+    max-height: ${props => props.theme.overlays?.modalSizes?.full?.maxHeight || overlays.modalSizes.full.maxHeight};
   `
 };
 
-// Contenedor del modal
+// Contenedor del modal - Optimizado para evitar parpadeo
 const ModalContainer = styled.div`
   background: ${props => props.theme.colors.white};
-  border-radius: ${props => props.theme.borderRadius.large};
+  border-radius: ${props => props.theme.base?.borderRadius?.large || props.theme.borderRadius?.large || base.borderRadius.large};
   box-shadow: ${props => props.theme.shadows.modal || '0 25px 50px -12px rgba(0, 0, 0, 0.25)'};
   position: relative;
   max-height: 90vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  animation: ${slideIn} 0.3s ease-out;
+  /* Evitar parpadeo inicial */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.95);
+  animation: ${slideIn} ${props => props.theme.base?.duration?.normal || base.duration.normal} ${props => props.theme.base?.easing?.easeOut || base.easing.easeOut} forwards;
   
   ${props => modalSizes[props.size || 'medium']}
   
   ${props => props.closing && css`
-    animation: ${slideOut} 0.2s ease-out;
+    animation: ${slideOut} ${props => props.theme.base?.duration?.fast || base.duration.fast} ${props => props.theme.base?.easing?.easeOut || base.easing.easeOut} forwards;
   `}
   
   ${props => props.centered && css`
@@ -129,7 +149,11 @@ const ModalHeader = styled.div`
 const ModalTitle = styled(H3)`
   margin: 0;
   color: ${props => props.theme.colors.text};
-  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
+  font-weight: ${props => props.theme.typography.fontWeights.medium}; /* Menos invasivo */
+  font-size: 1.5rem; /* Tamaño más moderado */
+  line-height: 1.4; /* Mejor legibilidad */
+  letter-spacing: -0.01em; /* Espaciado más refinado */
+  opacity: 0.95; /* Ligeramente menos intenso */
 `;
 
 const CloseButton = styled.button`

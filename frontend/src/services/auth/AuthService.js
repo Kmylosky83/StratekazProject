@@ -102,8 +102,23 @@ class AuthService {
   /**
    * Iniciar sesión
    */
-  async login(email, password, rememberMe = false) {
+  async login(loginData) {
     try {
+      // Soporte para ambos formatos: objeto o parámetros individuales
+      let email, password, rememberMe;
+      
+      if (typeof loginData === 'object' && loginData.email) {
+        // Formato nuevo: objeto con propiedades
+        email = loginData.email;
+        password = loginData.password;
+        rememberMe = loginData.remember || false;
+      } else {
+        // Formato legacy: parámetros individuales
+        email = arguments[0];
+        password = arguments[1];
+        rememberMe = arguments[2] || false;
+      }
+
       const response = await fetch(getApiUrl('/auth/login/'), {
         method: 'POST',
         headers: {

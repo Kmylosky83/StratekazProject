@@ -24,12 +24,18 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('auth_module.urls')),
-    path('api/tenants/', include('tenants.urls')),
     path('api/dashboard/', include('dashboard_module.urls')),
     path('api/empresas/', include('empresas_module.urls')),
     path('api/herramientas/', include('herramientas_module.urls')),
     path('api/inteligencia/', include('inteligencia_negocios_module.urls')),
-    
+]
+
+# Incluir tenants solo si está en INSTALLED_APPS
+if 'tenants' in settings.INSTALLED_APPS:
+    urlpatterns.append(path('api/tenants/', include('tenants.urls')))
+
+# Rutas del frontend
+urlpatterns += [
     # Ruta explícita para la página principal
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
     

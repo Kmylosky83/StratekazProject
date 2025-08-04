@@ -1,6 +1,7 @@
 // Re-exportar todos los componentes de Card
 export {
   default as Card,
+  Card_Informativa,
   Card_Selection,
   Card_Stat,
   Card_Action,
@@ -8,6 +9,7 @@ export {
   Card_Loading,
   Card_Error,
   Card_Feature,
+  Card_Interaccion,
   CardHeader,
   CardContent,
   CardFooter,

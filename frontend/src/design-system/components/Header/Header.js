@@ -76,31 +76,81 @@ const NavLink = styled(Link)`
   }
 `;
 
-// Animación sutil para Acceso Gratuito
-const subtlePulse = keyframes`
+// Animación moderna y atractiva para Acceso Gratuito
+const modernGlow = keyframes`
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 ${props => props.theme.colors.primary}20;
+    box-shadow: 
+      0 2px 8px rgba(236, 38, 143, 0.15),
+      0 0 0 0 rgba(236, 38, 143, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   50% {
     transform: scale(1.02);
-    box-shadow: 0 0 0 4px ${props => props.theme.colors.primary}10;
+    box-shadow: 
+      0 4px 16px rgba(236, 38, 143, 0.25),
+      0 0 0 2px rgba(236, 38, 143, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
+`;
+
+const shimmer = keyframes`
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 `;
 
 const AccesoGratuitoLink = styled(NavLink)`
   position: relative;
-  padding: ${props => props.theme.spacing.s2} ${props => props.theme.spacing.s3};
-  border-radius: ${props => props.theme.borderRadius.medium};
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary}05, ${props => props.theme.colors.accent}05);
-  border: 1px solid ${props => props.theme.colors.primary}20;
-  animation: ${subtlePulse} 3s ease-in-out infinite;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.primaryDark} 100%);
+  color: ${props => props.theme.colors.white} !important;
+  border: none;
+  font-weight: 600;
+  overflow: hidden;
+  animation: ${modernGlow} 2.5s ease-in-out infinite;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Efecto shimmer */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s ease;
+  }
+  
+  /* Efecto de highlight interno */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  }
   
   &:hover {
-    background: linear-gradient(135deg, ${props => props.theme.colors.primary}10, ${props => props.theme.colors.accent}10);
-    border-color: ${props => props.theme.colors.primary}40;
+    background: linear-gradient(135deg, ${props => props.theme.colors.primaryDark} 0%, #b91c6b 100%);
     animation-play-state: paused;
-    transform: scale(1.05);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 
+      0 8px 24px rgba(236, 38, 143, 0.35),
+      0 0 0 3px rgba(236, 38, 143, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    color: ${props => props.theme.colors.white} !important;
+    
+    &::before {
+      left: 100%;
+    }
+  }
+  
+  &:active {
+    transform: translateY(-1px) scale(1.02);
   }
 `;
 
@@ -355,16 +405,36 @@ const MobileNavLink = styled(Link)`
 `;
 
 const AccesoGratuitoMobileLink = styled(MobileNavLink)`
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary}05, ${props => props.theme.colors.accent}05);
-  border: 1px solid ${props => props.theme.colors.primary}20;
-  animation: ${subtlePulse} 3s ease-in-out infinite;
+  background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.primaryDark} 100%);
+  color: ${props => props.theme.colors.white} !important;
+  border: none;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  animation: ${modernGlow} 2.5s ease-in-out infinite;
+  
+  /* Efecto shimmer para móvil */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s ease;
+  }
   
   &:hover {
-    background: linear-gradient(135deg, ${props => props.theme.colors.primary}10, ${props => props.theme.colors.accent}10);
-    border-color: ${props => props.theme.colors.primary}40;
+    background: linear-gradient(135deg, ${props => props.theme.colors.primaryDark} 0%, #b91c6b 100%);
     animation-play-state: paused;
-    color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.white} !important;
     transform: translateX(${props => props.theme.componentMeasures.header.translateHover}) scale(1.02);
+    box-shadow: 0 4px 16px rgba(236, 38, 143, 0.3);
+    
+    &::before {
+      left: 100%;
+    }
   }
 `;
 

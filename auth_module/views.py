@@ -19,9 +19,30 @@ def api_overview(request):
 def register_user(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        user = serializer.save()
+        
+        # Auto-login después del registro exitoso
+        token, _ = Token.objects.get_or_create(user=user)
+        
+        return Response({
+            'success': True,
+            'access': token.key,
+            'refresh': None,
+            'token': token.key,  # Compatibilidad legacy
+            'user': {
+                'id': user.pk,
+                'username': user.username,
+                'email': user.email,
+                'user_type': user.user_type,
+                'profile_completed': user.profile_completed,
+                'first_name': user.first_name,
+                'last_name': user.last_name
+            }
+        }, status=status.HTTP_201_CREATED)
+    return Response({
+        'success': False,
+        'errors': serializer.errors
+    }, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -50,7 +71,10 @@ def login_user(request):
     if user:
         token, _ = Token.objects.get_or_create(user=user)
         return Response({
-            'token': token.key,
+            'success': True,
+            'access': token.key,  # Cambiar de 'token' a 'access' para compatibilidad con frontend
+            'refresh': None,      # Agregar aunque sea None por compatibilidad
+            'token': token.key,   # Mantener por compatibilidad legacy
             'user': {
                 'id': user.pk,
                 'username': user.username,

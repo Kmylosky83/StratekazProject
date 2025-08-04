@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Icon } from '../../design-system/icons';
+import { Container_Auth, Auth_Card, Auth_Header, Auth_Content, Auth_Footer, Button } from '../../design-system/components';
 import authService from '../../services/auth/AuthService';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -117,106 +118,107 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-lg-6 col-md-8 col-sm-10">
-            <div className="auth-card">
-              <div className="card-body p-4">
-                <div className="text-center mb-4">
-                  <h4 className="auth-title">Iniciar Sesión</h4>
-                  <p className="auth-subtitle">Accede a tu cuenta de StrateKaz</p>
-                </div>
-                
-                {successMessage && (
-                  <div className="alert alert-success alert-dismissible fade show" role="alert">
-                    {successMessage}
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                )}
-                
-                {errors.general && (
-                  <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                    {errors.general}
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                )}
-                
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-3">
-                    <label className="form-label">
-                      <Icon name="mail" className="me-2" />
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="tu@correo.com"
-                    />
-                    {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-                  </div>
-                  
-                  <div className="mb-3">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <label className="form-label">
-                        <Icon name="lock" className="me-2" />
-                        Contraseña
-                      </label>
-                      <Link to="/recuperar-contrasena" className="forgot-password">
-                        ¿Olvidaste tu contraseña?
-                      </Link>
-                    </div>
-                    <input
-                      type="password"
-                      className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      placeholder="Tu contraseña"
-                    />
-                    {errors.password && <div className="invalid-feedback">{errors.password}</div>}
-                  </div>
-                  
-                  <div className="mb-3 form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="rememberCheck"
-                      name="remember"
-                      checked={formData.remember}
-                      onChange={handleInputChange}
-                    />
-                    <label className="form-check-label" htmlFor="rememberCheck">
-                      Recordarme
-                    </label>
-                  </div>
-                  
-                  <button 
-                    type="submit" 
-                    className="btn btn-primary w-100 py-2 mt-3"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                    ) : (
-                      <Icon name="login" className="me-2" />
-                    )}
-                    {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-                  </button>
-                  
-                  <div className="text-center mt-4">
-                    <p>¿No tienes una cuenta? <Link to="/register" className="text-primary">Regístrate aquí</Link></p>
-                  </div>
-                </form>
-              </div>
+    <Container_Auth>
+      <Auth_Card>
+        <Auth_Header
+          title="Iniciar Sesión"
+          subtitle="Accede a tu cuenta de StrateKaz"
+        />
+
+        <Auth_Content>
+          {successMessage && (
+            <div className="alert alert-success alert-dismissible fade show" role="alert">
+              {successMessage}
+              <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+          )}
+          
+          {errors.general && (
+            <div className="alert alert-danger alert-dismissible fade show" role="alert">
+              {errors.general}
+              <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          )}
+          
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label">
+                <Icon name="mail" className="me-2" />
+                Email
+              </label>
+              <input
+                type="email"
+                className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="tu@correo.com"
+              />
+              {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+            </div>
+            
+            <div className="mb-3">
+              <div className="d-flex justify-content-between align-items-center">
+                <label className="form-label">
+                  <Icon name="lock" className="me-2" />
+                  Contraseña
+                </label>
+                <Link to="/recuperar-contrasena" className="forgot-password">
+                  ¿Olvidaste tu contraseña?
+                </Link>
+              </div>
+              <input
+                type="password"
+                className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                placeholder="Tu contraseña"
+              />
+              {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+            </div>
+            
+            <div className="mb-3 form-check">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                id="rememberCheck"
+                name="remember"
+                checked={formData.remember}
+                onChange={handleInputChange}
+              />
+              <label className="form-check-label" htmlFor="rememberCheck">
+                Recordarme
+              </label>
+            </div>
+            
+            <Button 
+              type="submit"
+              variant="primary"
+              size="large"
+              fullWidth
+              disabled={isLoading}
+              style={{ marginTop: '1rem' }}
+            >
+              {isLoading ? (
+                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              ) : (
+                <Icon name="login" className="me-2" />
+              )}
+              {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+            </Button>
+          </form>
+        </Auth_Content>
+
+        <Auth_Footer>
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ margin: 0, color: '#666' }}>
+              ¿No tienes una cuenta? <Link to="/register" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Regístrate aquí</Link>
+            </p>
           </div>
-        </div>
-      </div>
-    </div>
+        </Auth_Footer>
+      </Auth_Card>
+    </Container_Auth>
   );
 };
 

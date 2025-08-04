@@ -25,6 +25,7 @@ export const colors = {
   text: '#333333',
   textLight: '#555555',
   textMuted: '#6c757d',
+  textMutedLight: '#64748b',
   textDisabled: '#adb5bd',
   
   // Colores Semánticos
@@ -40,8 +41,10 @@ export const colors = {
   
   // Bordes
   border: '#dee2e6',
-  borderLight: '#f1f3f4',
+  borderLight: '#f1f3f4', 
   borderDark: '#adb5bd',
+  borderSubtle: '#e2e8f0',
+  borderVeryLight: '#f1f5f9',
   
   // Estados
   hover: 'rgba(0, 0, 0, 0.05)',

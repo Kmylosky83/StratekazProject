@@ -8,8 +8,10 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'password', 'user_type', 'phone', 'city', 'department', 
-                 'first_name', 'last_name', 'profession', 'company_name', 'nit', 
-                 'industry', 'contact_position', 'account_verified', 'last_login', 'subdomain']
+                 'first_name', 'last_name', 'profession', 'id_type', 'id_number',
+                 'company_name', 'nit', 'industry', 'contact_position', 
+                 'contact_first_name', 'contact_last_name', 'contact_id_type', 'contact_id_number',
+                 'profile_completed', 'account_verified', 'last_login', 'subdomain']
     
     def create(self, validated_data):
         # Extraer la contraseña

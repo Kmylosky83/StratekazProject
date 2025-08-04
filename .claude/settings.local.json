@@ -5,7 +5,11 @@
       "Bash(rm:*)",
       "Bash(npm install:*)",
       "Bash(npm uninstall:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(npm audit:*)",
+      "Bash(python manage.py test:*)",
+      "Bash(npm update:*)",
+      "Bash(python manage.py:*)"
     ],
     "deny": []
   }
