@@ -293,6 +293,7 @@ const HeroSection = () => {
         to={buttonConfig.to}
         variant={variant}
         size="large"
+        onClick={() => window.scrollTo(0, 0)}
       >
         {buttonConfig.text}
       </Button>

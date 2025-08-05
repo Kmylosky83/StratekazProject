@@ -485,10 +485,10 @@ const Header = ({
 
         {showNavigation && (
           <Navigation>
-            <NavLink to="/portfolio">Portafolio</NavLink>
-            <AccesoGratuitoLink to="/acceso-gratuito">Acceso Gratuito</AccesoGratuitoLink>
+            <NavLink to="/portfolio" onClick={() => window.scrollTo(0, 0)}>Portafolio</NavLink>
+            <AccesoGratuitoLink to="/acceso-gratuito" onClick={() => window.scrollTo(0, 0)}>Acceso Gratuito</AccesoGratuitoLink>
             {isAuthenticated && (
-              <NavLink to="/dashboard">Dashboard</NavLink>
+              <NavLink to="/dashboard" onClick={() => window.scrollTo(0, 0)}>Dashboard</NavLink>
             )}
           </Navigation>
         )}
@@ -508,12 +508,12 @@ const Header = ({
               <DropdownMenu>
                 {/* Sección de navegación */}
                 <DropdownSection>
-                  <DropdownItem to="/login">
+                  <DropdownItem to="/login" onClick={() => window.scrollTo(0, 0)}>
                     <Icon name="login" size={18} />
                     <span>Inicio de Sesión</span>
                   </DropdownItem>
                   {!isAuthenticated && (
-                    <DropdownItem to="/register">
+                    <DropdownItem to="/register" onClick={() => window.scrollTo(0, 0)}>
                       <UserPlus size={18} />
                       <span>Registrarse</span>
                     </DropdownItem>
@@ -579,21 +579,30 @@ const Header = ({
               <MobileNavigation>
                 <MobileNavLink 
                   to="/login" 
-                  onClick={() => setShowMobileMenu(false)}
+                  onClick={() => {
+                    setShowMobileMenu(false);
+                    window.scrollTo(0, 0);
+                  }}
                 >
                   <Icon name="login" size={20} />
                   Inicio de Sesión
                 </MobileNavLink>
                 <MobileNavLink 
                   to="/portfolio" 
-                  onClick={() => setShowMobileMenu(false)}
+                  onClick={() => {
+                    setShowMobileMenu(false);
+                    window.scrollTo(0, 0);
+                  }}
                 >
                   <Icon name="briefcase" size={20} />
                   Portafolio
                 </MobileNavLink>
                 <AccesoGratuitoMobileLink 
                   to="/acceso-gratuito" 
-                  onClick={() => setShowMobileMenu(false)}
+                  onClick={() => {
+                    setShowMobileMenu(false);
+                    window.scrollTo(0, 0);
+                  }}
                 >
                   <Icon name="tool" size={20} />
                   Acceso Gratuito
@@ -601,7 +610,10 @@ const Header = ({
                 {isAuthenticated && (
                   <MobileNavLink 
                     to="/dashboard" 
-                    onClick={() => setShowMobileMenu(false)}
+                    onClick={() => {
+                      setShowMobileMenu(false);
+                      window.scrollTo(0, 0);
+                    }}
                   >
                     <Icon name="dashboard" size={20} />
                     Dashboard

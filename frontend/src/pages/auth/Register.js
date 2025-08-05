@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, UserCheck, Building2, Factory, Home } from 'lucide-react';
+import { ArrowLeft, ArrowRight, UserCheck, Building2, Factory } from 'lucide-react';
 import styled from 'styled-components';
 import authService from '../../services/auth/AuthService';
 import PolicyModal from '../../components/modals/PolicyModal';
-import { Card_Selection, Grid, Button, Container_Auth, Auth_Card, Auth_Header, Auth_Content, Auth_Footer, Auth_NavButtons } from '../../design-system/components';
+import { 
+  Card_Selection, 
+  Button
+} from '../../design-system/components';
 import { colors } from '../../design-system/tokens/colors';
 import { spacing } from '../../design-system/tokens/spacing';
 import { typography } from '../../design-system/tokens/typography';
@@ -13,7 +16,7 @@ const Register = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [userType, setUserType] = useState('');
-  const [progress, setProgress] = useState(0);
+  // const [progress, setProgress] = useState(0); // Removed unused state
   const [formData, setFormData] = useState({
 
   // Datos comunes (mantener solo estos)
@@ -35,11 +38,7 @@ const [passwordStrength, setPasswordStrength] = useState({
   const [errors, setErrors] = useState({});
   const [termsAccepted, setTermsAccepted] = useState(false);
 
-  // Actualizar barra de progreso al cambiar de paso
-  useEffect(() => {
-    const progressValue = (currentStep - 1) * 50;
-    setProgress(progressValue);
-  }, [currentStep]);
+  // Progress tracking removed for compact design
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -170,52 +169,45 @@ const [passwordStrength, setPasswordStrength] = useState({
   });
 
   return (
-    <Container_Auth>
-      <Auth_Card>
-        <Auth_Header
-          title="Crea tu cuenta"
-          subtitle="Únete a StrateKaz y gestiona tus sistemas de forma eficiente"
-          progress={progress}
-        />
+    <AuthPageWrapper>
+      <CompactFormContainer>
+        {errors.general && (
+          <ErrorAlert>{errors.general}</ErrorAlert>
+        )}
 
-        <Auth_Content>
-          {errors.general && (
-            <ErrorAlert>{errors.general}</ErrorAlert>
-          )}
+        {currentStep === 1 && (
+          <CompactStepContainer>
+            <CompactStepTitle>¿Qué tipo de usuario eres?</CompactStepTitle>
+            <UserTypeGrid>
+              <Card_Selection
+                title="Profesional Independiente"
+                description="Para profesionales que trabajan de manera independiente"
+                icon={<UserCheck size={32} />}
+                selected={userType === 'professional'}
+                onClick={() => selectUserType('professional')}
+              />
+              <Card_Selection
+                title="Empresa Consultora"
+                description="Para empresas que ofrecen servicios de consultoría"
+                icon={<Building2 size={32} />}
+                selected={userType === 'consultant_company'}
+                onClick={() => selectUserType('consultant_company')}
+              />
+              <Card_Selection
+                title="Empresa Directa"
+                description="Para empresas que utilizan la herramienta para su autogestión"
+                icon={<Factory size={32} />}
+                selected={userType === 'direct_company'}
+                onClick={() => selectUserType('direct_company')}
+              />
+            </UserTypeGrid>
+            {errors.userType && <ErrorText>{errors.userType}</ErrorText>}
+          </CompactStepContainer>
+        )}
 
-                {currentStep === 1 && (
-                  <StepContainer>
-                    <StepTitle>¿Qué tipo de usuario eres?</StepTitle>
-                    <Grid columns={3} tablet={1} mobile={1} gap="large">
-                      <Card_Selection
-                        title="Profesional Independiente"
-                        description="Para profesionales que trabajan de manera independiente"
-                        icon={<UserCheck size={32} />}
-                        selected={userType === 'professional'}
-                        onClick={() => selectUserType('professional')}
-                      />
-                      <Card_Selection
-                        title="Empresa Consultora"
-                        description="Para empresas que ofrecen servicios de consultoría"
-                        icon={<Building2 size={32} />}
-                        selected={userType === 'consultant_company'}
-                        onClick={() => selectUserType('consultant_company')}
-                      />
-                      <Card_Selection
-                        title="Empresa Directa"
-                        description="Para empresas que utilizan la herramienta para su autogestión"
-                        icon={<Factory size={32} />}
-                        selected={userType === 'direct_company'}
-                        onClick={() => selectUserType('direct_company')}
-                      />
-                    </Grid>
-                    {errors.userType && <ErrorText>{errors.userType}</ErrorText>}
-                  </StepContainer>
-                )}
-
-                {currentStep === 2 && (
-                  <StepContainer>
-                    <StepTitle>Información de acceso</StepTitle>
+        {currentStep === 2 && (
+          <CompactStepContainer>
+            <CompactStepTitle>Información de acceso</CompactStepTitle>
                     
                     <FormGroup>
                       <FormLabel>Email</FormLabel>
@@ -283,110 +275,165 @@ const [passwordStrength, setPasswordStrength] = useState({
                         {errors.confirmPassword && <ErrorText>{errors.confirmPassword}</ErrorText>}
                       </FormGroup>
                     </FormRow>
-                  </StepContainer>
-                )}
-                
-                {currentStep === 3 && (
-                  <StepContainer>
-                    <StepTitle>Términos y Condiciones</StepTitle>              
-                    
-                    <CheckboxGroup>
-                      <FormCheckbox
-                        type="checkbox"
-                        $hasError={!!errors.terms}
-                        id="acceptTerms"
-                        checked={termsAccepted}
-                        onChange={() => setTermsAccepted(!termsAccepted)}
-                      />
-                      <CheckboxLabel htmlFor="acceptTerms">
-                        He leído y acepto los <PolicyLink onClick={() => setPolicyModal({ show: true, type: 'terms' })}>Términos y Condiciones</PolicyLink>
-                      </CheckboxLabel>
-                      {errors.terms && <ErrorText>{errors.terms}</ErrorText>}
-                    </CheckboxGroup>
-                    
-                    <PrivacyText>
-                      Al registrarte, también aceptas nuestra <PolicyLink onClick={() => setPolicyModal({ show: true, type: 'privacy' })}>Política de Privacidad</PolicyLink>
-                    </PrivacyText>
-                  </StepContainer>
-                )}
+          </CompactStepContainer>
+        )}
+        
+        {currentStep === 3 && (
+          <CompactStepContainer>
+            <CompactStepTitle>Términos y Condiciones</CompactStepTitle>
+            
+            <CheckboxGroup>
+              <FormCheckbox
+                type="checkbox"
+                $hasError={!!errors.terms}
+                id="acceptTerms"
+                checked={termsAccepted}
+                onChange={() => setTermsAccepted(!termsAccepted)}
+              />
+              <CheckboxLabel htmlFor="acceptTerms">
+                He leído y acepto los <PolicyLink onClick={() => setPolicyModal({ show: true, type: 'terms' })}>Términos y Condiciones</PolicyLink>
+              </CheckboxLabel>
+              {errors.terms && <ErrorText>{errors.terms}</ErrorText>}
+            </CheckboxGroup>
+            
+            <PrivacyText>
+              Al registrarte, también aceptas nuestra <PolicyLink onClick={() => setPolicyModal({ show: true, type: 'privacy' })}>Política de Privacidad</PolicyLink>
+            </PrivacyText>
+          </CompactStepContainer>
+        )}
 
-          <PolicyModal 
-            show={policyModal.show} 
-            handleClose={() => setPolicyModal({ ...policyModal, show: false })} 
-            type={policyModal.type} 
-          />
-        </Auth_Content>
-
-        <Auth_Footer>
-          <Auth_NavButtons
-            leftButton={
-              currentStep === 1 ? (
-                <Link to="/" style={{ textDecoration: 'none' }}>
-                  <Button variant="outline" size="medium">
-                    <Home size={20} style={{ marginRight: '8px' }} />
-                    Ir al Home
-                  </Button>
-                </Link>
-              ) : (
-                <Button variant="outline" size="medium" onClick={prevStep}>
-                  <ArrowLeft size={20} style={{ marginRight: '8px' }} />
-                  Anterior
-                </Button>
-              )
-            }
-            rightButton={
-              currentStep < 3 ? (
-                <Button 
-                  variant="primary"
-                  size="medium"
-                  onClick={nextStep}
-                  disabled={!userType && currentStep === 1}
-                >
-                  Siguiente
-                  <ArrowRight size={20} style={{ marginLeft: '8px' }} />
-                </Button>
-              ) : (
-                <Button 
-                  variant="primary"
-                  size="medium"
-                  onClick={handleSubmit}
-                >
-                  Completar Registro
-                </Button>
-              )
-            }
-          />
+        {/* Navegación */}
+        <NavigationContainer>
+          {currentStep === 1 ? (
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <Button variant="outline" size="medium">
+                <ArrowLeft size={20} style={{ marginRight: '8px' }} />
+                Volver al Home
+              </Button>
+            </Link>
+          ) : (
+            <Button variant="outline" size="medium" onClick={prevStep}>
+              <ArrowLeft size={20} style={{ marginRight: '8px' }} />
+              Anterior
+            </Button>
+          )}
           
-          <FooterText>
-            ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión aquí</Link>
-          </FooterText>
-        </Auth_Footer>
-      </Auth_Card>
-    </Container_Auth>
+          {currentStep < 3 ? (
+            <Button 
+              variant="primary"
+              size="medium"
+              onClick={nextStep}
+              disabled={!userType && currentStep === 1}
+            >
+              Siguiente
+              <ArrowRight size={20} style={{ marginLeft: '8px' }} />
+            </Button>
+          ) : (
+            <Button 
+              variant="primary"
+              size="medium"
+              onClick={handleSubmit}
+            >
+              Completar Registro
+            </Button>
+          )}
+        </NavigationContainer>
+        
+        <FooterText>
+          ¿Ya tienes una cuenta? <Link to="/login" onClick={() => window.scrollTo(0, 0)}>Inicia sesión aquí</Link>
+        </FooterText>
+
+        <PolicyModal 
+          show={policyModal.show} 
+          handleClose={() => setPolicyModal({ ...policyModal, show: false })} 
+          type={policyModal.type} 
+        />
+      </CompactFormContainer>
+    </AuthPageWrapper>
   );
 };
 
 // Styled Components
-const ErrorAlert = styled.div`
-  background-color: ${colors.dangerLight};
-  color: ${colors.danger};
-  padding: ${spacing.medium};
-  border-radius: ${spacing.s1};
-  margin-bottom: ${spacing.medium};
-  border: 1px solid ${colors.danger};
+const AuthPageWrapper = styled.div`
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${props => props.theme.colors.surface};
+  padding: ${props => props.theme.spacing.s2};
 `;
 
-const StepContainer = styled.div`
+const CompactFormContainer = styled.div`
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: ${props => props.theme.spacing.s6};
+  border-radius: ${props => props.theme.borderRadius.large};
+  background: ${props => props.theme.colors.white};
+  border: 1px solid ${props => props.theme.colors.borderSubtle};
+  transition: ${props => props.theme.transitions.normal};
+  box-shadow: ${props => props.theme.shadows.card};
+  
+  &:hover {
+    box-shadow: ${props => props.theme.shadows.ctaHover(props.theme.colors.primary)};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: ${props => props.theme.spacing.s4};
+    margin: ${props => props.theme.spacing.s2};
+  }
+`;
+
+const CompactStepContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: ${props => props.theme.spacing.s4};
+  text-align: center;
+  width: 100%;
 `;
 
-const StepTitle = styled.h5`
+const CompactStepTitle = styled.h2`
+  font-size: ${props => props.theme.typography.fontSizes.lg};
+  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
+  color: ${props => props.theme.colors.text};
+  margin: 0 0 ${props => props.theme.spacing.s3} 0;
   text-align: center;
-  margin-bottom: ${spacing.large};
-  font-size: ${typography.fontSizes.cardTitle};
-  font-weight: ${typography.fontWeights.semiBold};
-  color: ${colors.text};
+`;
+
+const UserTypeGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: ${props => props.theme.spacing.s3};
+  width: 100%;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing.s3};
+  }
+`;
+
+const ErrorAlert = styled.div`
+  background-color: #fee;
+  color: #c33;
+  padding: ${props => props.theme.spacing.s4};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  margin-bottom: ${props => props.theme.spacing.s4};
+  border: 1px solid #c33;
+  text-align: center;
+`;
+
+const NavigationContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: ${props => props.theme.spacing.s5};
+  gap: ${props => props.theme.spacing.s3};
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    flex-direction: column;
+    gap: ${props => props.theme.spacing.s3};
+  }
 `;
 
 const FormGroup = styled.div`
@@ -524,16 +571,15 @@ const PrivacyText = styled.p`
 
 const FooterText = styled.div`
   text-align: center;
-  margin-top: ${spacing.medium};
-  
-  p {
-    margin: 0;
-    color: ${colors.textMuted};
-  }
+  margin-top: ${props => props.theme.spacing.s6};
+  padding-top: ${props => props.theme.spacing.s4};
+  border-top: 1px solid ${props => props.theme.colors.borderSubtle};
+  color: ${props => props.theme.colors.textMuted};
   
   a {
-    color: ${colors.primary};
+    color: ${props => props.theme.colors.primary};
     text-decoration: none;
+    font-weight: ${props => props.theme.typography.fontWeights.medium};
     
     &:hover {
       opacity: 0.8;

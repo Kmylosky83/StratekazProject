@@ -101,7 +101,13 @@ const CTASection = () => {
           No diseñamos sistemas de gestión. Desatamos el potencial de tu empresa. Únete a StrateKaz.
         </CTAQuote>
         <CTAButtonWrapper>
-          <CTAButton as={Link} to="/register" size="large" variant="primary">
+          <CTAButton 
+            as={Link} 
+            to="/register" 
+            size="large" 
+            variant="primary"
+            onClick={() => window.scrollTo(0, 0)}
+          >
             Comenzar Ahora
           </CTAButton>
         </CTAButtonWrapper>

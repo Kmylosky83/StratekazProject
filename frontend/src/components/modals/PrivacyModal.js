@@ -399,20 +399,21 @@ const PrivacyModal = ({ isOpen, onClose, onAccept }) => {
       </ModalBody>
       
       <ModalFooter>
-        {onAccept ? (
-          <>
-            <Button variant="outline" onClick={onClose}>
-              Cancelar
-            </Button>
-            <Button variant="primary" onClick={onAccept}>
-              Acepto la Política
-            </Button>
-          </>
-        ) : (
-          <Button variant="primary" onClick={onClose}>
-            Cerrar
-          </Button>
-        )}
+        <Button variant="outline" onClick={onClose}>
+          Cerrar
+        </Button>
+        <Button 
+          as="a"
+          href="/registro"
+          variant="primary"
+          onClick={() => {
+            if (onAccept) onAccept();
+            onClose();
+            window.scrollTo(0, 0);
+          }}
+        >
+          Continuar al Registro
+        </Button>
       </ModalFooter>
     </Modal>
   );

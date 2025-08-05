@@ -1,16 +1,9 @@
 // frontend/src/pages/AccesoGratuitoPage.js
 import React from 'react';
-import styled from 'styled-components';
-import { Header, Footer } from '../design-system/components';
+import { PageLayout } from '../design-system/components';
 import RecursosSection from '../components/acceso-gratuito/RecursosSection';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../design-system/themes/ThemeManager';
-
-const PageWrapper = styled.div``;
-
-const MainContent = styled.main`
-  padding-top: ${props => props.theme.spacing.s12};
-`;
 
 const AccesoGratuitoPage = () => {
   const { isAuthenticated, user, loading } = useAuth();
@@ -31,20 +24,14 @@ const AccesoGratuitoPage = () => {
   }
 
   return (
-    <PageWrapper>
-      <Header 
-        isAuthenticated={isAuthenticated} 
-        userName={userName}
-        currentTheme={currentTheme}
-        onThemeChange={changeTheme}
-      />
-      
-      <MainContent>
-        <RecursosSection />
-      </MainContent>
-
-      <Footer />
-    </PageWrapper>
+    <PageLayout
+      isAuthenticated={isAuthenticated} 
+      userName={userName}
+      currentTheme={currentTheme}
+      onThemeChange={changeTheme}
+    >
+      <RecursosSection />
+    </PageLayout>
   );
 };
 

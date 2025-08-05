@@ -1,6 +1,6 @@
 // frontend/src/pages/Home.js
 import React from 'react';
-import { Header, Footer } from '../design-system/components';
+import { PageLayout } from '../design-system/components';
 import HeroSection from '../components/home/HeroSection';
 import NormativasSection from '../components/home/NormativasSection';
 import CaracteristicasSection from '../components/home/CaracteristicasSection';
@@ -29,24 +29,18 @@ const Home = () => {
   }
   
   return (
-    <div>
-      <Header 
-        isAuthenticated={isAuthenticated} 
-        userName={userName} 
-        currentTheme={currentTheme}
-        onThemeChange={changeTheme}
-      />
-      
-      <main>
-        <HeroSection />
-        <NormativasSection />
-        <CaracteristicasSection />
-        <MethodologySection />
-        <CTASection />
-      </main>
-
-      <Footer />
-    </div>
+    <PageLayout
+      isAuthenticated={isAuthenticated} 
+      userName={userName} 
+      currentTheme={currentTheme}
+      onThemeChange={changeTheme}
+    >
+      <HeroSection />
+      <NormativasSection />
+      <CaracteristicasSection />
+      <MethodologySection />
+      <CTASection />
+    </PageLayout>
   );
 };
 

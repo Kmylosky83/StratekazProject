@@ -37,7 +37,7 @@ export {
 } from './Card';
 
 // Componentes de Layout
-export { Container, Grid, Row, Col } from './Layout';
+export { Container, Grid, Row, Col, PageLayout } from './Layout';
 
 // Componentes de Header
 export { Header } from './Header';
@@ -69,7 +69,11 @@ export {
   Checkbox, 
   Radio, 
   FieldError, 
-  FieldHelp 
+  FieldHelp,
+  FormContainer,
+  StepContainer,
+  StepTitle,
+  SelectionGrid
 } from './Form/Form';
 
 // Componentes de Logo

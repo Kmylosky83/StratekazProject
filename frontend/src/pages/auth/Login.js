@@ -2,7 +2,12 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Mail, Lock, LogIn } from 'lucide-react';
-import { Container_Auth, Auth_Card, Auth_Header, Auth_Content, Auth_Footer, Button } from '../../design-system/components';
+import { 
+  FormContainer,
+  StepContainer,
+  StepTitle,
+  Button 
+} from '../../design-system/components';
 import authService from '../../services/auth/AuthService';
 import { AuthContext } from '../../context/AuthContext';
 import { colors } from '../../design-system/tokens/colors';
@@ -122,14 +127,11 @@ const Login = () => {
   };
 
   return (
-    <Container_Auth>
-      <Auth_Card>
-        <Auth_Header
-          title="Iniciar Sesión"
-          subtitle="Accede a tu cuenta de StrateKaz"
-        />
-
-        <Auth_Content>
+    <AuthPageWrapper>
+      <FormContainer>
+        <StepContainer>
+          <StepTitle>Iniciar Sesión</StepTitle>
+          
           {successMessage && (
             <SuccessAlert>
               {successMessage}
@@ -142,7 +144,7 @@ const Login = () => {
             </ErrorAlert>
           )}
           
-          <form onSubmit={handleSubmit}>
+          <LoginForm onSubmit={handleSubmit}>
             <FormGroup>
               <FormLabel>
                 <Mail size={16} />
@@ -197,7 +199,6 @@ const Login = () => {
               type="submit"
               variant="primary"
               size="large"
-              fullWidth
               disabled={isLoading}
             >
               {isLoading ? (
@@ -207,36 +208,53 @@ const Login = () => {
               )}
               {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
             </SubmitButton>
-          </form>
-        </Auth_Content>
-
-        <Auth_Footer>
+          </LoginForm>
+          
           <FooterText>
-            ¿No tienes una cuenta? <Link to="/register">Regístrate aquí</Link>
+            ¿No tienes una cuenta? <Link to="/register" onClick={() => window.scrollTo(0, 0)}>Regístrate aquí</Link>
           </FooterText>
-        </Auth_Footer>
-      </Auth_Card>
-    </Container_Auth>
+        </StepContainer>
+      </FormContainer>
+    </AuthPageWrapper>
   );
 };
 
 // Styled Components
+const AuthPageWrapper = styled.div`
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${props => props.theme.colors.surface};
+  padding: ${props => props.theme.spacing.s4};
+`;
+
 const SuccessAlert = styled.div`
-  background-color: ${colors.successLight};
-  color: ${colors.success};
-  padding: ${spacing.medium};
-  border-radius: ${spacing.s1};
-  margin-bottom: ${spacing.medium};
-  border: 1px solid ${colors.success};
+  background-color: #eff7ef;
+  color: #2e7d32;
+  padding: ${props => props.theme.spacing.s4};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  margin-bottom: ${props => props.theme.spacing.s4};
+  border: 1px solid #2e7d32;
+  text-align: center;
 `;
 
 const ErrorAlert = styled.div`
-  background-color: ${colors.dangerLight};
-  color: ${colors.danger};
-  padding: ${spacing.medium};
-  border-radius: ${spacing.s1};
-  margin-bottom: ${spacing.medium};
-  border: 1px solid ${colors.danger};
+  background-color: #fee;
+  color: #c33;
+  padding: ${props => props.theme.spacing.s4};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  margin-bottom: ${props => props.theme.spacing.s4};
+  border: 1px solid #c33;
+  text-align: center;
+`;
+
+const LoginForm = styled.form`
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.s4};
 `;
 
 const FormGroup = styled.div`
@@ -336,15 +354,15 @@ const Spinner = styled.div`
 
 const FooterText = styled.div`
   text-align: center;
-  
-  p {
-    margin: 0;
-    color: ${colors.textMuted};
-  }
+  margin-top: ${props => props.theme.spacing.s6};
+  padding-top: ${props => props.theme.spacing.s4};
+  border-top: 1px solid ${props => props.theme.colors.borderSubtle};
+  color: ${props => props.theme.colors.textMuted};
   
   a {
-    color: ${colors.primary};
+    color: ${props => props.theme.colors.primary};
     text-decoration: none;
+    font-weight: ${props => props.theme.typography.fontWeights.medium};
     
     &:hover {
       opacity: 0.8;

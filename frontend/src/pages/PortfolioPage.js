@@ -1,16 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Header, Footer } from '../design-system/components';
+import { PageLayout } from '../design-system/components';
 import ServiceSection from '../components/portfolio/ServiceSection';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../design-system/themes/ThemeManager';
-
-const PageWrapper = styled.div``;
-
-const MainContent = styled.main`
-  min-height: 100vh;
-  background-color: ${props => props.theme.colors.background};
-`;
 
 const PortfolioPage = () => {
   const { isAuthenticated, user, loading } = useAuth();
@@ -31,20 +23,14 @@ const PortfolioPage = () => {
   }
 
   return (
-    <PageWrapper>
-      <Header 
-        isAuthenticated={isAuthenticated} 
-        userName={userName}
-        currentTheme={currentTheme}
-        onThemeChange={changeTheme}
-      />
-      
-      <MainContent>
-        <ServiceSection />
-      </MainContent>
-
-      <Footer />
-    </PageWrapper>
+    <PageLayout
+      isAuthenticated={isAuthenticated} 
+      userName={userName}
+      currentTheme={currentTheme}
+      onThemeChange={changeTheme}
+    >
+      <ServiceSection />
+    </PageLayout>
   );
 };
 

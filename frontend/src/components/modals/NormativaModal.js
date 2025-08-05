@@ -680,11 +680,13 @@ const NormativaModal = ({ isOpen, onClose, normativaId }) => {
         </Button>
         <Button 
           as="a"
-          href="/registro"
+          href="https://wa.me/573115351944?text=Hola, quiero información sobre implementación de normativas en mi empresa"
+          target="_blank"
+          rel="noopener noreferrer"
           variant="primary"
           onClick={onClose}
         >
-          Iniciar Implementación
+          Solicitar Consulta
         </Button>
       </ModalFooter>
     </Modal>

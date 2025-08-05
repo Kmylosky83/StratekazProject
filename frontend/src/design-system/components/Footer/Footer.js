@@ -19,8 +19,9 @@ const FooterWrapper = styled.footer`
     ${colors.white} 100%
   );
   position: relative;
-  padding: ${spacing.s8} 0 ${spacing.s6} 0;
+  padding: ${spacing.s6} 0 ${spacing.s4} 0;
   transition: all 0.3s ease;
+  margin-top: auto;
   
   &::before {
     content: '';
@@ -59,22 +60,26 @@ const FooterContent = styled(Container)``;
 
 const FooterSection = styled.div`
   margin-bottom: ${spacing.s4};
+  padding-right: ${spacing.s3};
   
   @media (max-width: 768px) {
     margin-bottom: ${spacing.s4};
+    padding-right: 0;
   }
 `;
 
 const BrandSection = styled(FooterSection)`
   .description {
     color: ${colors.textMuted};
-    margin: ${spacing.s3} 0 ${spacing.s4} 0;
-    line-height: 1.6;
-    font-size: ${typography.fontSizes.base};
+    margin: ${spacing.s1} 0 ${spacing.s3} 0;
+    line-height: 1.5;
+    font-size: ${typography.fontSizes.sm};
     font-weight: ${typography.fontWeights.regular};
     font-family: ${typography.fontFamilies.secondary};
-    max-width: 320px;
+    max-width: 240px;
     letter-spacing: 0.01em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 `;
 
@@ -123,6 +128,7 @@ const FooterTitle = styled(H6)`
   letter-spacing: -0.01em;
   position: relative;
   padding-bottom: ${spacing.s2};
+  text-align: left;
   
   &::after {
     content: '';
@@ -152,6 +158,7 @@ const FooterLink = styled(Link)`
   font-family: ${typography.fontFamilies.secondary};
   line-height: 1.4;
   border-radius: ${spacing.s1};
+  text-align: left;
   
   &::before {
     content: '';
@@ -236,7 +243,7 @@ const FooterDivider = styled.hr`
     ${colors.primary}15 85%,
     transparent 100%
   );
-  margin: ${spacing.s5} 0 ${spacing.s4} 0;
+  margin: ${spacing.s4} 0 ${spacing.s3} 0;
   opacity: 0.6;
 `;
 
@@ -283,7 +290,7 @@ const LegalLink = styled.button`
 `;
 
 const LogoContainer = styled.div`
-  margin-bottom: ${spacing.s4};
+  margin-bottom: ${spacing.s1};
 `;
 
 const ServiceButton = styled.button`
@@ -412,7 +419,7 @@ const Footer = ({ showSocial = true, showContact = true }) => {
                 />
               </LogoContainer>
               <Text className="description">
-                Transformamos organizaciones a través de metodologías innovadoras en gestión empresarial, formación especializada y coaching estratégico. Más de 200 empresas confían en nuestras soluciones para optimizar procesos, desarrollar talento y acelerar su crecimiento sostenible.
+                Plataforma integral de gestión empresarial desarrollada por @Kmylosky, potenciada con IA de última generación, que ofrece soluciones digitales con los más altos estándares de calidad y tecnología.
               </Text>
               {showSocial && (
                 <SocialLinks>
@@ -438,7 +445,14 @@ const Footer = ({ showSocial = true, showContact = true }) => {
             <FooterSection>
               <FooterTitle>Navegación</FooterTitle>
               {navigationLinks.map((link) => (
-                <FooterLink key={link.to} to={link.to}>
+                <FooterLink 
+                  key={link.to} 
+                  to={link.to}
+                  onClick={() => {
+                    // Scroll to top after a brief delay to allow navigation
+                    setTimeout(() => window.scrollTo(0, 0), 100);
+                  }}
+                >
                   {link.text}
                 </FooterLink>
               ))}

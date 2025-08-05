@@ -350,4 +350,7 @@ export const FormField = ({
   </FormGroup>
 );
 
+// Export FormContainer components
+export { FormContainer, StepContainer, StepTitle, SelectionGrid } from './FormContainer';
+
 export default Form;
