@@ -111,7 +111,7 @@ const modalSizes = {
 
 // Contenedor del modal - Optimizado para evitar parpadeo
 const ModalContainer = styled.div`
-  background: ${props => props.theme.colors.white};
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
   border-radius: ${props => props.theme.base?.borderRadius?.large || props.theme.borderRadius?.large || base.borderRadius.large};
   box-shadow: ${props => props.theme.shadows.modal || '0 25px 50px -12px rgba(0, 0, 0, 0.25)'};
   position: relative;

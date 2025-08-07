@@ -1,9 +1,18 @@
 // frontend/src/pages/AccesoGratuitoPage.js
 import React from 'react';
 import { PageLayout } from '../design-system/components';
+import { Text } from '../design-system/components/Typography';
 import RecursosSection from '../components/acceso-gratuito/RecursosSection';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../design-system/themes/ThemeManager';
+import styled from 'styled-components';
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+`;
 
 const AccesoGratuitoPage = () => {
   const { isAuthenticated, user, loading } = useAuth();
@@ -12,14 +21,9 @@ const AccesoGratuitoPage = () => {
   
   if (loading) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        minHeight: '100vh' 
-      }}>
-        <div>Cargando...</div>
-      </div>
+      <LoadingWrapper>
+        <Text>Cargando...</Text>
+      </LoadingWrapper>
     );
   }
 

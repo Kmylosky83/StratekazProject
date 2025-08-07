@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Section, SectionHeader, Grid, Container } from '../../design-system/components';
 import { InteraccionCard, InteraccionIcon, InteraccionTitle, InteraccionDescription, InteraccionCTA } from '../../design-system/components/Card/Card.styled';
 import { Award, GraduationCap, Target, ArrowLeft, Shield, Briefcase, BarChart2, Users, BookOpen, TrendingUp, CheckCircle, Settings, FileCheck, Leaf } from 'lucide-react';
@@ -8,45 +8,61 @@ import { colors } from '../../design-system/tokens/colors';
 import { spacing } from '../../design-system/tokens/spacing';
 import { typography } from '../../design-system/tokens/typography';
 
+// Función para obtener colores según el tema
+const getThemeColors = (theme) => ({
+  sistemas: theme.buttonPrimary?.background || theme.colors.primary,
+  formacion: theme.colors.success || '#059669',
+  consultoria: theme.colors.danger || '#dc2626',
+  calidad: theme.colors.warning || '#f59e0b',
+  seguridad: theme.colors.danger || '#dc2626',
+  ambiental: theme.colors.success || '#10b981',
+  datos: theme.colors.info || '#3b82f6',
+  liderazgo: theme.colors.secondary || '#8b5cf6',
+  auditoria: theme.colors.success || '#059669',
+  gerencial: theme.colors.info || '#0ea5e9',
+  pnl: theme.colors.accent || '#ec4899',
+  estrategico: theme.colors.warning || '#f59e0b'
+});
+
 const PortfolioContainer = styled.div`
-  background: ${colors.white};
+  background: ${props => props.theme.card?.background || colors.white};
   border-radius: ${spacing.s4};
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: ${props => props.theme.card?.shadow || '0 4px 20px rgba(0, 0, 0, 0.08)'};
   overflow: hidden;
   margin: ${spacing.s8} 0;
-  border: 1px solid ${colors.border};
+  border: 1px solid ${props => props.theme.card?.border || colors.border};
   max-width: 100%;
   width: 100%;
   box-sizing: border-box;
 `;
 
 const PortfolioHeader = styled.div`
-  background: linear-gradient(135deg, ${colors.backgroundLight} 0%, ${colors.white} 100%);
+  background: ${props => props.theme.colors.backgroundLight || colors.backgroundLight};
   padding: ${spacing.s8};
-  border-bottom: 1px solid ${colors.border};
+  border-bottom: 1px solid ${props => props.theme.colors.border || colors.border};
   text-align: center;
 `;
 
 const PortfolioTitle = styled.h2`
   font-size: ${typography.fontSizes.sectionTitle};
   font-weight: ${typography.fontWeights.semiBold};
-  color: ${colors.text};
+  color: ${props => props.theme.colors.text};
   margin: 0 0 ${spacing.s2} 0;
   letter-spacing: -0.01em;
 `;
 
 const PortfolioSubtitle = styled.p`
   font-size: ${typography.fontSizes.base};
-  color: ${colors.textMuted};
+  color: ${props => props.theme.colors.textMuted};
   margin: 0;
   line-height: 1.5;
   opacity: 0.9;
 `;
 
 const TabsContainer = styled.div`
-  background: ${colors.backgroundLight};
+  background: ${props => props.theme.colors.backgroundLight || colors.backgroundLight};
   padding: ${spacing.s4} ${spacing.s8};
-  border-bottom: 1px solid ${colors.border};
+  border-bottom: 1px solid ${props => props.theme.colors.border || colors.border};
 `;
 
 const TabsWrapper = styled.div`
@@ -63,9 +79,9 @@ const TabsWrapper = styled.div`
 `;
 
 const TabButton = styled.button`
-  background: ${props => props.active ? colors.primary : 'transparent'};
-  color: ${props => props.active ? colors.white : colors.textMuted};
-  border: 1px solid ${props => props.active ? colors.primary : colors.border};
+  background: ${props => props.active ? (props.theme.buttonPrimary?.background || props.theme.colors.primary || colors.primary) : 'transparent'};
+  color: ${props => props.active ? (props.theme.buttonPrimary?.text || colors.white) : (props.theme.colors.textMuted || colors.textMuted)};
+  border: 1px solid ${props => props.active ? (props.theme.colors.primary || colors.primary) : (props.theme.colors.border || colors.border)};
   border-radius: ${spacing.s2};
   padding: ${spacing.s3} ${spacing.s6};
   font-weight: ${typography.fontWeights.medium};
@@ -78,8 +94,8 @@ const TabButton = styled.button`
   justify-content: center;
   
   &:hover:not(.active) {
-    background: ${colors.hover};
-    border-color: ${colors.borderDark};
+    background: ${props => props.theme.colors.hover || colors.hover};
+    border-color: ${props => props.theme.colors.borderDark || colors.borderDark};
     transform: translateY(-1px);
   }
   
@@ -103,8 +119,8 @@ const StatusIndicator = styled.div`
   position: absolute;
   top: ${spacing.s4};
   right: ${spacing.s4};
-  background: ${colors.primary};
-  color: ${colors.white};
+  background: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
+  color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white};
   padding: ${spacing.s1} ${spacing.s3};
   border-radius: ${spacing.s3};
   font-size: ${typography.fontSizes.note};
@@ -120,6 +136,8 @@ const StatusIndicator = styled.div`
 `;
 
 const ServiceSection = () => {
+  const theme = useTheme();
+  const themeColors = getThemeColors(theme);
   const [activeCategory, setActiveCategory] = useState('sistemas-gestion');
   const [selectedService, setSelectedService] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -131,13 +149,13 @@ const ServiceSection = () => {
       icon: Settings,
       title: 'Sistemas de Gestión',
       description: 'Diseño e implementación de sistemas de gestión basados en normas internacionales ISO.',
-      themeColor: '#2563eb', // Azul profesional
+      themeColor: themeColors.sistemas,
       services: [
         {
           title: "ISO 9001 - Calidad",
           description: "Implementación completa del Sistema de Gestión de Calidad",
           icon: Award,
-          iconColor: '#f59e0b', // Dorado para calidad
+          iconColor: themeColors.calidad,
           features: [
             "Diagnóstico inicial y planificación",
             "Desarrollo y documentación de procesos",
@@ -149,7 +167,7 @@ const ServiceSection = () => {
           title: "ISO 45001 - Seguridad",
           description: "Sistema de Gestión de Seguridad y Salud en el Trabajo",
           icon: Shield,
-          iconColor: '#dc2626', // Rojo para seguridad
+          iconColor: themeColors.seguridad,
           features: [
             "Identificación de peligros y riesgos",
             "Planes de emergencia y contingencia",
@@ -161,7 +179,7 @@ const ServiceSection = () => {
           title: "ISO 14001 - Ambiental",
           description: "Gestión Ambiental para organizaciones sostenibles",
           icon: Leaf,
-          iconColor: '#10b981', // Verde para ambiental
+          iconColor: themeColors.ambiental,
           features: [
             "Aspectos e impactos ambientales",
             "Cumplimiento legal ambiental",
@@ -176,13 +194,13 @@ const ServiceSection = () => {
       icon: GraduationCap,
       title: 'Formación',
       description: 'Capacitación especializada para el desarrollo de competencias técnicas y directivas.',
-      themeColor: '#059669', // Verde crecimiento
+      themeColor: themeColors.formacion,
       services: [
         {
           title: "Análisis de Datos",
           description: "Formación en extracción de valor de datos para decisiones basadas en evidencia",
           icon: BarChart2,
-          iconColor: '#3b82f6', // Azul para datos
+          iconColor: themeColors.datos,
           features: [
             "Análisis descriptivo y predictivo",
             "Visualización efectiva de datos",
@@ -194,7 +212,7 @@ const ServiceSection = () => {
           title: "Liderazgo y Equipos",
           description: "Desarrollo de habilidades para gestión de equipos de alto rendimiento",
           icon: Users,
-          iconColor: '#8b5cf6', // Púrpura para liderazgo
+          iconColor: themeColors.liderazgo,
           features: [
             "Liderazgo disruptivo",
             "Comunicación efectiva",
@@ -206,7 +224,7 @@ const ServiceSection = () => {
           title: "Auditoría Interna",
           description: "Capacitación especializada en auditoría de sistemas de gestión",
           icon: FileCheck,
-          iconColor: '#059669', // Verde para auditoría
+          iconColor: themeColors.auditoria,
           features: [
             "Interpretación de requisitos normativos",
             "Técnicas de auditoría efectiva",
@@ -221,13 +239,13 @@ const ServiceSection = () => {
       icon: Target,
       title: 'Coaching',
       description: 'Acompañamiento personalizado para el desarrollo personal y organizacional.',
-      themeColor: '#dc2626', // Rojo impacto
+      themeColor: themeColors.consultoria,
       services: [
         {
           title: "Coaching Gerencial",
           description: "Acompañamiento personalizado para directivos y equipos de alta dirección",
           icon: TrendingUp,
-          iconColor: '#0ea5e9', // Azul cielo para gerencial
+          iconColor: themeColors.gerencial,
           features: [
             "Definición de visión y metas",
             "Desarrollo de competencias directivas",
@@ -239,7 +257,7 @@ const ServiceSection = () => {
           title: "Coaching en PNL",
           description: "Programación Neurolingüística para desarrollo personal y profesional",
           icon: CheckCircle,
-          iconColor: '#ec4899', // Rosa para PNL
+          iconColor: themeColors.pnl,
           features: [
             "Comunicación efectiva",
             "Gestión emocional",
@@ -251,7 +269,7 @@ const ServiceSection = () => {
           title: "Coaching Estratégico",
           description: "Transformación de estrategias personales y organizacionales",
           icon: Target,
-          iconColor: '#f59e0b', // Dorado para estratégico
+          iconColor: themeColors.estrategico,
           features: [
             "Análisis de potencial individual",
             "Diseño de planes de desarrollo",

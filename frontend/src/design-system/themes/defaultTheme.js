@@ -44,6 +44,16 @@ export const defaultTheme = {
     modal: 1040,
     popover: 1050,
     tooltip: 1060
+  },
+  
+  // Button primary configuration (light theme)
+  buttonPrimary: {
+    background: colors.primary,
+    text: colors.white,
+    hover: colors.primaryDark,
+    active: colors.primaryDark,
+    shimmer: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+    overlay: 'linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%)'
   }
 };
 

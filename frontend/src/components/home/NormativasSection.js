@@ -1,6 +1,6 @@
 // frontend/src/components/home/NormativasSection.js
 import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, useTheme } from 'styled-components';
 import { Section, SectionHeader, Grid } from '../../design-system/components';
 import { Card_Interaccion } from '../../design-system/components/Card';
 import { Award, Shield, Car, Lightbulb } from 'lucide-react';
@@ -14,6 +14,7 @@ const NormativasGrid = styled(Grid)`
 `;
 
 const NormativasSection = () => {
+  const theme = useTheme();
   const [showModal, setShowModal] = useState(false);
   const [currentNormativa, setCurrentNormativa] = useState(null);
 
@@ -103,15 +104,15 @@ const NormativasSection = () => {
     return icons[id] || Award;
   };
 
-  // Colores temáticos para cada normativa
+  // Colores temáticos para cada normativa usando tokens del tema
   const getColor = (id) => {
     const colors = {
-      'iso': '#3498db',
-      'sgsst': '#e74c3c',
-      'pesv': '#9b59b6',
-      'innovation': '#f39c12'
+      'iso': theme.buttonPrimary?.background || theme.colors.primary, // Azul corporativo
+      'sgsst': theme.colors.danger || '#dc2626', // Rojo para seguridad
+      'pesv': theme.colors.secondary || '#6366f1', // Púrpura para vial
+      'innovation': theme.colors.warning || '#f59e0b' // Amarillo para innovación
     };
-    return colors[id] || '#3498db';
+    return colors[id] || theme.colors.primary;
   };
 
   return (

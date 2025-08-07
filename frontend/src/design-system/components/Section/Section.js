@@ -9,7 +9,7 @@ import { H2, Text } from '../Typography';
 // Variantes de sección - Fondos consistentes sin gradientes
 const sectionVariants = {
   default: css`
-    background-color: ${props => props.theme.colors.white};
+    background-color: ${props => props.theme.card?.background || props.theme.colors.white};
     color: ${props => props.theme.colors.text};
   `,
   
@@ -19,14 +19,14 @@ const sectionVariants = {
   `,
   
   white: css`
-    background-color: ${props => props.theme.colors.white};
+    background-color: ${props => props.theme.card?.background || props.theme.colors.white};
     color: ${props => props.theme.colors.text};
   `,
   
   // Mantenemos solo estas variantes para casos específicos si se necesitan
   primary: css`
-    background-color: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.white};
+    background-color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white};
   `,
   
   secondary: css`

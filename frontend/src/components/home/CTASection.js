@@ -10,12 +10,12 @@ const CTAContainer = styled(SectionContent)`
   text-align: center;
   padding: ${props => props.theme.spacing.s10};
   border-radius: ${props => props.theme.borderRadius.large};
-  background: ${props => props.theme.colors.white};
-  border: 1px solid ${props => props.theme.colors.borderSubtle};
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
+  border: 1px solid ${props => props.theme.card?.border || props.theme.colors.borderSubtle};
   transition: ${props => props.theme.transitions.normal};
   
   &:hover {
-    box-shadow: ${props => props.theme.shadows.ctaHover(props.theme.colors.primary)};
+    box-shadow: ${props => props.theme.shadows.cardHover || props.theme.shadows.card};
   }
 `;
 
@@ -75,12 +75,12 @@ const CTAButton = styled(Button)`
   font-size: ${props => props.theme.typography.fontSizes.buttonCta};
   padding: ${props => props.theme.spacing.s4} ${props => props.theme.spacing.s8};
   border-radius: ${props => props.theme.borderRadius.medium};
-  box-shadow: 0 4px 14px 0 ${props => props.theme.colors.primary}30;
+  box-shadow: ${props => props.theme.shadows.button || '0 4px 14px rgba(0, 0, 0, 0.1)'};
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px 0 ${props => props.theme.colors.primary}40;
+    box-shadow: ${props => props.theme.shadows.buttonHover || '0 8px 25px rgba(0, 0, 0, 0.15)'};
   }
   
   &:active {

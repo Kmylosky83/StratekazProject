@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { Mail, Lock, LogIn } from 'lucide-react';
+import { Mail, Lock, LogIn, AlertTriangle } from 'lucide-react';
 import { 
   FormContainer,
   StepContainer,
@@ -10,9 +10,6 @@ import {
 } from '../../design-system/components';
 import authService from '../../services/auth/AuthService';
 import { AuthContext } from '../../context/AuthContext';
-import { colors } from '../../design-system/tokens/colors';
-import { spacing } from '../../design-system/tokens/spacing';
-import { typography } from '../../design-system/tokens/typography';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,6 +21,7 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [showRememberWarning, setShowRememberWarning] = useState(false);
   
   // Obtener funciones del contexto de autenticación si existe
   const authContext = useContext(AuthContext);
@@ -34,6 +32,11 @@ const Login = () => {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     const val = type === 'checkbox' ? checked : value;
+    
+    // Mostrar advertencia cuando se marca el checkbox de recordar
+    if (name === 'remember' && checked) {
+      setShowRememberWarning(true);
+    }
     
     setFormData({
       ...formData,
@@ -195,6 +198,15 @@ const Login = () => {
               </CheckboxLabel>
             </CheckboxGroup>
             
+            {showRememberWarning && formData.remember && (
+              <WarningMessage>
+                <AlertTriangle size={16} />
+                <span>
+                  Utiliza esta opción solo en equipos privados. No la actives en equipos de uso público o compartido.
+                </span>
+              </WarningMessage>
+            )}
+            
             <SubmitButton
               type="submit"
               variant="primary"
@@ -230,22 +242,22 @@ const AuthPageWrapper = styled.div`
 `;
 
 const SuccessAlert = styled.div`
-  background-color: #eff7ef;
-  color: #2e7d32;
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
+  color: ${props => props.theme.colors.success || props.theme.colors.primary};
   padding: ${props => props.theme.spacing.s4};
   border-radius: ${props => props.theme.borderRadius.medium};
   margin-bottom: ${props => props.theme.spacing.s4};
-  border: 1px solid #2e7d32;
+  border: 1px solid ${props => props.theme.colors.success || props.theme.colors.primary};
   text-align: center;
 `;
 
 const ErrorAlert = styled.div`
-  background-color: #fee;
-  color: #c33;
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
+  color: ${props => props.theme.colors.danger || props.theme.colors.text};
   padding: ${props => props.theme.spacing.s4};
   border-radius: ${props => props.theme.borderRadius.medium};
   margin-bottom: ${props => props.theme.spacing.s4};
-  border: 1px solid #c33;
+  border: 1px solid ${props => props.theme.colors.danger || props.theme.colors.border};
   text-align: center;
 `;
 
@@ -258,30 +270,30 @@ const LoginForm = styled.form`
 `;
 
 const FormGroup = styled.div`
-  margin-bottom: ${spacing.medium};
+  margin-bottom: ${props => props.theme.spacing.s4};
 `;
 
 const FormLabel = styled.label`
   display: flex;
   align-items: center;
-  gap: ${spacing.s1};
-  margin-bottom: ${spacing.s1};
-  font-weight: ${typography.fontWeights.medium};
-  color: ${colors.text};
-  font-size: ${typography.fontSizes.base};
+  gap: ${props => props.theme.spacing.s2};
+  margin-bottom: ${props => props.theme.spacing.s2};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.base};
 `;
 
 const LabelRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${spacing.s1};
+  margin-bottom: ${props => props.theme.spacing.s2};
 `;
 
 const ForgotPasswordLink = styled(Link)`
-  color: ${colors.primary};
+  color: ${props => props.theme.colors.primary};
   text-decoration: none;
-  font-size: ${typography.fontSizes.note};
+  font-size: ${props => props.theme.typography.fontSizes.note};
   
   &:hover {
     opacity: 0.8;
@@ -290,52 +302,54 @@ const ForgotPasswordLink = styled(Link)`
 
 const FormInput = styled.input`
   width: 100%;
-  padding: ${spacing.small} ${spacing.medium};
-  border: 1px solid ${({ $hasError }) => $hasError ? colors.danger : colors.border};
-  border-radius: ${spacing.s1};
-  font-size: ${typography.fontSizes.base};
+  padding: ${props => props.theme.spacing.s3} ${props => props.theme.spacing.s4};
+  border: 1px solid ${({ $hasError, theme }) => $hasError ? theme.colors.danger : theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.small};
+  font-size: ${props => props.theme.typography.fontSizes.base};
+  background: ${props => props.theme.colors.white};
+  color: ${props => props.theme.colors.text};
   transition: border-color 0.2s ease;
   
   &:focus {
     outline: none;
-    border-color: ${colors.primary};
-    box-shadow: 0 0 0 2px ${colors.focus};
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 2px ${props => props.theme.colors.focus};
   }
   
   &::placeholder {
-    color: ${colors.textMuted};
+    color: ${props => props.theme.colors.textMuted};
   }
 `;
 
 const ErrorText = styled.div`
-  color: ${colors.danger};
-  font-size: ${typography.fontSizes.note};
-  margin-top: ${spacing.s1};
+  color: ${props => props.theme.colors.danger};
+  font-size: ${props => props.theme.typography.fontSizes.note};
+  margin-top: ${props => props.theme.spacing.s2};
 `;
 
 const CheckboxGroup = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: ${spacing.medium};
+  margin-bottom: ${props => props.theme.spacing.s4};
 `;
 
 const FormCheckbox = styled.input`
-  margin-right: ${spacing.small};
-  accent-color: ${colors.primary};
+  margin-right: ${props => props.theme.spacing.s3};
+  accent-color: ${props => props.theme.colors.primary};
 `;
 
 const CheckboxLabel = styled.label`
-  font-size: ${typography.fontSizes.base};
-  color: ${colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.base};
+  color: ${props => props.theme.colors.text};
   cursor: pointer;
 `;
 
 const SubmitButton = styled(Button)`
-  margin-top: ${spacing.medium};
+  margin-top: ${props => props.theme.spacing.s4};
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${spacing.s1};
+  gap: ${props => props.theme.spacing.s2};
 `;
 
 const Spinner = styled.div`
@@ -367,6 +381,29 @@ const FooterText = styled.div`
     &:hover {
       opacity: 0.8;
     }
+  }
+`;
+
+const WarningMessage = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: ${props => props.theme.spacing.s3};
+  padding: ${props => props.theme.spacing.s3} ${props => props.theme.spacing.s4};
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
+  border: 1px solid ${props => props.theme.colors.warning || props.theme.colors.primary};
+  border-radius: ${props => props.theme.borderRadius.small};
+  font-size: ${props => props.theme.typography.fontSizes.note};
+  color: ${props => props.theme.colors.warning || props.theme.colors.text};
+  margin-top: -${props => props.theme.spacing.s3};
+  
+  svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: ${props => props.theme.colors.warning || props.theme.colors.primary};
+  }
+  
+  span {
+    line-height: 1.4;
   }
 `;
 

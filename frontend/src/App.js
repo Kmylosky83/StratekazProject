@@ -15,6 +15,7 @@ import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
 import PortfolioPage from './pages/PortfolioPage';
 import AccesoGratuitoPage from './pages/AccesoGratuitoPage';
+import HerramientaPage from './pages/HerramientaPage';
 
 const App = () => {
   return (
@@ -30,6 +31,9 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/portfolio" element={<PortfolioPage />} />
               <Route path="/acceso-gratuito" element={<AccesoGratuitoPage />} />
+              
+              {/* Rutas de herramientas */}
+              <Route path="/herramientas/:pillar/:toolId" element={<HerramientaPage />} />
               
               {/* Redirección para rutas no encontradas */}
               <Route path="*" element={<Navigate to="/" />} />

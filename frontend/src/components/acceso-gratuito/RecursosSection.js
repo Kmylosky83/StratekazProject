@@ -1,10 +1,11 @@
 // RecursosSection - Componente específico para AccesoGratuitoPage
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Section, SectionHeader, Grid, Container, Card_Selection } from '../../design-system/components';
-import { Award, HardHat, Car, Lightbulb } from 'lucide-react';
-// import RecursoLibreModal from '../modals/RecursoLibreModal'; // No usado en esta sección
+import { Section, SectionHeader, Grid, Container, Card_Selection, Button } from '../../design-system/components';
+import { Award, HardHat, Car, Lightbulb, HelpCircle } from 'lucide-react';
 import RecursosLibresInfoModal from '../modals/RecursosLibresInfoModal';
+import PillarSidebar from '../recursos-libres/PillarSidebar';
 import { Icon } from '../../design-system/icons';
 
 const ToolGrid = styled(Grid)`
@@ -12,121 +13,100 @@ const ToolGrid = styled(Grid)`
   margin: 0 auto;
 `;
 
-const HeaderContainer = styled.div`
-  position: relative;
-`;
-
-const InfoButton = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: ${props => props.theme.colors.white};
-  border: 2px solid ${props => props.theme.colors.border};
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
+const HeaderSection = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  color: ${props => props.theme.colors.textMuted};
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  
-  /* Efecto de resplandor sutil */
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle, ${props => props.theme.colors.primary}20 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  /* Estados de interacción mejorados */
-  &:hover {
-    background: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.white};
-    border-color: ${props => props.theme.colors.primary};
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(236, 38, 143, 0.25);
-    
-    &::before {
-      opacity: 1;
-    }
-  }
-  
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px ${props => props.theme.colors.focus}, 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-  
-  &:active {
-    transform: translateY(-1px) scale(1.02);
-    transition: all 0.1s ease;
-  }
-  
-  /* Icono con micro-animación */
-  svg {
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover svg {
-    transform: rotate(15deg) scale(1.1);
-  }
-  
-  /* Responsive mejorado */
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    position: static;
-    margin: ${props => props.theme.spacing.s4} auto 0;
-    width: 48px;
-    height: 48px;
-  }
-  
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    width: 52px;
-    height: 52px;
-  }
+  gap: 4px;
+  margin-bottom: ${props => props.theme.spacing.s3};
+  margin-top: ${props => props.theme.spacing.s8};
+  text-align: center;
 `;
 
 const tools = [
   {
     id: 'iso',
     icon: Award,
-    title: "ISO 9001",
+    title: "ISO 9001 | 45001 | 14001",
     description: "Sistema de Gestión de Calidad. Herramientas básicas para implementar ISO 9001 en tu organización.",
-    available: true
+    available: true,
+    herramientas: [
+      {
+        id: 'matriz-riesgos',
+        name: 'Matriz de Riesgos',
+        description: 'Identifica y evalúa los riesgos de tu organización'
+      },
+      {
+        id: 'auditoria-interna',
+        name: 'Auditoría Interna',
+        description: 'Planifica y ejecuta auditorías internas de calidad'
+      }
+    ]
   },
   {
     id: 'sgsst',
     icon: HardHat,
     title: "SG-SST",
     description: "Sistema de Gestión de Seguridad y Salud en el Trabajo. Cumple con la normatividad colombiana.",
-    available: true
+    available: true,
+    herramientas: [
+      {
+        id: 'matriz-peligros',
+        name: 'Matriz de Peligros',
+        description: 'Identifica peligros y evalúa riesgos laborales'
+      },
+      {
+        id: 'investigacion-accidentes',
+        name: 'Investigación de Accidentes',
+        description: 'Investiga y analiza accidentes e incidentes'
+      }
+    ]
   },
   {
     id: 'pesv',
     icon: Car,
     title: "PESV",
     description: "Plan Estratégico de Seguridad Vial. Herramientas para implementar PESV en tu empresa.",
-    available: true
+    available: true,
+    herramientas: [
+      {
+        id: 'diagnostico-pesv',
+        name: 'Diagnóstico PESV',
+        description: 'Evalúa el estado actual de seguridad vial'
+      },
+      {
+        id: 'plan-accion',
+        name: 'Plan de Acción',
+        description: 'Define objetivos y acciones de seguridad vial'
+      }
+    ]
   },
   {
     id: 'innovation',
     icon: Lightbulb,
     title: "Innovación",
     description: "Herramientas de gestión de la innovación. Impulsa la creatividad en tu organización.",
-    available: true
+    available: true,
+    herramientas: [
+      {
+        id: 'canvas-innovacion',
+        name: 'Canvas de Innovación',
+        description: 'Estructura tus ideas innovadoras'
+      },
+      {
+        id: 'matriz-priorizacion',
+        name: 'Matriz de Priorización',
+        description: 'Prioriza proyectos de innovación'
+      }
+    ]
   }
 ];
 
 const RecursosSection = () => {
+  const navigate = useNavigate();
   const [infoModalOpen, setInfoModalOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedPillar, setSelectedPillar] = useState(null);
 
   // Verificar si es la primera visita y mostrar modal automáticamente
   useEffect(() => {
@@ -142,14 +122,20 @@ const RecursosSection = () => {
   }, []);
 
   const handleToolClick = (tool) => {
-    // Función principal para acceder al recurso
-    console.log(`Accediendo directamente al recurso: ${tool.id}`);
-    // Aquí puedes agregar lógica para navegar a la herramienta específica
-    // Ejemplo: window.location.href = `/herramientas/${tool.id}`;
-    // O navegar con React Router: navigate(`/herramientas/${tool.id}`);
+    // Abrir sidebar con las herramientas del pilar
+    setSelectedPillar(tool.id);
+    setSidebarOpen(true);
   };
 
-  // Función para mostrar información general sobre recursos libres
+  const handleToolSelect = (tool) => {
+    // Navegar a la herramienta específica
+    navigate(`/herramientas/${selectedPillar}/${tool.id}`);
+  };
+
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
+    setSelectedPillar(null);
+  };
 
   const handleShowInfo = () => {
     setInfoModalOpen(true);
@@ -158,19 +144,22 @@ const RecursosSection = () => {
   return (
     <Section variant="light" size="large">
       <Container>
-        <HeaderContainer>
+        <HeaderSection>
           <SectionHeader
             title="Recursos Libres"
-            subtitle="Accede a nuestras herramientas básicas de gestión empresarial completamente gratis"
             centered
           />
-          <InfoButton 
+          
+          <Button 
+            variant="outline"
+            size="medium"
             onClick={handleShowInfo}
             title="¿Cómo funcionan los recursos libres?"
+            aria-label="Información sobre recursos libres"
           >
-            <Icon name="help-circle" size={20} />
-          </InfoButton>
-        </HeaderContainer>
+            ¿Cómo funcionan los recursos libres?
+          </Button>
+        </HeaderSection>
         
         <ToolGrid columns={4} tablet={2} mobile={1} gap="large">
           {tools.map((tool, index) => {
@@ -193,6 +182,15 @@ const RecursosSection = () => {
         <RecursosLibresInfoModal
           isOpen={infoModalOpen}
           onClose={() => setInfoModalOpen(false)}
+        />
+
+        {/* Sidebar de Herramientas */}
+        <PillarSidebar
+          isOpen={sidebarOpen}
+          onClose={handleCloseSidebar}
+          selectedPillar={selectedPillar}
+          tools={selectedPillar ? tools.find(t => t.id === selectedPillar)?.herramientas || [] : []}
+          onToolSelect={handleToolSelect}
         />
       </Container>
     </Section>

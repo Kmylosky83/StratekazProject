@@ -23,6 +23,7 @@ export const shadows = {
   
   // Sombras de botones
   button: '0 0.5rem 1rem rgba(0, 0, 0, 0.15)',
+  buttonHover: '0 0.75rem 1.5rem rgba(0, 0, 0, 0.2)',
   buttonSecondary: '0 0.5rem 1rem rgba(0, 0, 0, 0.1)',
   
   // Sombras de tarjetas con funciones dinámicas

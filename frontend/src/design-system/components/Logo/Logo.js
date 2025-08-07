@@ -24,6 +24,13 @@ const StyledLogo = styled.div`
   cursor: ${props => props.clickable ? 'pointer' : 'default'};
   transition: ${props => props.theme.transitions.normal};
   
+  /* Sombra para logo - solo en tema black usando design system */
+  ${props => props.theme.shadows.logo && `
+    img, svg {
+      filter: drop-shadow(${props.theme.shadows.logo});
+    }
+  `}
+  
   svg {
     width: ${props => {
       switch (props.size) {
@@ -40,9 +47,22 @@ const StyledLogo = styled.div`
         case 'medium': return '40px';
         case 'large': return '50px';
         case 'xlarge': return '60px';
+        default: return '60px';
+      }
+    }};
+  }
+  
+  img {
+    max-height: ${props => {
+      switch (props.size) {
+        case 'small': return '30px';
+        case 'medium': return '40px';
+        case 'large': return '50px';
+        case 'xlarge': return '60px';
         default: return '40px';
       }
     }};
+    width: auto;
   }
   
   &:hover {

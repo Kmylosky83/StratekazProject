@@ -150,7 +150,7 @@ const ModalFooter = styled.div`
   margin-top: ${props => props.theme.spacing.s4};
 `;
 
-const TermsModal = ({ isOpen, onClose, onAccept }) => {
+const TermsModal = ({ isOpen, onClose, onAccept, hideRegisterButton = false }) => {
   return (
     <Modal 
       isOpen={isOpen} 
@@ -324,18 +324,20 @@ const TermsModal = ({ isOpen, onClose, onAccept }) => {
         <Button variant="outline" onClick={onClose}>
           Cerrar
         </Button>
-        <Button 
-          as="a"
-          href="/registro"
-          variant="primary"
-          onClick={() => {
-            if (onAccept) onAccept();
-            onClose();
-            window.scrollTo(0, 0);
-          }}
-        >
-          Continuar al Registro
-        </Button>
+        {!hideRegisterButton && (
+          <Button 
+            as="a"
+            href="/registro"
+            variant="primary"
+            onClick={() => {
+              if (onAccept) onAccept();
+              onClose();
+              window.scrollTo(0, 0);
+            }}
+          >
+            Continuar al Registro
+          </Button>
+        )}
       </ModalFooter>
     </Modal>
   );

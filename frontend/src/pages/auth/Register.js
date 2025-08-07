@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, UserCheck, Building2, Factory } from 'lucide-react';
+import { ArrowLeft, ArrowRight, UserCheck, Building2, Factory, FileText } from 'lucide-react';
 import styled from 'styled-components';
 import authService from '../../services/auth/AuthService';
-import PolicyModal from '../../components/modals/PolicyModal';
+import TermsModal from '../../components/modals/TermsModal';
+import PrivacyModal from '../../components/modals/PrivacyModal';
 import { 
   Card_Selection, 
-  Button
+  Button,
+  Section,
+  Container
 } from '../../design-system/components';
-import { colors } from '../../design-system/tokens/colors';
-import { spacing } from '../../design-system/tokens/spacing';
-import { typography } from '../../design-system/tokens/typography';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -163,14 +163,12 @@ const [passwordStrength, setPasswordStrength] = useState({
     // Aquí iría la implementación real con una librería como canvas-confetti
   };
 
-  const [policyModal, setPolicyModal] = useState({
-    show: false,
-    type: 'privacy' // o 'terms'
-  });
+  const [termsModalOpen, setTermsModalOpen] = useState(false);
+  const [privacyModalOpen, setPrivacyModalOpen] = useState(false);
 
   return (
     <AuthPageWrapper>
-      <CompactFormContainer>
+      <CompactFormContainer $currentStep={currentStep}>
         {errors.general && (
           <ErrorAlert>{errors.general}</ErrorAlert>
         )}
@@ -208,73 +206,76 @@ const [passwordStrength, setPasswordStrength] = useState({
         {currentStep === 2 && (
           <CompactStepContainer>
             <CompactStepTitle>Información de acceso</CompactStepTitle>
-                    
-                    <FormGroup>
-                      <FormLabel>Email</FormLabel>
-                      <FormInput
-                        type="email"
-                        $hasError={!!errors.email}
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        placeholder="tu@email.com"
-                      />
-                      {errors.email && <ErrorText>{errors.email}</ErrorText>}
-                    </FormGroup>
-                    
-                    <FormRow>
-                      <FormGroup>
-                        <FormLabel>Contraseña</FormLabel>
-                        <FormInput
-                          type="password"
-                          $hasError={!!errors.password}
-                          name="password"
-                          value={formData.password}
-                          onChange={handleInputChange}
-                        />
-                        {errors.password && <ErrorText>{errors.password}</ErrorText>}
-                        
-                        {formData.password && (
-                          <PasswordStrengthContainer>
-                            <PasswordStrengthBadge $score={passwordStrength.score}>
-                              {passwordStrength.score === 0 ? 'Muy débil' :
-                              passwordStrength.score === 1 ? 'Débil' :
-                              passwordStrength.score === 2 ? 'Media' :
-                              passwordStrength.score === 3 ? 'Fuerte' :
-                              'Muy fuerte'}
-                            </PasswordStrengthBadge>
-                            <PasswordChecklist>
-                              <ChecklistItem $valid={passwordStrength.length}>
-                                {passwordStrength.length ? '✓' : '✗'} Mínimo 8 caracteres
-                              </ChecklistItem>
-                              <ChecklistItem $valid={passwordStrength.lowercase}>
-                                {passwordStrength.lowercase ? '✓' : '✗'} Una letra minúscula
-                              </ChecklistItem>
-                              <ChecklistItem $valid={passwordStrength.uppercase}>
-                                {passwordStrength.uppercase ? '✓' : '✗'} Una letra mayúscula
-                              </ChecklistItem>
-                              <ChecklistItem $valid={passwordStrength.number}>
-                                {passwordStrength.number ? '✓' : '✗'} Un número
-                              </ChecklistItem>
-                              <ChecklistItem $valid={passwordStrength.special}>
-                                {passwordStrength.special ? '✓' : '✗'} Un carácter especial
-                              </ChecklistItem>
-                            </PasswordChecklist>
-                          </PasswordStrengthContainer>
-                        )}
-                      </FormGroup>
-                      <FormGroup>
-                        <FormLabel>Confirmar Contraseña</FormLabel>
-                        <FormInput
-                          type="password"
-                          $hasError={!!errors.confirmPassword}
-                          name="confirmPassword"
-                          value={formData.confirmPassword}
-                          onChange={handleInputChange}
-                        />
-                        {errors.confirmPassword && <ErrorText>{errors.confirmPassword}</ErrorText>}
-                      </FormGroup>
-                    </FormRow>
+            
+            <SingleColumnForm>
+              <FormGroup>
+                <FormLabel>Email</FormLabel>
+                <FormInput
+                  type="email"
+                  $hasError={!!errors.email}
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="tu@email.com"
+                />
+                {errors.email && <ErrorText>{errors.email}</ErrorText>}
+              </FormGroup>
+              
+              <FormGroup>
+                <FormLabel>Contraseña</FormLabel>
+                <FormInput
+                  type="password"
+                  $hasError={!!errors.password}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Mínimo 8 caracteres"
+                />
+                {errors.password && <ErrorText>{errors.password}</ErrorText>}
+                
+                {formData.password && (
+                  <PasswordStrengthContainer>
+                    <PasswordStrengthBadge $score={passwordStrength.score}>
+                      {passwordStrength.score === 0 ? 'Muy débil' :
+                      passwordStrength.score === 1 ? 'Débil' :
+                      passwordStrength.score === 2 ? 'Media' :
+                      passwordStrength.score === 3 ? 'Fuerte' :
+                      'Muy fuerte'}
+                    </PasswordStrengthBadge>
+                    <PasswordChecklist>
+                      <ChecklistItem $valid={passwordStrength.length}>
+                        {passwordStrength.length ? '✓' : '✗'} Mínimo 8 caracteres
+                      </ChecklistItem>
+                      <ChecklistItem $valid={passwordStrength.lowercase}>
+                        {passwordStrength.lowercase ? '✓' : '✗'} Una letra minúscula
+                      </ChecklistItem>
+                      <ChecklistItem $valid={passwordStrength.uppercase}>
+                        {passwordStrength.uppercase ? '✓' : '✗'} Una letra mayúscula
+                      </ChecklistItem>
+                      <ChecklistItem $valid={passwordStrength.number}>
+                        {passwordStrength.number ? '✓' : '✗'} Un número
+                      </ChecklistItem>
+                      <ChecklistItem $valid={passwordStrength.special}>
+                        {passwordStrength.special ? '✓' : '✗'} Un carácter especial
+                      </ChecklistItem>
+                    </PasswordChecklist>
+                  </PasswordStrengthContainer>
+                )}
+              </FormGroup>
+              
+              <FormGroup>
+                <FormLabel>Confirmar Contraseña</FormLabel>
+                <FormInput
+                  type="password"
+                  $hasError={!!errors.confirmPassword}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  placeholder="Repite tu contraseña"
+                />
+                {errors.confirmPassword && <ErrorText>{errors.confirmPassword}</ErrorText>}
+              </FormGroup>
+            </SingleColumnForm>
           </CompactStepContainer>
         )}
         
@@ -282,38 +283,57 @@ const [passwordStrength, setPasswordStrength] = useState({
           <CompactStepContainer>
             <CompactStepTitle>Términos y Condiciones</CompactStepTitle>
             
-            <CheckboxGroup>
-              <FormCheckbox
-                type="checkbox"
-                $hasError={!!errors.terms}
-                id="acceptTerms"
-                checked={termsAccepted}
-                onChange={() => setTermsAccepted(!termsAccepted)}
-              />
-              <CheckboxLabel htmlFor="acceptTerms">
-                He leído y acepto los <PolicyLink onClick={() => setPolicyModal({ show: true, type: 'terms' })}>Términos y Condiciones</PolicyLink>
-              </CheckboxLabel>
-              {errors.terms && <ErrorText>{errors.terms}</ErrorText>}
-            </CheckboxGroup>
-            
-            <PrivacyText>
-              Al registrarte, también aceptas nuestra <PolicyLink onClick={() => setPolicyModal({ show: true, type: 'privacy' })}>Política de Privacidad</PolicyLink>
-            </PrivacyText>
+            <SingleColumnForm>
+              <TermsContainer>
+                <TermsSummary>
+                  <TermsIcon>
+                    <FileText size={24} />
+                  </TermsIcon>
+                  <TermsContent>
+                    <TermsTitle>Términos de Uso y Política de Privacidad</TermsTitle>
+                    <TermsDescription>
+                      Al crear tu cuenta aceptas nuestros términos de servicio y la forma en que protegemos tu información.
+                    </TermsDescription>
+                    <TermsActions>
+                      <PolicyLink onClick={() => setTermsModalOpen(true)}>
+                        Leer Términos Completos
+                      </PolicyLink>
+                      <span> • </span>
+                      <PolicyLink onClick={() => setPrivacyModalOpen(true)}>
+                        Política de Privacidad
+                      </PolicyLink>
+                    </TermsActions>
+                  </TermsContent>
+                </TermsSummary>
+                
+                <CheckboxGroup>
+                  <FormCheckbox
+                    type="checkbox"
+                    $hasError={!!errors.terms}
+                    id="acceptTerms"
+                    checked={termsAccepted}
+                    onChange={() => setTermsAccepted(!termsAccepted)}
+                  />
+                  <CheckboxLabel htmlFor="acceptTerms">
+                    Acepto los términos y condiciones
+                  </CheckboxLabel>
+                </CheckboxGroup>
+                {errors.terms && <ErrorText>{errors.terms}</ErrorText>}
+              </TermsContainer>
+            </SingleColumnForm>
           </CompactStepContainer>
         )}
 
         {/* Navegación */}
         <NavigationContainer>
           {currentStep === 1 ? (
-            <Link to="/" style={{ textDecoration: 'none' }}>
-              <Button variant="outline" size="medium">
-                <ArrowLeft size={20} style={{ marginRight: '8px' }} />
+            <Link to="/">
+              <Button variant="outline" size="medium" icon={<ArrowLeft size={20} />}>
                 Volver al Home
               </Button>
             </Link>
           ) : (
-            <Button variant="outline" size="medium" onClick={prevStep}>
-              <ArrowLeft size={20} style={{ marginRight: '8px' }} />
+            <Button variant="outline" size="medium" onClick={prevStep} icon={<ArrowLeft size={20} />}>
               Anterior
             </Button>
           )}
@@ -324,9 +344,9 @@ const [passwordStrength, setPasswordStrength] = useState({
               size="medium"
               onClick={nextStep}
               disabled={!userType && currentStep === 1}
+              iconRight={<ArrowRight size={20} />}
             >
               Siguiente
-              <ArrowRight size={20} style={{ marginLeft: '8px' }} />
             </Button>
           ) : (
             <Button 
@@ -343,10 +363,15 @@ const [passwordStrength, setPasswordStrength] = useState({
           ¿Ya tienes una cuenta? <Link to="/login" onClick={() => window.scrollTo(0, 0)}>Inicia sesión aquí</Link>
         </FooterText>
 
-        <PolicyModal 
-          show={policyModal.show} 
-          handleClose={() => setPolicyModal({ ...policyModal, show: false })} 
-          type={policyModal.type} 
+        <TermsModal 
+          isOpen={termsModalOpen} 
+          onClose={() => setTermsModalOpen(false)}
+          hideRegisterButton={true}
+        />
+        
+        <PrivacyModal 
+          isOpen={privacyModalOpen} 
+          onClose={() => setPrivacyModalOpen(false)} 
         />
       </CompactFormContainer>
     </AuthPageWrapper>
@@ -364,14 +389,14 @@ const AuthPageWrapper = styled.div`
 `;
 
 const CompactFormContainer = styled.div`
-  max-width: 1100px;
+  max-width: ${({ $currentStep }) => $currentStep === 1 ? '1100px' : '480px'};
   width: 100%;
   margin: 0 auto;
   padding: ${props => props.theme.spacing.s6};
   border-radius: ${props => props.theme.borderRadius.large};
-  background: ${props => props.theme.colors.white};
-  border: 1px solid ${props => props.theme.colors.borderSubtle};
-  transition: ${props => props.theme.transitions.normal};
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
+  border: 1px solid ${props => props.theme.card?.border || props.theme.colors.borderSubtle};
+  transition: all ${props => props.theme.transitions.normal};
   box-shadow: ${props => props.theme.shadows.card};
   
   &:hover {
@@ -434,42 +459,46 @@ const NavigationContainer = styled.div`
     flex-direction: column;
     gap: ${props => props.theme.spacing.s3};
   }
+  
+  a {
+    text-decoration: none;
+  }
 `;
 
 const FormGroup = styled.div`
-  margin-bottom: ${spacing.medium};
+  margin-bottom: ${props => props.theme.spacing.s4};
 `;
 
 const FormLabel = styled.label`
   display: block;
-  margin-bottom: ${spacing.s1};
-  font-weight: ${typography.fontWeights.medium};
-  color: ${colors.text};
+  margin-bottom: ${props => props.theme.spacing.s1};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  color: ${props => props.theme.colors.text};
 `;
 
 const FormInput = styled.input`
   width: 100%;
-  padding: ${spacing.small} ${spacing.medium};
-  border: 1px solid ${({ $hasError }) => $hasError ? colors.danger : colors.border};
-  border-radius: ${spacing.s1};
-  font-size: ${typography.fontSizes.base};
+  padding: ${props => props.theme.spacing.s2} ${props => props.theme.spacing.s4};
+  border: 1px solid ${({ $hasError, theme }) => $hasError ? theme.colors.danger : theme.colors.border};
+  border-radius: ${props => props.theme.spacing.s1};
+  font-size: ${props => props.theme.typography.fontSizes.base};
   transition: border-color 0.2s ease;
   
   &:focus {
     outline: none;
-    border-color: ${colors.primary};
-    box-shadow: 0 0 0 2px ${colors.focus};
+    border-color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
+    box-shadow: 0 0 0 2px ${props => props.theme.colors.focus || `${props.theme.colors.primary}20`};
   }
   
   &::placeholder {
-    color: ${colors.textMuted};
+    color: ${props => props.theme.colors.textMuted};
   }
 `;
 
 const FormRow = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: ${spacing.medium};
+  gap: ${props => props.theme.spacing.s4};
   
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -477,42 +506,42 @@ const FormRow = styled.div`
 `;
 
 const ErrorText = styled.div`
-  color: ${colors.danger};
-  font-size: ${typography.fontSizes.note};
-  margin-top: ${spacing.s1};
+  color: ${props => props.theme.colors.danger};
+  font-size: ${props => props.theme.typography.fontSizes.note};
+  margin-top: ${props => props.theme.spacing.s1};
 `;
 
 const PasswordStrengthContainer = styled.div`
-  margin-top: ${spacing.small};
+  margin-top: ${props => props.theme.spacing.s2};
 `;
 
 const PasswordStrengthBadge = styled.span`
   display: inline-block;
-  padding: ${spacing.s1} ${spacing.small};
-  border-radius: ${spacing.s1};
-  font-size: ${typography.fontSizes.note};
-  font-weight: ${typography.fontWeights.medium};
+  padding: ${props => props.theme.spacing.s1} ${props => props.theme.spacing.s2};
+  border-radius: ${props => props.theme.spacing.s1};
+  font-size: ${props => props.theme.typography.fontSizes.note};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
   
-  ${({ $score }) => {
+  ${({ $score, theme }) => {
     if ($score === 0) return `
-      background-color: ${colors.passwordStrength.veryWeak.bg};
-      color: ${colors.passwordStrength.veryWeak.text};
+      background-color: ${theme.colors.passwordStrength.veryWeak.bg};
+      color: ${theme.colors.passwordStrength.veryWeak.text};
     `;
     if ($score === 1) return `
-      background-color: ${colors.passwordStrength.weak.bg};
-      color: ${colors.passwordStrength.weak.text};
+      background-color: ${theme.colors.passwordStrength.weak.bg};
+      color: ${theme.colors.passwordStrength.weak.text};
     `;
     if ($score === 2) return `
-      background-color: ${colors.passwordStrength.medium.bg};
-      color: ${colors.passwordStrength.medium.text};
+      background-color: ${theme.colors.passwordStrength.medium.bg};
+      color: ${theme.colors.passwordStrength.medium.text};
     `;
     if ($score === 3) return `
-      background-color: ${colors.passwordStrength.strong.bg};
-      color: ${colors.passwordStrength.strong.text};
+      background-color: ${theme.colors.passwordStrength.strong.bg};
+      color: ${theme.colors.passwordStrength.strong.text};
     `;
     return `
-      background-color: ${colors.passwordStrength.veryStrong.bg};
-      color: ${colors.passwordStrength.veryStrong.text};
+      background-color: ${theme.colors.passwordStrength.veryStrong.bg};
+      color: ${theme.colors.passwordStrength.veryStrong.text};
     `;
   }}
 `;
@@ -520,38 +549,38 @@ const PasswordStrengthBadge = styled.span`
 const PasswordChecklist = styled.ul`
   list-style: none;
   padding: 0;
-  margin: ${spacing.small} 0 0 0;
+  margin: ${props => props.theme.spacing.s2} 0 0 0;
 `;
 
 const ChecklistItem = styled.li`
-  color: ${({ $valid }) => $valid ? colors.passwordChecklist.valid : colors.passwordChecklist.invalid};
-  font-size: ${typography.fontSizes.note};
-  margin-bottom: ${spacing.s1};
+  color: ${({ $valid, theme }) => $valid ? theme.colors.passwordChecklist.valid : theme.colors.passwordChecklist.invalid};
+  font-size: ${props => props.theme.typography.fontSizes.note};
+  margin-bottom: ${props => props.theme.spacing.s1};
 `;
 
 const CheckboxGroup = styled.div`
-  margin-bottom: ${spacing.medium};
+  margin-bottom: ${props => props.theme.spacing.s4};
 `;
 
 const FormCheckbox = styled.input`
-  margin-right: ${spacing.small};
-  accent-color: ${colors.primary};
+  margin-right: ${props => props.theme.spacing.s2};
+  accent-color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
   
-  ${({ $hasError }) => $hasError && `
-    border-color: ${colors.danger};
+  ${({ $hasError, theme }) => $hasError && `
+    border-color: ${theme.colors.danger};
   `}
 `;
 
 const CheckboxLabel = styled.label`
-  font-size: ${typography.fontSizes.base};
-  color: ${colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.base};
+  color: ${props => props.theme.colors.text};
   cursor: pointer;
 `;
 
 const PolicyLink = styled.button`
   background: none;
   border: none;
-  color: ${colors.primary};
+  color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
   text-decoration: underline;
   padding: 0;
   cursor: pointer;
@@ -565,8 +594,8 @@ const PolicyLink = styled.button`
 const PrivacyText = styled.p`
   text-align: center;
   margin: 0;
-  color: ${colors.textMuted};
-  font-size: ${typography.fontSizes.base};
+  color: ${props => props.theme.colors.textMuted};
+  font-size: ${props => props.theme.typography.fontSizes.base};
 `;
 
 const FooterText = styled.div`
@@ -577,13 +606,74 @@ const FooterText = styled.div`
   color: ${props => props.theme.colors.textMuted};
   
   a {
-    color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
     text-decoration: none;
     font-weight: ${props => props.theme.typography.fontWeights.medium};
     
     &:hover {
       opacity: 0.8;
     }
+  }
+`;
+
+const SingleColumnForm = styled.div`
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.s4};
+`;
+
+const TermsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.s4};
+  width: 100%;
+`;
+
+const TermsSummary = styled.div`
+  display: flex;
+  gap: ${props => props.theme.spacing.s3};
+  padding: ${props => props.theme.spacing.s4};
+  background: ${props => props.theme.card?.backgroundLight || props.theme.colors.backgroundLight};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  border: 1px solid ${props => props.theme.card?.border || props.theme.colors.borderSubtle};
+`;
+
+const TermsIcon = styled.div`
+  color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.primary};
+  flex-shrink: 0;
+  padding-top: ${props => props.theme.spacing.s1};
+`;
+
+const TermsContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.s2};
+`;
+
+const TermsTitle = styled.h4`
+  font-size: ${props => props.theme.typography.fontSizes.base};
+  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
+  color: ${props => props.theme.colors.text};
+  margin: 0;
+`;
+
+const TermsDescription = styled.p`
+  font-size: ${props => props.theme.typography.fontSizes.sm};
+  color: ${props => props.theme.colors.textMuted};
+  margin: 0;
+  line-height: ${props => props.theme.typography.lineHeights.normal};
+`;
+
+const TermsActions = styled.div`
+  font-size: ${props => props.theme.typography.fontSizes.sm};
+  color: ${props => props.theme.colors.textMuted};
+  
+  span {
+    color: ${props => props.theme.colors.borderSubtle};
   }
 `;
 

@@ -10,7 +10,7 @@ import { fadeIn } from '../../animations';
 import { Menu, X, ChevronDown, Sun, Moon, Sparkles, Home, UserPlus, Palette } from 'lucide-react';
 
 const HeaderWrapper = styled.header`
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${props => props.theme.header?.background || props.theme.colors.white};
   box-shadow: ${props => props.theme.shadows.card};
   position: fixed;
   top: 0;
@@ -21,9 +21,10 @@ const HeaderWrapper = styled.header`
   width: 100%;
   transition: ${props => props.theme.transitions.normal};
   animation: ${fadeIn} 0.3s ease-in-out;
+  border-bottom: 1px solid ${props => props.theme.header?.border || props.theme.colors.border};
 
   &:hover {
-    box-shadow: ${props => props.theme.shadows.hover};
+    box-shadow: ${props => props.theme.shadows.primaryMd(props.theme.colors.primary, 0.2)};
   }
 `;
 
@@ -43,7 +44,7 @@ const Logo = styled(Link)`
   .logo-main {
     font-size: ${props => props.theme.typography.fontSizes.sectionTitle};
     font-weight: ${props => props.theme.typography.fontWeights.bold};
-    color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
     letter-spacing: -0.02em;
   }
   
@@ -72,25 +73,18 @@ const NavLink = styled(Link)`
   transition: ${props => props.theme.transitions.normal};
   
   &:hover {
-    color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
   }
 `;
 
-// Animación moderna y atractiva para Acceso Gratuito
+// Animación moderna y atractiva para Acceso Gratuito - adaptable a temas
+// Nota: Esta animación usará las sombras del tema en lugar de valores hardcodeados
 const modernGlow = keyframes`
   0%, 100% {
     transform: scale(1);
-    box-shadow: 
-      0 2px 8px rgba(236, 38, 143, 0.15),
-      0 0 0 0 rgba(236, 38, 143, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   50% {
     transform: scale(1.02);
-    box-shadow: 
-      0 4px 16px rgba(236, 38, 143, 0.25),
-      0 0 0 2px rgba(236, 38, 143, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
 `;
 
@@ -103,13 +97,14 @@ const AccesoGratuitoLink = styled(NavLink)`
   position: relative;
   padding: 10px 20px;
   border-radius: 8px;
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.primaryDark} 100%);
-  color: ${props => props.theme.colors.white} !important;
+  background: ${props => props.theme.buttonPrimary?.background || `linear-gradient(135deg, ${props.theme.colors.primary} 0%, ${props.theme.colors.primaryDark} 100%)`};
+  color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white} !important;
   border: none;
   font-weight: 600;
   overflow: hidden;
   animation: ${modernGlow} 2.5s ease-in-out infinite;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: ${props => props.theme.shadows.button};
   
   /* Efecto shimmer */
   &::before {
@@ -119,7 +114,7 @@ const AccesoGratuitoLink = styled(NavLink)`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    background: ${props => props.theme.buttonPrimary?.shimmer || 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)'};
     transition: left 0.6s ease;
   }
   
@@ -131,18 +126,15 @@ const AccesoGratuitoLink = styled(NavLink)`
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    background: ${props => props.theme.buttonPrimary?.shimmer || 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)'};
   }
   
   &:hover {
-    background: linear-gradient(135deg, ${props => props.theme.colors.primaryDark} 0%, #b91c6b 100%);
+    background: ${props => props.theme.buttonPrimary?.hover || props.theme.colors.primaryDark};
     animation-play-state: paused;
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 
-      0 8px 24px rgba(236, 38, 143, 0.35),
-      0 0 0 3px rgba(236, 38, 143, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    color: ${props => props.theme.colors.white} !important;
+    box-shadow: ${props => props.theme.shadows.buttonHover};
+    color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white} !important;
     
     &::before {
       left: 100%;
@@ -175,7 +167,7 @@ const DropdownButton = styled.button`
   
   &:hover {
     background: ${props => props.theme.colors.hover};
-    border-color: ${props => props.theme.colors.primary};
+    border-color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
   }
   
   svg {
@@ -191,8 +183,8 @@ const DropdownMenu = styled.div`
   position: absolute;
   top: calc(100% + ${props => props.theme.componentMeasures.header.dropdownOffset});
   right: 0;
-  background: ${props => props.theme.colors.white};
-  border: ${props => props.theme.componentMeasures.header.borderWidth} solid ${props => props.theme.colors.border};
+  background: ${props => props.theme.header?.background || props.theme.colors.white};
+  border: ${props => props.theme.componentMeasures.header.borderWidth} solid ${props => props.theme.header?.border || props.theme.colors.border};
   border-radius: ${props => props.theme.borderRadius.large};
   box-shadow: ${props => props.theme.shadows.elevated};
   padding: ${props => props.theme.spacing.s2};
@@ -221,7 +213,7 @@ const DropdownItem = styled(Link)`
   
   &:hover {
     background-color: ${props => props.theme.colors.hover};
-    color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
   }
   
   svg {
@@ -294,7 +286,7 @@ const IconButton = styled.button`
   
   &:hover {
     background-color: ${props => props.theme.colors.hover};
-    color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
   }
 `;
 
@@ -302,7 +294,7 @@ const MobileMenuButton = styled(IconButton)`
   display: none;
   
   svg {
-    color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
   }
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
@@ -350,7 +342,7 @@ const MobileMenu = styled.div`
   height: 100vh;
   width: ${props => props.theme.componentMeasures.header.mobileMenuWidth};
   max-width: ${props => props.theme.componentMeasures.header.mobileMenuMaxWidth};
-  background: ${props => props.theme.colors.white};
+  background: ${props => props.theme.header?.background || props.theme.colors.white};
   box-shadow: ${props => props.theme.componentMeasures.header.shadowMobile};
   padding: ${props => props.theme.spacing.s6};
   z-index: ${props => props.theme.zIndex.modal + 1};
@@ -399,14 +391,14 @@ const MobileNavLink = styled(Link)`
   
   &:hover {
     background-color: ${props => props.theme.colors.hover};
-    color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
     transform: translateX(${props => props.theme.componentMeasures.header.translateHover});
   }
 `;
 
 const AccesoGratuitoMobileLink = styled(MobileNavLink)`
   background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.primaryDark} 100%);
-  color: ${props => props.theme.colors.white} !important;
+  color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white} !important;
   border: none;
   font-weight: 600;
   position: relative;
@@ -421,16 +413,16 @@ const AccesoGratuitoMobileLink = styled(MobileNavLink)`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    background: ${props => props.theme.buttonPrimary?.shimmer || 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)'};
     transition: left 0.6s ease;
   }
   
   &:hover {
-    background: linear-gradient(135deg, ${props => props.theme.colors.primaryDark} 0%, #b91c6b 100%);
+    background: ${props => props.theme.buttonPrimary?.hover || props.theme.colors.primaryDark};
     animation-play-state: paused;
-    color: ${props => props.theme.colors.white} !important;
+    color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white} !important;
     transform: translateX(${props => props.theme.componentMeasures.header.translateHover}) scale(1.02);
-    box-shadow: 0 4px 16px rgba(236, 38, 143, 0.3);
+    box-shadow: ${props => props.theme.shadows.button};
     
     &::before {
       left: 100%;

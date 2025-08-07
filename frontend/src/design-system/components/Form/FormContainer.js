@@ -7,8 +7,8 @@ const FormContainer = styled(SectionContent)`
   margin: 0 auto;
   padding: ${props => props.theme.spacing.s10};
   border-radius: ${props => props.theme.borderRadius.large};
-  background: ${props => props.theme.colors.white};
-  border: 1px solid ${props => props.theme.colors.borderSubtle};
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
+  border: 1px solid ${props => props.theme.card?.border || props.theme.colors.borderSubtle};
   transition: ${props => props.theme.transitions.normal};
   box-shadow: ${props => props.theme.shadows.card};
   

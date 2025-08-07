@@ -9,19 +9,14 @@ import TermsModal from '../../../components/modals/TermsModal';
 import PrivacyModal from '../../../components/modals/PrivacyModal';
 import CookiesModal from '../../../components/modals/CookiesModal';
 import NormativaModal from '../../../components/modals/NormativaModal';
-import { colors } from '../../tokens/colors';
-import { spacing } from '../../tokens/spacing';
-import { typography } from '../../tokens/typography';
 
 const FooterWrapper = styled.footer`
-  background: linear-gradient(135deg, 
-    ${colors.backgroundLight} 0%, 
-    ${colors.white} 100%
-  );
+  background: ${props => props.theme.footer?.background || props.theme.colors.backgroundLight};
   position: relative;
-  padding: ${spacing.s6} 0 ${spacing.s4} 0;
+  padding: ${props => props.theme.spacing.s6} 0 ${props => props.theme.spacing.s4} 0;
   transition: all 0.3s ease;
   margin-top: auto;
+  border-top: 1px solid ${props => props.theme.footer?.border || props.theme.colors.borderSubtle};
   
   &::before {
     content: '';
@@ -30,52 +25,38 @@ const FooterWrapper = styled.footer`
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, 
-      transparent 0%,
-      ${colors.primary}20 20%,
-      ${colors.borderSubtle} 30%,
-      ${colors.borderSubtle} 70%,
-      ${colors.primary}20 80%,
-      transparent 100%
-    );
+    background: ${props => props.theme.footer?.border || props.theme.colors.borderSubtle};
     opacity: 0.6;
     transition: all 0.3s ease;
   }
   
   &:hover::before {
     opacity: 1;
-    background: linear-gradient(90deg, 
-      transparent 0%,
-      ${colors.primary}40 15%,
-      ${colors.primary} 25%,
-      ${colors.primary} 75%,
-      ${colors.primary}40 85%,
-      transparent 100%
-    );
-    box-shadow: 0 0 8px ${colors.primary}30;
+    background: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 8px ${props => props.theme.colors.primary}30;
   }
 `;
 
 const FooterContent = styled(Container)``;
 
 const FooterSection = styled.div`
-  margin-bottom: ${spacing.s4};
-  padding-right: ${spacing.s3};
+  margin-bottom: ${props => props.theme.spacing.s4};
+  padding-right: ${props => props.theme.spacing.s3};
   
   @media (max-width: 768px) {
-    margin-bottom: ${spacing.s4};
+    margin-bottom: ${props => props.theme.spacing.s4};
     padding-right: 0;
   }
 `;
 
 const BrandSection = styled(FooterSection)`
   .description {
-    color: ${colors.textMuted};
-    margin: ${spacing.s1} 0 ${spacing.s3} 0;
+    color: ${props => props.theme.colors.textMuted};
+    margin: ${props => props.theme.spacing.s1} 0 ${props => props.theme.spacing.s3} 0;
     line-height: 1.5;
-    font-size: ${typography.fontSizes.sm};
-    font-weight: ${typography.fontWeights.regular};
-    font-family: ${typography.fontFamilies.secondary};
+    font-size: ${props => props.theme.typography.fontSizes.sm};
+    font-weight: ${props => props.theme.typography.fontWeights.regular};
+    font-family: ${props => props.theme.typography.fontFamilies.secondary};
     max-width: 240px;
     letter-spacing: 0.01em;
     word-wrap: break-word;
@@ -85,8 +66,8 @@ const BrandSection = styled(FooterSection)`
 
 const SocialLinks = styled.div`
   display: flex;
-  gap: ${spacing.s2};
-  margin-top: ${spacing.s2};
+  gap: ${props => props.theme.spacing.s2};
+  margin-top: ${props => props.theme.spacing.s2};
   justify-content: flex-start;
   flex-wrap: wrap;
 `;
@@ -97,20 +78,20 @@ const SocialLink = styled.a`
   justify-content: center;
   width: 44px;
   height: 44px;
-  background: ${colors.white};
-  color: ${colors.textMuted};
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
+  color: ${props => props.theme.colors.textMuted};
   border-radius: 12px;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   text-decoration: none;
-  border: 1px solid ${colors.border};
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  border: 1px solid ${props => props.theme.colors.border};
+  box-shadow: ${props => props.theme.shadows.button};
   
   &:hover {
-    background: ${colors.primary};
-    color: white;
+    background: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white};
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px ${colors.primary}30;
-    border-color: ${colors.primary};
+    box-shadow: ${props => props.theme.shadows.buttonHover};
+    border-color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
   }
   
   &:active {
@@ -119,15 +100,15 @@ const SocialLink = styled.a`
 `;
 
 const FooterTitle = styled(H6)`
-  color: ${colors.text};
-  font-family: ${typography.fontFamilies.primary};
-  font-weight: ${typography.fontWeights.semiBold};
-  font-size: ${typography.fontSizes.cardTitle};
-  margin-bottom: ${spacing.s4};
+  color: ${props => props.theme.colors.text};
+  font-family: ${props => props.theme.typography.fontFamilies.primary};
+  font-weight: ${props => props.theme.typography.fontWeights.semiBold};
+  font-size: ${props => props.theme.typography.fontSizes.cardTitle};
+  margin-bottom: ${props => props.theme.spacing.s4};
   text-transform: none;
   letter-spacing: -0.01em;
   position: relative;
-  padding-bottom: ${spacing.s2};
+  padding-bottom: ${props => props.theme.spacing.s2};
   text-align: left;
   
   &::after {
@@ -138,26 +119,26 @@ const FooterTitle = styled(H6)`
     width: 40px;
     height: 3px;
     background: linear-gradient(90deg, 
-      ${colors.primary} 0%, 
-      ${colors.primary}60 100%
+      ${props => props.theme.colors.primary} 0%, 
+      ${props => props.theme.colors.primary}60 100%
     );
     border-radius: 2px;
   }
 `;
 
 const FooterLink = styled(Link)`
-  color: ${colors.textMuted};
+  color: ${props => props.theme.colors.textMuted};
   text-decoration: none;
   display: block;
-  margin-bottom: ${spacing.s2};
+  margin-bottom: ${props => props.theme.spacing.s2};
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: ${spacing.s1} 0;
+  padding: ${props => props.theme.spacing.s1} 0;
   position: relative;
-  font-size: ${typography.fontSizes.base};
-  font-weight: ${typography.fontWeights.regular};
-  font-family: ${typography.fontFamilies.secondary};
+  font-size: ${props => props.theme.typography.fontSizes.base};
+  font-weight: ${props => props.theme.typography.fontWeights.regular};
+  font-family: ${props => props.theme.typography.fontFamilies.secondary};
   line-height: 1.4;
-  border-radius: ${spacing.s1};
+  border-radius: ${props => props.theme.spacing.s1};
   text-align: left;
   
   &::before {
@@ -169,16 +150,16 @@ const FooterLink = styled(Link)`
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: ${colors.primary};
+    background: ${props => props.theme.colors.primary};
     opacity: 0;
     transition: all 0.25s ease;
   }
   
   &:hover {
-    color: ${colors.primary};
+    color: ${props => props.theme.colors.primary};
     text-decoration: none;
-    padding-left: ${spacing.s4};
-    background: ${colors.primary}05;
+    padding-left: ${props => props.theme.spacing.s4};
+    background: ${props => props.theme.colors.primary}05;
     
     &::before {
       opacity: 1;
@@ -187,44 +168,44 @@ const FooterLink = styled(Link)`
 `;
 
 const FooterExternalLink = styled.a`
-  color: ${colors.textMuted};
+  color: ${props => props.theme.colors.textMuted};
   text-decoration: none;
-  font-size: ${typography.fontSizes.base};
-  font-weight: ${typography.fontWeights.regular};
-  font-family: ${typography.fontFamilies.secondary};
+  font-size: ${props => props.theme.typography.fontSizes.base};
+  font-weight: ${props => props.theme.typography.fontWeights.regular};
+  font-family: ${props => props.theme.typography.fontFamilies.secondary};
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: ${spacing.s1} ${spacing.s2};
-  border-radius: ${spacing.s1};
+  padding: ${props => props.theme.spacing.s1} ${props => props.theme.spacing.s2};
+  border-radius: ${props => props.theme.spacing.s1};
   
   &:hover {
-    color: ${colors.primary};
+    color: ${props => props.theme.colors.primary};
     text-decoration: none;
-    background: ${colors.primary}05;
+    background: ${props => props.theme.colors.primary}05;
   }
 `;
 
 const ContactItem = styled.div`
   display: flex;
   align-items: flex-start;
-  margin-bottom: ${spacing.s2};
-  color: ${colors.textMutedLight};
-  font-size: ${typography.fontSizes.note};
-  font-family: ${typography.fontFamilies.secondary};
+  margin-bottom: ${props => props.theme.spacing.s2};
+  color: ${props => props.theme.colors.textMutedLight};
+  font-size: ${props => props.theme.typography.fontSizes.note};
+  font-family: ${props => props.theme.typography.fontFamilies.secondary};
   line-height: 1.4;
   transition: all 0.25s ease;
-  padding: ${spacing.s1} 0;
-  border-radius: ${spacing.s1};
+  padding: ${props => props.theme.spacing.s1} 0;
+  border-radius: ${props => props.theme.spacing.s1};
   
   .icon {
-    margin-right: ${spacing.s3};
+    margin-right: ${props => props.theme.spacing.s3};
     margin-top: 2px;
-    color: ${colors.primary};
+    color: ${props => props.theme.colors.primary};
     transition: all 0.25s ease;
     flex-shrink: 0;
   }
   
   &:hover {
-    color: ${colors.text};
+    color: ${props => props.theme.colors.text};
     
     .icon {
       transform: scale(1.05);
@@ -235,22 +216,15 @@ const ContactItem = styled.div`
 const FooterDivider = styled.hr`
   border: none;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent 0%,
-    ${colors.primary}15 15%,
-    ${colors.borderSubtle} 25%,
-    ${colors.borderSubtle} 75%,
-    ${colors.primary}15 85%,
-    transparent 100%
-  );
-  margin: ${spacing.s4} 0 ${spacing.s3} 0;
+  background: ${props => props.theme.footer?.border || props.theme.colors.borderSubtle};
+  margin: ${props => props.theme.spacing.s4} 0 ${props => props.theme.spacing.s3} 0;
   opacity: 0.6;
 `;
 
 const BottomSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${spacing.s4};
+  gap: ${props => props.theme.spacing.s4};
   
   @media (min-width: 768px) {
     flex-direction: row;
@@ -260,37 +234,37 @@ const BottomSection = styled.div`
 `;
 
 const Copyright = styled(Text)`
-  color: ${colors.textMutedLight};
-  font-size: ${typography.fontSizes.note};
-  font-family: ${typography.fontFamilies.secondary};
+  color: ${props => props.theme.colors.textMutedLight};
+  font-size: ${props => props.theme.typography.fontSizes.note};
+  font-family: ${props => props.theme.typography.fontFamilies.secondary};
   margin: 0;
 `;
 
 const LegalLinks = styled.div`
   display: flex;
-  gap: ${spacing.s4};
+  gap: ${props => props.theme.spacing.s4};
   flex-wrap: wrap;
 `;
 
 const LegalLink = styled.button`
   background: none;
   border: none;
-  color: ${colors.textMutedLight};
+  color: ${props => props.theme.colors.textMutedLight};
   text-decoration: none;
-  font-size: ${typography.fontSizes.note};
-  font-family: ${typography.fontFamilies.secondary};
+  font-size: ${props => props.theme.typography.fontSizes.note};
+  font-family: ${props => props.theme.typography.fontFamilies.secondary};
   transition: all 0.25s ease;
   cursor: pointer;
   padding: 0;
   
   &:hover {
-    color: ${colors.primary};
+    color: ${props => props.theme.colors.primary};
     text-decoration: none;
   }
 `;
 
 const LogoContainer = styled.div`
-  margin-bottom: ${spacing.s1};
+  margin-bottom: ${props => props.theme.spacing.s1};
 `;
 
 const ServiceButton = styled.button`
@@ -300,18 +274,18 @@ const ServiceButton = styled.button`
   cursor: pointer;
   text-align: left;
   width: 100%;
-  color: ${colors.textMuted};
+  color: ${props => props.theme.colors.textMuted};
   text-decoration: none;
   display: block;
-  margin-bottom: ${spacing.s2};
+  margin-bottom: ${props => props.theme.spacing.s2};
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: ${spacing.s1} 0;
+  padding: ${props => props.theme.spacing.s1} 0;
   position: relative;
-  font-size: ${typography.fontSizes.base};
-  font-weight: ${typography.fontWeights.regular};
-  font-family: ${typography.fontFamilies.secondary};
+  font-size: ${props => props.theme.typography.fontSizes.base};
+  font-weight: ${props => props.theme.typography.fontWeights.regular};
+  font-family: ${props => props.theme.typography.fontFamilies.secondary};
   line-height: 1.4;
-  border-radius: ${spacing.s1};
+  border-radius: ${props => props.theme.spacing.s1};
   
   &::before {
     content: '';
@@ -322,16 +296,16 @@ const ServiceButton = styled.button`
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: ${colors.primary};
+    background: ${props => props.theme.colors.primary};
     opacity: 0;
     transition: all 0.25s ease;
   }
   
   &:hover {
-    color: ${colors.primary};
+    color: ${props => props.theme.colors.primary};
     text-decoration: none;
-    padding-left: ${spacing.s4};
-    background: ${colors.primary}05;
+    padding-left: ${props => props.theme.spacing.s4};
+    background: ${props => props.theme.colors.primary}05;
     
     &::before {
       opacity: 1;
@@ -342,19 +316,19 @@ const ServiceButton = styled.button`
 const ContactLink = styled.a`
   display: inline;
   margin: 0;
-  color: ${colors.textMuted};
+  color: ${props => props.theme.colors.textMuted};
   text-decoration: none;
-  font-size: ${typography.fontSizes.base};
-  font-weight: ${typography.fontWeights.regular};
-  font-family: ${typography.fontFamilies.secondary};
+  font-size: ${props => props.theme.typography.fontSizes.base};
+  font-weight: ${props => props.theme.typography.fontWeights.regular};
+  font-family: ${props => props.theme.typography.fontFamilies.secondary};
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: ${spacing.s1} ${spacing.s2};
-  border-radius: ${spacing.s1};
+  padding: ${props => props.theme.spacing.s1} ${props => props.theme.spacing.s2};
+  border-radius: ${props => props.theme.spacing.s1};
   
   &:hover {
-    color: ${colors.primary};
+    color: ${props => props.theme.colors.primary};
     text-decoration: none;
-    background: ${colors.primary}05;
+    background: ${props => props.theme.colors.primary}05;
   }
 `;
 
@@ -382,7 +356,7 @@ const Footer = ({ showSocial = true, showContact = true }) => {
     { to: '/#hero', text: 'Inicio' },
     { to: '/acceso-gratuito#hero', text: 'Acceso Gratuito' },
     { to: '/portfolio#hero', text: 'Portafolio' },
-    { to: '/registro#hero', text: 'Crear Cuenta' },
+    { to: '/registro', text: 'Crear Cuenta' },
   ];
   
   const serviceLinks = [

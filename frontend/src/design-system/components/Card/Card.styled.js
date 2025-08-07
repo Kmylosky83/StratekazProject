@@ -6,9 +6,10 @@ import styled, { css } from 'styled-components';
 
 // Card base
 export const StyledCard = styled.div`
-  background: ${props => props.theme.colors.white};
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
   border-radius: ${props => props.theme.borderRadius.medium};
-  box-shadow: ${props => props.theme.shadows.card};
+  box-shadow: ${props => props.theme.card?.shadow || props.theme.shadows.card};
+  border: 1px solid ${props => props.theme.card?.border || props.theme.colors.border};
   transition: ${props => props.theme.transitions.normal};
   overflow: hidden;
   
@@ -50,8 +51,8 @@ export const StyledCard = styled.div`
   
   /* Estados */
   ${props => props.selected && css`
-    border: 2px solid ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}20;
+    border: 2px solid ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
+    box-shadow: 0 0 0 3px ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary}20;
   `}
   
   ${props => props.disabled && css`
@@ -72,7 +73,7 @@ export const StyledCard = styled.div`
   `}
   
   ${props => props.variant === 'filled' && css`
-    background: ${props => props.theme.colors.surface};
+    background: ${props => props.theme.card?.background || props.theme.colors.surface};
   `}
 `;
 
@@ -133,8 +134,8 @@ export const CardIcon = styled.div`
   
   /* Variantes de color */
   ${props => props.variant === 'primary' && css`
-    background: ${props => props.theme.colors.primary}20;
-    color: ${props => props.theme.colors.primary};
+    background: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary}20;
+    color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
   `}
   
   ${props => props.variant === 'secondary' && css`
@@ -202,20 +203,20 @@ export const SelectionCard = styled(StyledCard)`
   border: 2px solid transparent;
   
   &:hover {
-    border-color: ${props => props.theme.colors.primary}40;
+    border-color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary}40;
     transform: translateY(-1px);
   }
   
   ${props => props.selected && css`
-    border-color: ${props => props.theme.colors.primary};
-    background: ${props => props.theme.colors.primary}05;
+    border-color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
+    background: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary}05;
     
     &::after {
       content: '';
       position: absolute;
       top: ${props => props.theme.spacing.s3};
       right: ${props => props.theme.spacing.s3};
-      background: ${props => props.theme.colors.primary};
+      background: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
       width: 24px;
       height: 24px;
       border-radius: 50%;
@@ -269,8 +270,8 @@ export const ActionCard = styled(StyledCard)`
   border: 2px solid transparent;
   
   &:hover {
-    border-color: ${props => props.theme.colors.primary};
-    background: ${props => props.theme.colors.primary}05;
+    border-color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
+    background: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary}05;
     transform: translateY(-4px);
     box-shadow: ${props => props.theme.shadows.hover};
   }
@@ -328,7 +329,7 @@ export const LoadingCard = styled(StyledCard)`
     width: 40px;
     height: 40px;
     border: 4px solid ${props => props.theme.colors.border};
-    border-top: 4px solid ${props => props.theme.colors.primary};
+    border-top: 4px solid ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
@@ -370,10 +371,10 @@ export const ErrorCard = styled(StyledCard)`
 
 // Card Informativa - Para mostrar información sin interacción
 export const InformativaCard = styled.div`
-  background: ${props => props.theme.colors.white};
-  border: 1px solid ${props => props.theme.colors.border || '#e5e7eb'};
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
+  border: 1px solid ${props => props.theme.card?.border || props.theme.colors.border || '#e5e7eb'};
   border-radius: ${props => props.theme.borderRadius.large};
-  box-shadow: ${props => props.theme.shadows.card};
+  box-shadow: ${props => props.theme.card?.shadow || props.theme.shadows.card};
   padding: ${props => props.theme.spacing.s8};
   text-align: center;
   display: flex;
@@ -406,9 +407,9 @@ export const InformativaIcon = styled.div`
   
   ${InformativaCard}:hover & {
     background: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.white};
+    color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white};
     transform: scale(1.1) translateY(-2px);
-    box-shadow: 0 8px 25px ${props => props.theme.colors.primary}40;
+    box-shadow: ${props => props.theme.shadows.elevated || '0 8px 25px rgba(0, 0, 0, 0.15)'};
   }
 `;
 
@@ -434,10 +435,10 @@ export const InformativaDescription = styled.p`
 
 // Card de Selección - Nueva implementación según especificaciones
 export const SelectionCardNew = styled.div`
-  background: ${props => props.theme.colors.white};
-  border: 1px solid ${props => props.theme.colors.border || '#e5e7eb'};
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
+  border: 1px solid ${props => props.theme.card?.border || props.theme.colors.border || '#e5e7eb'};
   border-radius: ${props => props.theme.borderRadius.large};
-  box-shadow: ${props => props.theme.shadows.card};
+  box-shadow: ${props => props.theme.card?.shadow || props.theme.shadows.card};
   padding: ${props => props.theme.spacing.s8};
   text-align: center;
   display: flex;
@@ -491,9 +492,9 @@ export const SelectionIcon = styled.div`
   /* Hover Effects */
   ${SelectionCardNew}:hover & {
     background: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.white};
+    color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white};
     transform: scale(1.05) translateY(-2px);
-    box-shadow: 0 8px 20px ${props => props.theme.colors.primary}40;
+    box-shadow: ${props => props.theme.shadows.elevated || '0 8px 20px rgba(0, 0, 0, 0.15)'};
   }
   
   /* Estado Disabled */
@@ -571,10 +572,10 @@ export const ToolIcon = styled.div`
 // Card de Interacción - Para elementos clickeables con información detallada
 // Usado en: NormativasSection con 4 pilares (ISO, SG-SST, PESV, Innovación)
 export const InteraccionCard = styled.div`
-  background: ${props => props.theme.colors.white};
-  border: 1px solid ${props => props.theme.colors.border || '#e5e7eb'};
+  background: ${props => props.theme.card?.background || props.theme.colors.white};
+  border: 1px solid ${props => props.theme.card?.border || props.theme.colors.border || '#e5e7eb'};
   border-radius: ${props => props.theme.borderRadius.large};
-  box-shadow: ${props => props.theme.shadows.card};
+  box-shadow: ${props => props.theme.card?.shadow || props.theme.shadows.card};
   padding: ${props => props.theme.spacing.s6};
   text-align: center;
   display: flex;
@@ -594,21 +595,16 @@ export const InteraccionCard = styled.div`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(
-      90deg, 
-      transparent, 
-      ${props => props.themeColor || props.theme.colors.primary}10, 
-      transparent
-    );
+    background: ${props => props.theme.card?.hoverBackground || `linear-gradient(90deg, transparent, ${props.themeColor || props.theme.buttonPrimary?.background || props.theme.colors.primary}10, transparent)`};
     transition: left 0.5s ease;
   }
   
   /* Hover Effects */
   &:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 
-                0 0 30px ${props => props.themeColor || props.theme.colors.primary}40;
-    border-color: ${props => props.themeColor || props.theme.colors.primary}20;
+    box-shadow: ${props => props.theme.shadows.cardHover || '0 20px 40px rgba(0, 0, 0, 0.15)'}, 
+                0 0 30px ${props => props.themeColor || props.theme.buttonPrimary?.background || props.theme.colors.primary}40;
+    border-color: ${props => props.themeColor || props.theme.buttonPrimary?.background || props.theme.colors.primary}20;
     
     &::before {
       left: 100%;
@@ -620,12 +616,12 @@ export const InteraccionIcon = styled.div`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: ${props => props.themeColor || props.theme.colors.primary};
+  background: ${props => props.themeColor || props.theme.buttonPrimary?.background || props.theme.colors.primary};
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: ${props => props.theme.spacing.s4 || '1rem'};
-  color: ${props => props.theme.colors.white};
+  color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white};
   position: relative;
   transition: all 0.2s ease-out; /* Transición más rápida */
   will-change: transform;
@@ -633,7 +629,10 @@ export const InteraccionIcon = styled.div`
   /* Hover Effects optimizados */
   ${InteraccionCard}:hover & {
     transform: scale(1.05); /* Escala más sutil */
-    box-shadow: 0 6px 20px ${props => props.themeColor || props.theme.colors.primary}30;
+    box-shadow: ${props => props.theme.shadows.button || '0 6px 20px rgba(0, 0, 0, 0.15)'};
+    /* En tema black: fondo del ícono cambia a blanco, entonces el ícono debe ser negro */
+    background: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white};
   }
 `;
 
@@ -648,7 +647,7 @@ export const InteraccionTitle = styled.h3`
   transition: color 0.3s ease;
   
   ${InteraccionCard}:hover & {
-    color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
   }
 `;
 
@@ -669,7 +668,7 @@ export const InteraccionDescription = styled.p`
 `;
 
 export const InteraccionCTA = styled.span`
-  color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
   font-size: ${props => props.theme.typography.fontSizes.sm || '0.875rem'};
   font-weight: ${props => props.theme.typography.fontWeights.medium || 500};
   opacity: 0.7; /* Visible por defecto pero sutil */
@@ -678,6 +677,6 @@ export const InteraccionCTA = styled.span`
   
   ${InteraccionCard}:hover & {
     opacity: 1;
-    color: ${props => props.themeColor || props.theme.colors.primary};
+    color: ${props => props.themeColor || props.theme.buttonPrimary?.background || props.theme.colors.primary};
   }
 `;

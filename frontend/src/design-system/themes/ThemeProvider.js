@@ -8,6 +8,8 @@ import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { defaultTheme } from './defaultTheme';
+import { blackTheme } from './blackTheme';
+import { arkaneTheme } from './arkaneTheme';
 import { createTenantTheme, generateThemeVariants } from './themeUtils';
 import config, { getTenantFromSubdomain } from '../../config';
 
@@ -50,8 +52,10 @@ export const ThemeProvider = ({ children, initialTheme = 'default', tenantId }) 
   // Temas disponibles por defecto
   const baseThemes = useMemo(() => ({
     default: defaultTheme,
-    dark: generateThemeVariants(defaultTheme).dark,
-    light: generateThemeVariants(defaultTheme).light,
+    light: defaultTheme,
+    dark: blackTheme,
+    black: blackTheme,
+    arkane: arkaneTheme,
   }), []);
 
   /**

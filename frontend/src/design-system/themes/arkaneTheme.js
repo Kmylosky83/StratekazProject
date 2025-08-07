@@ -1,4 +1,4 @@
-// Sistema de Diseño - Tema Arkane (Futurista/Cyberpunk)
+// Sistema de Diseño - Tema Arkane (Azul Corporativo)
 import { defaultTheme } from './defaultTheme';
 import { componentMeasures } from '../tokens/spacing';
 
@@ -7,62 +7,106 @@ export const arkaneTheme = {
   componentMeasures,
   colors: {
     ...defaultTheme.colors,
-    // Override para tema Arkane
-    primary: '#00ffcc', // Cyan brillante
-    primaryLight: '#33ffd6',
-    primaryDark: '#00ccaa',
+    // Override para tema Arkane - Azul Corporativo (Microsoft Blue)
+    primary: '#0078d4', // Microsoft Blue - Azul corporativo optimizado 2024
+    primaryLight: '#40a9ff', // Azul más claro
+    primaryDark: '#106ebe', // Azul más oscuro para hover
     
-    accent: '#ff00ff', // Magenta neón
-    accentDark: '#cc00cc',
+    accent: '#0ea5e9', // Sky blue
+    accentDark: '#0284c7',
     
-    secondary: '#7b2fff', // Púrpura
+    secondary: '#475569', // Slate gray
     
     white: '#ffffff',
     black: '#000000',
     
-    // Fondos oscuros con tinte púrpura
-    background: '#0a0014',
-    backgroundLight: '#140028',
-    surface: '#1a0033',
-    surfaceDark: '#250047',
+    // Fondos claros como tema light
+    background: '#ffffff',
+    backgroundLight: '#f8fafc', // slate-50
+    surface: '#f1f5f9', // slate-100
+    surfaceDark: '#e2e8f0', // slate-200
     
-    // Colores de texto con tinte cyan
-    text: '#e0fff0',
-    textLight: '#b0ffd0',
-    textMuted: '#70a090',
-    textDisabled: '#405060',
+    // Colores de texto corporativos
+    text: '#0f172a', // slate-900
+    textLight: '#334155', // slate-700
+    textMuted: '#64748b', // slate-500
+    textMutedLight: '#94a3b8', // slate-400
+    textDisabled: '#cbd5e1', // slate-300
     
-    // Bordes con glow
-    border: '#2a5050',
-    borderLight: '#1a3540',
-    borderDark: '#3a6060',
+    // Bordes corporativos
+    border: '#e2e8f0', // slate-200
+    borderLight: '#f1f5f9', // slate-100
+    borderDark: '#cbd5e1', // slate-300
+    borderSubtle: '#f8fafc', // slate-50
+    borderVeryLight: '#ffffff',
     
-    // Estados con neón
-    hover: 'rgba(0, 255, 204, 0.1)',
-    active: 'rgba(0, 255, 204, 0.2)',
-    focus: 'rgba(0, 255, 204, 0.3)',
-    disabled: '#1a2030',
+    // Estados azules corporativos
+    hover: 'rgba(0, 120, 212, 0.05)', // primary con opacidad
+    active: 'rgba(0, 120, 212, 0.1)',
+    focus: 'rgba(0, 120, 212, 0.2)',
+    disabled: '#f1f5f9',
     
-    // Colores semánticos cyberpunk
-    success: '#00ff88',
-    successLight: '#00ff8830',
-    danger: '#ff0066',
-    dangerLight: '#ff006630',
-    warning: '#ffaa00',
-    warningLight: '#ffaa0030',
-    info: '#00aaff',
-    infoLight: '#00aaff30',
+    // Colores semánticos corporativos
+    success: '#059669', // emerald-600
+    successLight: '#d1fae5', // emerald-100
+    danger: '#dc2626', // red-600
+    dangerLight: '#fee2e2', // red-100
+    warning: '#d97706', // amber-600
+    warningLight: '#fef3c7', // amber-100
+    info: '#0284c7', // sky-600
+    infoLight: '#e0f2fe', // sky-100
+    
+    // Configuración para botones corporativos
+    buttonPrimary: {
+      background: '#0078d4', // Microsoft Blue - Contraste 4.64:1 WCAG AA
+      text: '#ffffff',
+      hover: '#106ebe', // Hover más oscuro
+      active: '#004578', // Active más oscuro
+      shimmer: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+      overlay: 'linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%)'
+    },
+    buttonSecondary: {
+      background: 'transparent',
+      text: '#0078d4',
+      border: '#0078d4',
+      hover: 'rgba(0, 120, 212, 0.05)',
+      active: 'rgba(0, 120, 212, 0.1)'
+    }
   },
   
   shadows: {
     ...defaultTheme.shadows,
-    // Sombras con glow neón
-    card: '0 0 20px rgba(0, 255, 204, 0.1), 0 4px 12px rgba(0, 0, 0, 0.8)',
-    cardHover: '0 0 30px rgba(0, 255, 204, 0.2), 0 8px 20px rgba(0, 0, 0, 0.9)',
-    button: '0 0 15px rgba(0, 255, 204, 0.2), 0 2px 8px rgba(0, 0, 0, 0.6)',
-    buttonHover: '0 0 25px rgba(0, 255, 204, 0.4), 0 4px 12px rgba(0, 0, 0, 0.7)',
-    elevated: '0 0 40px rgba(0, 255, 204, 0.15), 0 10px 30px rgba(0, 0, 0, 0.8)',
-    hover: '0 0 50px rgba(0, 255, 204, 0.25), 0 15px 40px rgba(0, 0, 0, 0.9)',
+    // Sombras corporativas azules - Microsoft Blue
+    card: '0 1px 3px rgba(0, 120, 212, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
+    cardHover: '0 4px 6px rgba(0, 120, 212, 0.15), 0 2px 4px rgba(0, 0, 0, 0.06)',
+    button: '0 2px 4px rgba(0, 120, 212, 0.15)',
+    buttonHover: '0 4px 8px rgba(0, 120, 212, 0.25)',
+    elevated: '0 10px 25px rgba(0, 120, 212, 0.15)',
+    hover: '0 12px 32px rgba(0, 120, 212, 0.2)',
+    // Funciones para sombras dinámicas con azul
+    ctaHover: (color) => `0 12px 32px rgba(0, 120, 212, 0.2)`, // Microsoft Blue para CTA
+  },
+  
+  // Configuración específica para componentes
+  header: {
+    background: '#ffffff',
+    text: '#0f172a',
+    border: '#e2e8f0'
+  },
+  
+  footer: {
+    background: '#f8fafc',
+    text: '#0f172a',
+    border: '#e2e8f0'
+  },
+  
+  // Configuración para cards corporativas
+  card: {
+    background: '#ffffff',
+    backgroundLight: '#f8fafc',
+    border: '#e2e8f0',
+    shadow: '0 1px 3px rgba(0, 120, 212, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
+    hoverBackground: 'linear-gradient(90deg, transparent, rgba(0, 120, 212, 0.05), transparent)'
   }
 };
 

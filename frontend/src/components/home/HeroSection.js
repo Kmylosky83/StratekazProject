@@ -22,7 +22,7 @@ const HeroWrapper = styled.section`
   position: relative;
   font-family: ${props => props.theme.typography.fontFamilies.primary};
   
-  /* Línea sutil consistente con el Footer */
+  /* Línea sutil sin gradientes */
   &::after {
     content: '';
     position: absolute;
@@ -30,14 +30,7 @@ const HeroWrapper = styled.section`
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, 
-      transparent 0%,
-      ${props => props.theme.colors.primary}10 20%,
-      ${props => props.theme.colors.borderSubtle} 30%,
-      ${props => props.theme.colors.borderSubtle} 70%,
-      ${props => props.theme.colors.primary}10 80%,
-      transparent 100%
-    );
+    background: ${props => props.theme.colors.borderSubtle};
     opacity: 0.4;
   }
 `;
@@ -175,13 +168,26 @@ const FloatingQuote = styled.div`
   &.bottom-left {
     bottom: -10px;
     left: -20px;
-    background: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.white};
+    background: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
+    color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white};
   }
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: none;
   }
+`;
+
+// Placeholder para preview de dashboard
+const PlaceholderDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 300px;
+  background: ${props => props.theme.colors.surface};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.large};
+  color: ${props => props.theme.colors.textMuted};
 `;
 
 // Estadísticas centradas
@@ -328,9 +334,9 @@ const HeroSection = () => {
                 e.target.nextSibling.style.display = 'flex';
               }}
             />
-            <div style={{ display: 'none', alignItems: 'center', justifyContent: 'center', width: '100%', height: '300px', background: '#f0f0f0', borderRadius: '12px', color: '#999' }}>
+            <PlaceholderDiv style={{ display: 'none' }}>
               Dashboard Preview
-            </div>
+            </PlaceholderDiv>
             
             {/* Frases flotantes */}
             <FloatingQuote className="top-right">
