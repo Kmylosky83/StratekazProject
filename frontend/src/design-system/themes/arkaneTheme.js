@@ -56,7 +56,7 @@ export const arkaneTheme = {
     info: '#0284c7', // sky-600
     infoLight: '#e0f2fe', // sky-100
     
-    // Configuración para botones corporativos
+    // Configuración para botones corporativos optimizada
     buttonPrimary: {
       background: '#0078d4', // Microsoft Blue - Contraste 4.64:1 WCAG AA
       text: '#ffffff',

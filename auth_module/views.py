@@ -3,9 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
-from .serializers import UserSerializer
+from .services import AuthService, UserService
 from .models import User
 
 @api_view(['GET'])
@@ -17,86 +15,37 @@ def api_overview(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_user(request):
-    serializer = UserSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.save()
-        
-        # Auto-login después del registro exitoso
-        token, _ = Token.objects.get_or_create(user=user)
-        
-        return Response({
-            'success': True,
-            'access': token.key,
-            'refresh': None,
-            'token': token.key,  # Compatibilidad legacy
-            'user': {
-                'id': user.pk,
-                'username': user.username,
-                'email': user.email,
-                'user_type': user.user_type,
-                'profile_completed': user.profile_completed,
-                'first_name': user.first_name,
-                'last_name': user.last_name
-            }
-        }, status=status.HTTP_201_CREATED)
-    return Response({
-        'success': False,
-        'errors': serializer.errors
-    }, status=status.HTTP_400_BAD_REQUEST)
+    success, response_data = AuthService.register_user(request.data)
+    return Response(
+        response_data,
+        status=status.HTTP_201_CREATED if success else status.HTTP_400_BAD_REQUEST
+    )
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login_user(request):
-    # Obtener datos del request
     username = request.data.get('username')
     email = request.data.get('email')
     password = request.data.get('password')
     
-    # Debug: imprime los datos recibidos
-    print(f"Login attempt: username={username}, email={email}")
+    # Intentar login con username primero, luego con email
+    login_identifier = username or email
+    success, response_data = AuthService.login_user(login_identifier, password)
     
-    # Intentar autenticación con username
-    user = None
-    if username:
-        user = authenticate(username=username, password=password)
-    
-    # Si no hay username o falló la autenticación, intentar con email
-    if not user and email:
-        try:
-            user_obj = User.objects.get(email=email)
-            user = authenticate(username=user_obj.username, password=password)
-        except User.DoesNotExist:
-            pass
-    
-    if user:
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({
-            'success': True,
-            'access': token.key,  # Cambiar de 'token' a 'access' para compatibilidad con frontend
-            'refresh': None,      # Agregar aunque sea None por compatibilidad
-            'token': token.key,   # Mantener por compatibilidad legacy
-            'user': {
-                'id': user.pk,
-                'username': user.username,
-                'email': user.email,
-                'user_type': user.user_type,
-                'profile_completed': user.profile_completed,
-                'first_name': user.first_name,
-                'last_name': user.last_name
-            }
-        })
-    return Response({'error': 'Credenciales inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
+    return Response(
+        response_data,
+        status=status.HTTP_200_OK if success else status.HTTP_401_UNAUTHORIZED
+    )
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_profile(request):
     """Actualiza el perfil del usuario actual"""
-    user = request.user
-    serializer = UserSerializer(user, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    success, response_data = AuthService.update_user_profile(request.user, request.data)
+    return Response(
+        response_data,
+        status=status.HTTP_200_OK if success else status.HTTP_400_BAD_REQUEST
+    )
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -117,42 +66,14 @@ def request_password_reset(request):
 def check_profile_status(request):
     """Verifica si el perfil del usuario está completo"""
     try:
-        user = request.user
+        user_profile = AuthService.get_user_profile(request.user)
+        profile_status = AuthService.check_profile_status(request.user)
+        
         response_data = {
-            'id': user.pk,
-            'username': user.username,
-            'email': user.email,
-            'user_type': user.user_type,
-            'profile_completed': user.profile_completed,
-            'first_name': user.first_name,
-            'last_name': user.last_name
+            **user_profile,
+            **profile_status
         }
         
-        # Añadir campos específicos según el tipo de usuario
-        if user.user_type == 'professional':
-            response_data.update({
-                'profession': user.profession,
-                'phone': user.phone,
-                'city': user.city,
-                'department': user.department,
-                'id_type': user.id_type,  # Añadido
-                'id_number': user.id_number  # Añadido
-            })
-        else:
-            response_data.update({
-                'company_name': user.company_name,
-                'nit': user.nit,
-                'industry': user.industry,
-                'contact_position': user.contact_position,
-                'contact_first_name': user.contact_first_name,  # Añadido
-                'contact_last_name': user.contact_last_name,  # Añadido
-                'contact_id_type': user.contact_id_type,  # Añadido
-                'contact_id_number': user.contact_id_number,  # Añadido
-                'phone': user.phone,
-                'city': user.city,
-                'department': user.department
-            })
-            
         return Response(response_data)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -161,14 +82,11 @@ def check_profile_status(request):
 @permission_classes([IsAuthenticated])
 def complete_profile(request):
     """Completa el perfil del usuario en su primer ingreso"""
-    user = request.user
-    serializer = UserSerializer(user, data=request.data, partial=True)
-    
-    if serializer.is_valid():
-        # Marcar el perfil como completo
-        serializer.save(profile_completed=True)
-        return Response(serializer.data)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    success, response_data = AuthService.complete_user_profile(request.user, request.data)
+    return Response(
+        response_data,
+        status=status.HTTP_200_OK if success else status.HTTP_400_BAD_REQUEST
+    )
 
 @api_view(['GET'])
 @permission_classes([AllowAny])  # Usar AllowAny para depuración

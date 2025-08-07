@@ -23,6 +23,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    # New versioned API structure
+    path('api/', include('api.urls')),
+    
+    # Legacy API endpoints (mantener temporalmente para retrocompatibilidad)
     path('api/auth/', include('auth_module.urls')),
     path('api/dashboard/', include('dashboard_module.urls')),
     path('api/empresas/', include('empresas_module.urls')),

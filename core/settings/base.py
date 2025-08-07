@@ -46,6 +46,10 @@ SHARED_APPS = [
     'auth_module',
     'core',
     'tenants',
+    
+    # Domain packages (DDD architecture)
+    'domains.shared',
+    'domains.authentication',
 ]
 
 TENANT_APPS = [

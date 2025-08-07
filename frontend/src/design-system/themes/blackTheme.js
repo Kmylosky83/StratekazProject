@@ -7,22 +7,22 @@ export const blackTheme = {
   componentMeasures,
   colors: {
     ...defaultTheme.colors,
-    // Override para tema oscuro - Solo blanco y negro
-    primary: '#ffffff',  // Blanco puro
-    primaryLight: '#ffffff',  // Blanco puro
-    primaryDark: '#e0e0e0',  // Gris muy claro para variación
+    // Override para tema oscuro - Mejorado para WCAG AA
+    primary: '#ffffff',  // Blanco puro - Contraste 21:1 con negro
+    primaryLight: '#f5f5f5',  // Gris muy claro para variación
+    primaryDark: '#e0e0e0',  // Gris claro para hover
     
-    accent: '#ffffff',  // Blanco para acentos
-    accentDark: '#e0e0e0',  // Gris claro
+    accent: '#60a5fa',  // Azul claro - Contraste 5.94:1 con negro
+    accentDark: '#3b82f6',  // Azul medio para variación
     
     white: '#ffffff',
     black: '#000000',
     
-    // Fondos oscuros con mejor contraste
+    // Fondos oscuros optimizados
     background: '#000000',  // Negro puro
-    backgroundLight: '#0a0a0a',  // Negro ligeramente más claro
-    surface: '#1a1a1a',  // Superficie para cards
-    surfaceDark: '#141414',  // Superficie más oscura
+    backgroundLight: '#121212',  // Material Design Dark - mejor contraste
+    surface: '#1e1e1e',  // Superficie para cards - Contraste mejorado
+    surfaceDark: '#151515',  // Superficie más oscura
     
     // Colores de texto optimizados para contraste
     text: '#ffffff',  // Blanco puro para máximo contraste
@@ -31,34 +31,34 @@ export const blackTheme = {
     textMutedLight: '#aaaaaa',  // Gris medio
     textDisabled: '#666666',  // Gris oscuro para deshabilitado
     
-    // Bordes oscuros mejorados
-    border: '#333333',  // Borde principal
-    borderLight: '#2a2a2a',  // Borde más sutil
-    borderDark: '#444444',  // Borde más prominente
-    borderSubtle: '#1a1a1a',  // Borde muy sutil
-    borderVeryLight: '#0f0f0f',  // Borde apenas visible
+    // Bordes oscuros con mejor definición
+    border: '#404040',  // Borde principal - mejor contraste
+    borderLight: '#333333',  // Borde más sutil
+    borderDark: '#505050',  // Borde más prominente
+    borderSubtle: '#2a2a2a',  // Borde muy sutil
+    borderVeryLight: '#1e1e1e',  // Borde apenas visible
     
-    // Estados oscuros con blanco
-    hover: 'rgba(255, 255, 255, 0.1)',  // Hover con blanco
-    active: 'rgba(255, 255, 255, 0.2)',  // Active con blanco
-    focus: 'rgba(255, 255, 255, 0.3)',  // Focus con blanco
-    disabled: '#0a0a0a',  // Fondo deshabilitado
+    // Estados oscuros optimizados
+    hover: 'rgba(96, 165, 250, 0.15)',  // Hover con azul suave
+    active: 'rgba(96, 165, 250, 0.25)',  // Active con azul
+    focus: 'rgba(96, 165, 250, 0.4)',  // Focus con azul prominente
+    disabled: '#121212',  // Fondo deshabilitado más claro
     
-    // Colores para botones con mejor contraste
+    // Botones con contraste WCAG AA optimizado
     buttonPrimary: {
-      background: '#ffffff',
-      text: '#000000',
-      hover: '#f0f0f0',
-      active: '#e0e0e0',
-      shimmer: 'linear-gradient(90deg, transparent, rgba(0,0,0,0.2), transparent)',  // Animación oscura para tema black
-      overlay: 'linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.1) 50%, transparent 100%)'
+      background: '#60a5fa',  // Azul claro - Contraste 5.94:1
+      text: '#000000',  // Negro sobre azul claro - excelente contraste
+      hover: '#3b82f6',  // Azul más intenso
+      active: '#2563eb',  // Azul oscuro
+      shimmer: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+      overlay: 'linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%)'
     },
     buttonSecondary: {
       background: 'transparent',
-      text: '#ffffff',
-      border: '#ffffff',
-      hover: 'rgba(255, 255, 255, 0.1)',
-      active: 'rgba(255, 255, 255, 0.2)'
+      text: '#60a5fa',  // Azul claro para contraste
+      border: '#60a5fa',
+      hover: 'rgba(96, 165, 250, 0.15)',
+      active: 'rgba(96, 165, 250, 0.25)'
     }
   },
   
@@ -89,13 +89,13 @@ export const blackTheme = {
     border: '#333333'
   },
   
-  // Configuración para cards
+  // Configuración para cards optimizada
   card: {
-    background: '#1a1a1a',  // Fondo oscuro para cards
-    backgroundLight: '#0a0a0a',  // Para TermsSummary y otros componentes
-    border: '#333333',
-    shadow: '0 2px 8px rgba(255, 255, 255, 0.1)',
-    hoverBackground: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent)'  // Fondo de hover sin gradientes de color
+    background: '#1e1e1e',  // Fondo oscuro mejorado
+    backgroundLight: '#121212',  // Material Design Dark
+    border: '#404040',  // Borde más visible
+    shadow: '0 2px 8px rgba(96, 165, 250, 0.15)',  // Sombra azul sutil
+    hoverBackground: 'rgba(96, 165, 250, 0.08)'  // Hover azul suave sin gradiente
   }
 };
 

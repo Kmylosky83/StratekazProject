@@ -1,0 +1,1 @@
+# domains package - Domain-Driven Design structure

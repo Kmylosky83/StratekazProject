@@ -1,0 +1,1 @@
+# Shared kernel - Code shared between domains
