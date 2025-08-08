@@ -27,7 +27,7 @@ const tools = [
   {
     id: 'iso',
     icon: Award,
-    title: "Sistemas de Gestión",
+    title: "ISO",
     description: "Implementación integral de las principales normas ISO: Calidad (9001), Seguridad y Salud (45001) y Gestión Ambiental (14001).",
     available: true,
     herramientas: [
@@ -43,8 +43,8 @@ const tools = [
       },
       {
         id: 'diagnostico-9001',
-        name: 'Diagnóstico ISO 9001',
-        description: 'Evalúa el cumplimiento de requisitos de calidad'
+        name: 'Diagnóstico ISO 9001:2015',
+        description: 'Evalúa el cumplimiento de tu Sistema de Gestión de Calidad'
       },
       {
         id: 'diagnostico-45001',
@@ -114,7 +114,7 @@ const tools = [
   {
     id: 'innovation',
     icon: Lightbulb,
-    title: "Innovación: Transformación Digital",
+    title: "INNOVACIÓN",
     description: "Soluciones tecnológicas que integran tecnologías emergentes para optimizar procesos de gestión empresarial moderna.",
     available: true,
     herramientas: [
@@ -168,8 +168,8 @@ const RecursosSection = () => {
   };
 
   const handleToolSelect = (tool) => {
-    // Abrir la herramienta como recurso libre independiente (sin header/footer)
-    window.open(`/recursoslibres/${selectedPillar}/${tool.id}/index.html`, '_blank');
+    // Navegar a la herramienta usando el sistema React SPA
+    navigate(`/herramientas/${selectedPillar}/${tool.id}`);
   };
 
   const handleCloseSidebar = () => {

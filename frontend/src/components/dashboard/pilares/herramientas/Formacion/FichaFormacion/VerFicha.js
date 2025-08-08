@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, Edit, Trash2, FileText, ExternalLink, Download, Upload,
   Link as LinkIcon, Copy, PlusCircle
-} from '../../../../../../design-system/icons';
+} from 'lucide-react';
 import formacionService from '../../../../../../services/herramientas/formacion';
 
 const VerFicha = () => {

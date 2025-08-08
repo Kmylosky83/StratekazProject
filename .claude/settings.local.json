@@ -14,7 +14,11 @@
       "Bash(move automatizacion innovacion)",
       "Bash(mv:*)",
       "Bash(cp:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(npm start)",
+      "mcp__ide__getDiagnostics",
+      "Bash(git add:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": []
   }

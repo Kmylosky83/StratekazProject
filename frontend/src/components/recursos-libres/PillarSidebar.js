@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { X, ChevronRight, Wrench, FileText, Shield, Lightbulb, Factory } from 'lucide-react';
+import { X, ChevronRight, Wrench, FileText, Shield, Lightbulb, Factory, CheckCircle, Clock } from 'lucide-react';
 import { Button } from '../../design-system/components';
 
 // Animaciones
@@ -58,8 +58,9 @@ const SidebarContainer = styled.div`
   top: 0;
   right: 0;
   height: 100vh;
-  width: 420px;
-  max-width: 90vw;
+  width: 25vw;
+  max-width: 420px;
+  min-width: 350px;
   background: ${props => props.theme.card?.background || props.theme.colors.white};
   box-shadow: ${props => props.theme.shadows.elevated};
   z-index: ${props => props.theme.zIndex.modal + 1};
@@ -69,6 +70,21 @@ const SidebarContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  
+  @media (max-width: ${props => props.theme.breakpoints?.tablet || '768px'}) {
+    width: 90vw;
+    max-width: 400px;
+    min-width: 320px;
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints?.mobile || '576px'}) {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    border-radius: 0;
+    min-width: unset;
+  }
 `;
 
 const SidebarHeader = styled.div`
@@ -223,7 +239,7 @@ const ToolCard = styled.div`
   gap: ${props => props.theme.spacing.s3};
   padding: ${props => props.theme.spacing.s4};
   background: ${props => props.theme.card?.background || props.theme.colors.white};
-  border: 1px solid ${props => props.theme.card?.border || props.theme.colors.border};
+  border: 1px solid ${props => props.$isFunctional ? props.theme.colors.primary : props.theme.card?.border || props.theme.colors.border};
   border-radius: ${props => props.theme.borderRadius.large};
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -232,6 +248,7 @@ const ToolCard = styled.div`
   animation: ${fadeInStagger} 0.5s ease-out;
   animation-delay: ${props => props.$index * 0.1}s;
   animation-fill-mode: both;
+  opacity: ${props => props.$isFunctional ? 1 : 0.8};
   
   &::before {
     content: '';
@@ -240,15 +257,16 @@ const ToolCard = styled.div`
     left: -100%;
     width: 100%;
     height: 100%;
-    background: ${props => props.theme.colors.hover};
+    background: ${props => props.$isFunctional ? props.theme.colors.primary + '10' : props.theme.colors.hover};
     transition: left 0.6s ease;
   }
   
   &:hover {
     background: ${props => props.theme.colors.backgroundLight};
-    border-color: ${props => props.theme.colors.primary};
+    border-color: ${props => props.$isFunctional ? props.theme.colors.primary : props.theme.colors.warning};
     transform: translateY(-2px);
     box-shadow: ${props => props.theme.shadows.cardHover || props.theme.shadows.card};
+    opacity: 1;
     
     &::before {
       left: 100%;
@@ -266,14 +284,29 @@ const ToolIcon = styled.div`
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary}10;
+  background: ${props => {
+    if (props.$isFunctional) {
+      return (props.theme.colors.success || '#10b981') + '20';
+    }
+    return (props.theme.colors.warning || '#f59e0b') + '20';
+  }};
   border-radius: ${props => props.theme.borderRadius.medium};
-  color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
+  color: ${props => {
+    if (props.$isFunctional) {
+      return props.theme.colors.success || '#10b981';
+    }
+    return props.theme.colors.warning || '#f59e0b';
+  }};
   transition: all 0.3s ease;
   
   ${ToolCard}:hover & {
-    background: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
-    color: ${props => props.theme.buttonPrimary?.text || props.theme.colors.white};
+    background: ${props => {
+      if (props.$isFunctional) {
+        return props.theme.colors.success || '#10b981';
+      }
+      return props.theme.colors.warning || '#f59e0b';
+    }};
+    color: ${props => props.theme.colors.white || '#ffffff'};
     transform: scale(1.1);
   }
 `;
@@ -306,6 +339,95 @@ const ToolArrow = styled.div`
     color: ${props => props.theme.buttonPrimary?.background || props.theme.colors.primary};
     transform: translateX(4px);
   }
+`;
+
+const StatusBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing?.s1 || '4px'};
+  padding: ${props => props.theme.spacing?.s1 || '4px'} ${props => props.theme.spacing?.s2 || '8px'};
+  border-radius: ${props => props.theme.borderRadius?.small || '4px'};
+  font-size: ${props => props.theme.typography?.fontSizes?.xs || '12px'};
+  font-weight: ${props => props.theme.typography?.fontWeights?.medium || 500};
+  font-family: ${props => props.theme.typography?.fontFamilies?.primary || 'system-ui'};
+  background: ${props => {
+    if (props.$status === 'available') {
+      return (props.theme.colors?.success || '#10b981') + '15';
+    }
+    return (props.theme.colors?.warning || '#f59e0b') + '15';
+  }};
+  color: ${props => {
+    if (props.$status === 'available') {
+      return props.theme.colors?.success || '#10b981';
+    }
+    return props.theme.colors?.warning || '#f59e0b';
+  }};
+  border: 1px solid ${props => {
+    if (props.$status === 'available') {
+      return (props.theme.colors?.success || '#10b981') + '30';
+    }
+    return (props.theme.colors?.warning || '#f59e0b') + '30';
+  }};
+  margin-left: ${props => props.theme.spacing?.s2 || '8px'};
+`;
+
+const MetricsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${props => props.theme.spacing?.s3 || '12px'} ${props => props.theme.spacing?.s4 || '16px'};
+  margin-bottom: ${props => props.theme.spacing?.s4 || '16px'};
+  background: ${props => props.theme.colors?.surface || '#f8f9fa'};
+  border: 1px solid ${props => props.theme.colors?.borderSubtle || '#e5e7eb'};
+  border-radius: ${props => props.theme.borderRadius?.medium || '8px'};
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const MetricItem = styled.div`
+  text-align: center;
+  flex: 1;
+`;
+
+const MetricValue = styled.div`
+  font-size: ${props => props.theme.typography?.fontSizes?.lg || '18px'};
+  font-weight: ${props => props.theme.typography?.fontWeights?.bold || 700};
+  font-family: ${props => props.theme.typography?.fontFamilies?.primary || 'system-ui'};
+  color: ${props => {
+    switch (props.$type) {
+      case 'available':
+        return props.theme.colors?.success || '#10b981';
+      case 'coming':
+        return props.theme.colors?.warning || '#f59e0b';
+      case 'total':
+        return props.theme.buttonPrimary?.background || props.theme.colors?.primary || '#2563eb';
+      default:
+        return props.theme.colors?.text || '#1f2937';
+    }
+  }};
+`;
+
+const MetricLabel = styled.div`
+  font-size: ${props => props.theme.typography?.fontSizes?.xs || '12px'};
+  font-weight: ${props => props.theme.typography?.fontWeights?.medium || 500};
+  font-family: ${props => props.theme.typography?.fontFamilies?.secondary || 'system-ui'};
+  color: ${props => props.theme.colors?.textMuted || '#6b7280'};
+  margin-top: ${props => props.theme.spacing?.s1 || '4px'};
+`;
+
+const FooterDescription = styled.p`
+  color: ${props => props.theme.colors?.textMuted || '#6b7280'};
+  font-size: ${props => props.theme.typography?.fontSizes?.sm || '14px'};
+  font-family: ${props => props.theme.typography?.fontFamilies?.secondary || 'system-ui'};
+  font-weight: ${props => props.theme.typography?.fontWeights?.normal || 400};
+  text-align: center;
+  margin: 0 0 ${props => props.theme.spacing?.s4 || '16px'} 0;
+  line-height: ${props => props.theme.typography?.lineHeights?.normal || 1.5};
+  opacity: 0.8;
 `;
 
 const SidebarFooter = styled.div`
@@ -398,6 +520,25 @@ const PillarSidebar = ({
             </CloseButton>
           </HeaderTop>
           
+          <MetricsContainer>
+            <MetricItem>
+              <MetricValue $type="available">
+                {tools.filter(tool => tool.id === 'diagnostico-9001').length}
+              </MetricValue>
+              <MetricLabel>Disponible</MetricLabel>
+            </MetricItem>
+            <MetricItem>
+              <MetricValue $type="coming">
+                {tools.filter(tool => tool.id !== 'diagnostico-9001').length}
+              </MetricValue>
+              <MetricLabel>Próximamente</MetricLabel>
+            </MetricItem>
+            <MetricItem>
+              <MetricValue $type="total">{tools.length}</MetricValue>
+              <MetricLabel>Total</MetricLabel>
+            </MetricItem>
+          </MetricsContainer>
+          
           {pillarConfig && (
             <PillarInfo>
               <PillarIcon>
@@ -415,24 +556,42 @@ const PillarSidebar = ({
           <ToolsSection>
             <SectionTitle>Herramientas Gratuitas</SectionTitle>
             <ToolsList>
-              {tools.map((tool, index) => (
-                <ToolCard
-                  key={tool.id}
-                  $index={index}
-                  onClick={() => handleToolClick(tool)}
-                >
-                  <ToolIcon>
-                    <FileText size={20} />
-                  </ToolIcon>
-                  <ToolInfo>
-                    <ToolName>{tool.name}</ToolName>
-                    <ToolDescription>{tool.description}</ToolDescription>
-                  </ToolInfo>
-                  <ToolArrow>
-                    <ChevronRight size={20} />
-                  </ToolArrow>
-                </ToolCard>
-              ))}
+              {tools.map((tool, index) => {
+                // Solo diagnóstico-9001 está funcional actualmente
+                const isFunctional = tool.id === 'diagnostico-9001';
+                
+                return (
+                  <ToolCard
+                    key={tool.id}
+                    $index={index}
+                    $isFunctional={isFunctional}
+                    onClick={() => handleToolClick(tool)}
+                  >
+                    <ToolIcon $isFunctional={isFunctional}>
+                      <FileText size={20} />
+                    </ToolIcon>
+                    <ToolInfo>
+                      <ToolName>
+                        {tool.name}
+                        <StatusBadge $status={isFunctional ? 'available' : 'coming'}>
+                          {isFunctional ? (
+                            <CheckCircle size={12} />
+                          ) : (
+                            <Clock size={12} />
+                          )}
+                          {isFunctional ? 'Disponible' : 'Próximamente'}
+                        </StatusBadge>
+                      </ToolName>
+                      <ToolDescription>
+                        {tool.description}
+                      </ToolDescription>
+                    </ToolInfo>
+                    <ToolArrow>
+                      <ChevronRight size={20} />
+                    </ToolArrow>
+                  </ToolCard>
+                );
+              })}
               
               {tools.length === 0 && (
                 <ToolCard $index={0}>
@@ -451,19 +610,6 @@ const PillarSidebar = ({
           </ToolsSection>
         </SidebarContent>
 
-        <SidebarFooter>
-          <FooterText>
-            Todas las herramientas incluyen export a PDF y Excel sin límites
-          </FooterText>
-          <Button 
-            variant="outline" 
-            size="medium" 
-            onClick={onClose}
-            style={{ width: '100%' }}
-          >
-            Cerrar
-          </Button>
-        </SidebarFooter>
       </SidebarContainer>
     </>
   );

@@ -3,10 +3,26 @@
 
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { PageLayout } from '../design-system/components';
+import styled, { keyframes } from 'styled-components';
 import ToolContainer from '../components/recursos-libres/ToolContainer';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../design-system/themes/ThemeManager';
+
+// Animación para el spinner
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+const SpinnerDiv = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #EC268F;
+  border-radius: 50%;
+  animation: ${spin} 1s linear infinite;
+  margin: 0 auto 16px;
+`;
 
 // Configuración de herramientas
 const TOOLS_CONFIG = {
@@ -85,39 +101,42 @@ const HerramientaPage = () => {
   const toolConfig = pillarConfig?.tools[toolId];
 
   if (!pillarConfig || !toolConfig) {
+    // Renderizar sin PageLayout para mantener consistencia con recursos gratuitos
     return (
-      <PageLayout
-        isAuthenticated={isAuthenticated} 
-        userName={userName}
-        currentTheme={currentTheme}
-        onThemeChange={changeTheme}
-      >
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          minHeight: '60vh',
-          textAlign: 'center',
-          gap: '20px'
-        }}>
-          <h2>Herramienta no encontrada</h2>
-          <p>La herramienta "{toolId}" no existe en el pilar "{pillar}"</p>
-          <button 
-            onClick={() => navigate('/acceso-gratuito')}
-            style={{
-              padding: '12px 24px',
-              borderRadius: '8px',
-              border: '1px solid #EC268F',
-              background: 'transparent',
-              color: '#EC268F',
-              cursor: 'pointer'
-            }}
-          >
-            Volver a Recursos Libres
-          </button>
-        </div>
-      </PageLayout>
+      <div style={{ 
+        minHeight: '100vh',
+        background: '#f8f9fa',
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        textAlign: 'center',
+        gap: '20px',
+        padding: '20px'
+      }}>
+        <h2>Herramienta no encontrada</h2>
+        <p>La herramienta "{toolId}" no existe en el pilar "{pillar}"</p>
+        <button 
+          onClick={() => navigate('/acceso-gratuito')}
+          style={{
+            padding: '12px 24px',
+            borderRadius: '8px',
+            border: '1px solid #EC268F',
+            background: 'transparent',
+            color: '#EC268F',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: '500',
+            transition: 'all 0.3s ease',
+            ':hover': {
+              background: '#EC268F',
+              color: 'white'
+            }
+          }}
+        >
+          Volver a Recursos Libres
+        </button>
+      </div>
     );
   }
 
@@ -126,41 +145,35 @@ const HerramientaPage = () => {
   };
 
   if (loading) {
+    // Renderizar sin PageLayout para mantener consistencia con recursos gratuitos
     return (
-      <PageLayout
-        isAuthenticated={isAuthenticated} 
-        userName={userName}
-        currentTheme={currentTheme}
-        onThemeChange={changeTheme}
-      >
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          minHeight: '60vh' 
+      <div style={{ 
+        minHeight: '100vh',
+        background: '#f8f9fa',
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center'
+      }}>
+        <div style={{
+          textAlign: 'center',
+          color: '#6b7280'
         }}>
-          Cargando...
+          <SpinnerDiv />
+          Cargando herramienta...
         </div>
-      </PageLayout>
+      </div>
     );
   }
 
+  // Los recursos gratuitos se renderizan sin PageLayout (sin header/footer)
   return (
-    <PageLayout
-      isAuthenticated={isAuthenticated} 
-      userName={userName}
-      currentTheme={currentTheme}
-      onThemeChange={changeTheme}
-      showNavigation={false} // Ocultar navegación para herramientas
-    >
-      <ToolContainer
-        pillar={pillar}
-        toolId={toolId}
-        toolName={toolConfig.name}
-        toolDescription={toolConfig.description}
-        onBack={handleBack}
-      />
-    </PageLayout>
+    <ToolContainer
+      pillar={pillar}
+      toolId={toolId}
+      toolName={toolConfig.name}
+      toolDescription={toolConfig.description}
+      onBack={handleBack}
+    />
   );
 };
 

@@ -26,6 +26,7 @@ Bienvenido al centro de documentación de StratekazProject - una plataforma SaaS
   - Tenants API (✅ Funcional) 
   - Módulos APIs (🚧 En desarrollo)
 - **[Estado de Módulos](modules/status.md)** - Qué está implementado y qué no
+- **[Recursos Libres](recursos-libres.md)** - Herramientas gratuitas disponibles
 
 #### **Guías de Desarrollo**
 - **[Contribuyendo al Proyecto](development/contributing.md)** - Cómo contribuir
@@ -72,15 +73,59 @@ Bienvenido al centro de documentación de StratekazProject - una plataforma SaaS
 | **Sistema de Autenticación** | ✅ Funcional al 100% | [API Auth](api/README.md#-authentication-api---funcional-) |
 | **Multi-tenancy** | ✅ Funcional al 95% | [API Tenants](api/README.md#-tenants-api---funcional-) |
 | **Design System Frontend** | ✅ Excelente | [Design System Docs](../frontend/src/design-system/docs/README.md) |
+| **Sistema de Recursos Libres** | ✅ 100% Funcional | [Recursos Libres](recursos-libres.md) |
+| **Navegación SPA** | ✅ End-to-end operativo | [Troubleshooting](modules/status.md#-troubleshooting-problema-de-navegación-resuelto) |
+| **Herramienta ISO 9001:2015** | ✅ Completamente funcional | [ISO 9001:2015](recursos-libres.md#iso-90012015---diagnóstico-completo) |
+| **Template para herramientas** | ✅ Patrón establecido | [Guía Técnica](recursos-libres.md#-guía-técnica-del-sistema) |
 | **Dashboard básico** | 🚧 30% funcional | [Módulos Status](modules/status.md) |
 | **Módulo Herramientas** | ⚠️ 10% implementado | [Estado Módulos](modules/status.md#-módulo-herramientas-herramientas_module) |
 | **Inteligencia de Negocios** | ❌ Por implementar | [Estado Módulos](modules/status.md#-módulo-inteligencia-de-negocios) |
 | **Ecosistema y Finanzas** | ❌ Por implementar | [Estado Módulos](modules/status.md) |
 
+## 🆓 **Sistema de Recursos Libres - Completamente Funcional**
+
+### ✅ Flujo End-to-End Operativo
+**Sistema completo desde landing hasta herramienta sin recargas**
+
+**Flujo de navegación:**
+```
+HomePage → AccesoGratuitoPage → RecursosSection → PillarSidebar → ToolContainer → Herramienta
+```
+
+**Corrección crítica implementada:**
+- **Problema resuelto:** RecursosSection intentaba archivos HTML estáticos
+- **Solución:** Navegación SPA con `navigate('/herramientas/iso/diagnostico-9001')`
+- **Resultado:** Experiencia de usuario profesional sin interrupciones
+
+### ✅ ISO 9001:2015 - Diagnóstico Completo (100% Funcional)
+**Primera herramienta completamente operativa con integración completa**
+
+**Acceso directo:** `/herramientas/iso/diagnostico-9001`
+
+**Características avanzadas:**
+- ✅ Diagnóstico interactivo de las 7 secciones ISO 9001:2015
+- ✅ Sistema de evaluación con escala 0-5 y ponderación automática
+- ✅ Dashboard ejecutivo con puntuación global y nivel de madurez
+- ✅ Gráficos interactivos profesionales (Radar, Barras, Circular, Líneas)
+- ✅ Generación automática de plan de acción con priorización inteligente
+- ✅ Exportación a PDF y Excel sin restricciones
+- ✅ Integración completa con LocalStorageManager y ExportService
+- ✅ Template establecido para replicar en 15+ herramientas
+
+**Tecnologías de vanguardia:**
+- React 19 con hooks avanzados y styled-components
+- Recharts para visualizaciones profesionales
+- React Router para navegación SPA dinámica
+- ToolContainer con servicios integrados
+- Design System consistente y responsive
+
+---
+
 ## 🔗 **Enlaces Rápidos**
 
 ### **Para Empezar Hoy**
 - 🏃‍♂️ [Setup en 5 minutos](getting-started/quick-start.md)
+- 🆓 [Herramienta ISO 9001:2015](recursos-libres.md#iso-90012015---diagnóstico-completo) - ¡Primera herramienta funcional!
 - 🎨 [Design System](../frontend/src/design-system/docs/README.md) - ¡Imprescindible para frontend!
 - 📡 [APIs Funcionales](api/README.md) - Auth y Tenants listos para usar
 
@@ -99,6 +144,9 @@ Bienvenido al centro de documentación de StratekazProject - una plataforma SaaS
 ### **Estado de Documentación**
 - ✅ **APIs principales documentadas** - Authentication y Tenants
 - ✅ **Design System excelente** - Documentación modelo
+- ✅ **Sistema de Recursos Libres completo** - Navegación SPA y herramienta ISO 9001:2015
+- ✅ **Template para herramientas** - Patrón replicable documentado
+- ✅ **Troubleshooting detallado** - Problema de navegación resuelto
 - 🚧 **Módulos de negocio** - Documentación conforme se implementen
 - 📋 **Estado real vs. aspiracional** - Esta documentación refleja la realidad
 
@@ -126,4 +174,4 @@ Bienvenido al centro de documentación de StratekazProject - una plataforma SaaS
 
 💡 **Consejo**: Esta documentación está diseñada para ser tu compañera durante todo el desarrollo. Manténla abierta y úsala como referencia constante.
 
-*Última actualización: 7 de Agosto 2025*
+*Última actualización: 8 de Agosto 2025 - Sistema de Recursos Libres completamente funcional con navegación SPA end-to-end y herramienta ISO 9001:2015 operativa*

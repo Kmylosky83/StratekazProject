@@ -1,272 +1,8 @@
-// Diagnóstico ISO 9001:2015 - Herramienta de evaluación de cumplimiento
-// Integrado con el sistema de recursos gratuitos de StrateKaz
-
 import React, { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
 import { LineChart, Line, BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Calendar, FileText, AlertTriangle, CheckCircle, Users, Target, TrendingUp, Activity, Award, Clock, Download, Save, ChevronRight, Info, HelpCircle, Home, ClipboardList } from 'lucide-react';
+import { Calendar, FileText, AlertTriangle, CheckCircle, Users, Target, TrendingUp, Activity, Award, Clock, Download, Save, Play, Pause, ChevronRight, Info, Menu, X, Home, ClipboardList, BarChart3, Settings, HelpCircle } from 'lucide-react';
 
-// Styled Components con Design System
-const ToolWrapper = styled.div`
-  min-height: 100vh;
-  background: ${props => props.theme.colors.surface || '#f8f9fa'};
-  position: relative;
-`;
-
-const LogoContainer = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 1000;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  
-  &:hover {
-    transform: scale(1.05);
-  }
-  
-  img {
-    height: 40px;
-    width: auto;
-  }
-`;
-
-const MainContainer = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 80px 20px 40px;
-  
-  @media (max-width: ${props => props.theme.breakpoints?.tablet || '768px'}) {
-    padding: 100px 15px 30px;
-  }
-`;
-
-const DiagnosticHeader = styled.div`
-  text-align: center;
-  margin-bottom: ${props => props.theme.spacing?.s8 || '40px'};
-`;
-
-const Title = styled.h1`
-  color: ${props => props.theme.colors?.primary || '#ec268f'};
-  font-size: ${props => props.theme.typography?.fontSizes?.hero || '2.5rem'};
-  font-weight: ${props => props.theme.typography?.fontWeights?.bold || '700'};
-  margin-bottom: ${props => props.theme.spacing?.s2 || '8px'};
-  
-  @media (max-width: ${props => props.theme.breakpoints?.mobile || '576px'}) {
-    font-size: 1.8rem;
-  }
-`;
-
-const Subtitle = styled.p`
-  color: ${props => props.theme.colors?.textMuted || '#6b7280'};
-  font-size: ${props => props.theme.typography?.fontSizes?.base || '1rem'};
-  margin-bottom: ${props => props.theme.spacing?.s4 || '16px'};
-`;
-
-const ModulesContainer = styled.div`
-  display: flex;
-  gap: ${props => props.theme.spacing?.s4 || '16px'};
-  margin-bottom: ${props => props.theme.spacing?.s6 || '24px'};
-  
-  @media (max-width: ${props => props.theme.breakpoints?.tablet || '768px'}) {
-    flex-direction: column;
-  }
-`;
-
-const Sidebar = styled.aside`
-  width: 280px;
-  background: ${props => props.theme.colors?.white || '#ffffff'};
-  border-radius: ${props => props.theme.borderRadius?.large || '12px'};
-  box-shadow: ${props => props.theme.shadows?.card || '0 2px 8px rgba(0,0,0,0.1)'};
-  padding: ${props => props.theme.spacing?.s4 || '16px'};
-  height: fit-content;
-  position: sticky;
-  top: 20px;
-  
-  @media (max-width: ${props => props.theme.breakpoints?.tablet || '768px'}) {
-    width: 100%;
-    position: static;
-  }
-`;
-
-const MainContent = styled.main`
-  flex: 1;
-  background: ${props => props.theme.colors?.white || '#ffffff'};
-  border-radius: ${props => props.theme.borderRadius?.large || '12px'};
-  box-shadow: ${props => props.theme.shadows?.card || '0 2px 8px rgba(0,0,0,0.1)'};
-  padding: ${props => props.theme.spacing?.s6 || '24px'};
-`;
-
-const SectionButton = styled.button`
-  width: 100%;
-  padding: ${props => props.theme.spacing?.s3 || '12px'};
-  margin-bottom: ${props => props.theme.spacing?.s2 || '8px'};
-  border: 1px solid ${props => props.active ? props.theme.colors?.primary || '#ec268f' : props.theme.colors?.border || '#e5e7eb'};
-  background: ${props => props.active ? props.theme.colors?.primary || '#ec268f' : 'transparent'};
-  color: ${props => props.active ? 'white' : props.theme.colors?.text || '#1f2937'};
-  border-radius: ${props => props.theme.borderRadius?.medium || '8px'};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing?.s2 || '8px'};
-  font-size: ${props => props.theme.typography?.fontSizes?.sm || '0.875rem'};
-  font-weight: ${props => props.theme.typography?.fontWeights?.medium || '500'};
-  
-  &:hover {
-    border-color: ${props => props.theme.colors?.primary || '#ec268f'};
-    background: ${props => props.active ? props.theme.colors?.primary || '#ec268f' : `${props.theme.colors?.primary || '#ec268f'}10`};
-  }
-  
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-`;
-
-const QuestionCard = styled.div`
-  padding: ${props => props.theme.spacing?.s4 || '16px'};
-  margin-bottom: ${props => props.theme.spacing?.s4 || '16px'};
-  border: 1px solid ${props => props.theme.colors?.border || '#e5e7eb'};
-  border-radius: ${props => props.theme.borderRadius?.medium || '8px'};
-  background: ${props => props.theme.colors?.backgroundLight || '#f9fafb'};
-`;
-
-const QuestionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: ${props => props.theme.spacing?.s3 || '12px'};
-`;
-
-const QuestionText = styled.h4`
-  color: ${props => props.theme.colors?.text || '#1f2937'};
-  font-size: ${props => props.theme.typography?.fontSizes?.base || '1rem'};
-  font-weight: ${props => props.theme.typography?.fontWeights?.semiBold || '600'};
-  flex: 1;
-  margin: 0;
-`;
-
-const HelpText = styled.p`
-  color: ${props => props.theme.colors?.textMuted || '#6b7280'};
-  font-size: ${props => props.theme.typography?.fontSizes?.sm || '0.875rem'};
-  margin: ${props => props.theme.spacing?.s2 || '8px'} 0;
-`;
-
-const ScoreButtons = styled.div`
-  display: flex;
-  gap: ${props => props.theme.spacing?.s2 || '8px'};
-  margin-top: ${props => props.theme.spacing?.s3 || '12px'};
-  flex-wrap: wrap;
-`;
-
-const ScoreButton = styled.button`
-  width: 48px;
-  height: 48px;
-  border: 2px solid ${props => props.selected ? props.theme.colors?.primary || '#ec268f' : props.theme.colors?.border || '#e5e7eb'};
-  background: ${props => props.selected ? props.theme.colors?.primary || '#ec268f' : 'white'};
-  color: ${props => props.selected ? 'white' : props.theme.colors?.text || '#1f2937'};
-  border-radius: ${props => props.theme.borderRadius?.small || '6px'};
-  cursor: pointer;
-  font-weight: ${props => props.theme.typography?.fontWeights?.bold || '700'};
-  transition: all 0.2s ease;
-  
-  &:hover {
-    transform: scale(1.1);
-    border-color: ${props => props.theme.colors?.primary || '#ec268f'};
-  }
-`;
-
-const NavigationButtons = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: ${props => props.theme.spacing?.s6 || '24px'};
-  padding-top: ${props => props.theme.spacing?.s4 || '16px'};
-  border-top: 1px solid ${props => props.theme.colors?.border || '#e5e7eb'};
-`;
-
-const NavButton = styled.button`
-  padding: ${props => props.theme.spacing?.s3 || '12px'} ${props => props.theme.spacing?.s4 || '16px'};
-  border: none;
-  background: ${props => props.variant === 'primary' ? props.theme.colors?.primary || '#ec268f' : props.theme.colors?.backgroundLight || '#f3f4f6'};
-  color: ${props => props.variant === 'primary' ? 'white' : props.theme.colors?.text || '#1f2937'};
-  border-radius: ${props => props.theme.borderRadius?.medium || '8px'};
-  cursor: pointer;
-  font-weight: ${props => props.theme.typography?.fontWeights?.medium || '500'};
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing?.s2 || '8px'};
-  transition: all 0.2s ease;
-  
-  &:hover:not(:disabled) {
-    opacity: 0.9;
-    transform: translateY(-1px);
-  }
-  
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const DashboardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${props => props.theme.spacing?.s4 || '16px'};
-  margin-bottom: ${props => props.theme.spacing?.s6 || '24px'};
-`;
-
-const MetricCard = styled.div`
-  background: ${props => props.theme.colors?.white || '#ffffff'};
-  border: 1px solid ${props => props.theme.colors?.border || '#e5e7eb'};
-  border-radius: ${props => props.theme.borderRadius?.medium || '8px'};
-  padding: ${props => props.theme.spacing?.s4 || '16px'};
-  box-shadow: ${props => props.theme.shadows?.sm || '0 1px 3px rgba(0,0,0,0.1)'};
-`;
-
-const MetricHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${props => props.theme.spacing?.s2 || '8px'};
-`;
-
-const MetricTitle = styled.h3`
-  color: ${props => props.theme.colors?.textMuted || '#6b7280'};
-  font-size: ${props => props.theme.typography?.fontSizes?.sm || '0.875rem'};
-  font-weight: ${props => props.theme.typography?.fontWeights?.medium || '500'};
-  margin: 0;
-`;
-
-const MetricValue = styled.div`
-  font-size: ${props => props.theme.typography?.fontSizes?.hero || '2.5rem'};
-  font-weight: ${props => props.theme.typography?.fontWeights?.bold || '700'};
-  color: ${props => props.color || props.theme.colors?.primary || '#ec268f'};
-`;
-
-const MetricLabel = styled.p`
-  color: ${props => props.theme.colors?.textMuted || '#6b7280'};
-  font-size: ${props => props.theme.typography?.fontSizes?.sm || '0.875rem'};
-  margin: ${props => props.theme.spacing?.s1 || '4px'} 0 0;
-`;
-
-const ChartContainer = styled.div`
-  background: ${props => props.theme.colors?.white || '#ffffff'};
-  border: 1px solid ${props => props.theme.colors?.border || '#e5e7eb'};
-  border-radius: ${props => props.theme.borderRadius?.medium || '8px'};
-  padding: ${props => props.theme.spacing?.s4 || '16px'};
-  margin-bottom: ${props => props.theme.spacing?.s4 || '16px'};
-  box-shadow: ${props => props.theme.shadows?.sm || '0 1px 3px rgba(0,0,0,0.1)'};
-`;
-
-const ChartTitle = styled.h3`
-  color: ${props => props.theme.colors?.text || '#1f2937'};
-  font-size: ${props => props.theme.typography?.fontSizes?.cardTitle || '1.25rem'};
-  font-weight: ${props => props.theme.typography?.fontWeights?.semiBold || '600'};
-  margin: 0 0 ${props => props.theme.spacing?.s4 || '16px'};
-`;
-
-// Configuración de colores
+// Configuración de colores y estilos
 const COLORS = {
   primary: '#ec268f',
   secondary: '#000000',
@@ -412,42 +148,42 @@ const DIAGNOSTIC_QUESTIONS = {
       id: 'pf1',
       question: '¿Se realiza seguimiento, medición, análisis y evaluación?',
       help: 'Qué medir, métodos, cuándo, análisis de resultados.',
-      weight: 2.5,
+      weight: 2,
       type: 'scale'
     },
     {
       id: 'pf2',
-      question: '¿Se realizan auditorías internas planificadas?',
-      help: 'Programa de auditoría, criterios, métodos, informes.',
-      weight: 2,
+      question: '¿Se ejecutan auditorías internas planificadas?',
+      help: 'Programa de auditorías, criterios, métodos, registros.',
+      weight: 1.5,
       type: 'scale'
     },
     {
       id: 'pf3',
       question: '¿La dirección revisa el SGC periódicamente?',
       help: 'Revisiones planificadas con entradas y salidas definidas.',
-      weight: 2,
+      weight: 1.5,
       type: 'scale'
     }
   ],
   improvement: [
     {
       id: 'im1',
-      question: '¿Se determinan oportunidades de mejora?',
-      help: 'Mejora de productos/servicios, prevención de efectos no deseados.',
+      question: '¿Se identifican y seleccionan oportunidades de mejora?',
+      help: 'Mejora de productos, servicios, procesos y del SGC.',
       weight: 2,
       type: 'scale'
     },
     {
       id: 'im2',
-      question: '¿Existe gestión de no conformidades y acciones correctivas?',
-      help: 'Reacción, evaluación, acción, revisión de eficacia.',
-      weight: 2.5,
+      question: '¿Se gestionan las no conformidades y acciones correctivas?',
+      help: 'Identificación, análisis de causas, implementación de acciones.',
+      weight: 2,
       type: 'scale'
     },
     {
       id: 'im3',
-      question: '¿Se evidencia mejora continua del SGC?',
+      question: '¿Existe mejora continua del SGC?',
       help: 'Pertinencia, adecuación y eficacia del sistema.',
       weight: 1.5,
       type: 'scale'
@@ -455,20 +191,31 @@ const DIAGNOSTIC_QUESTIONS = {
   ]
 };
 
-// Componente principal
+// Componente principal para integración con ToolContainer
 const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
   const [activeModule, setActiveModule] = useState('dashboard');
-  const [diagnosticData, setDiagnosticData] = useState(initialData?.diagnosticData || {});
+  const [diagnosticData, setDiagnosticData] = useState({});
   const [currentSection, setCurrentSection] = useState('context');
-  const [companyInfo, setCompanyInfo] = useState(initialData?.companyInfo || {
+  const [companyInfo, setCompanyInfo] = useState({
     name: '',
     sector: '',
     size: '',
     contact: ''
   });
-  const [actionPlans, setActionPlans] = useState(initialData?.actionPlans || []);
+  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState({ title: '', text: '' });
+  const [actionPlans, setActionPlans] = useState([]);
 
-  // Efecto para guardar datos cuando cambien
+  // Cargar datos iniciales del ToolContainer
+  useEffect(() => {
+    if (initialData) {
+      setDiagnosticData(initialData.diagnosticData || {});
+      setCompanyInfo(initialData.companyInfo || {});
+      setActionPlans(initialData.actionPlans || []);
+    }
+  }, [initialData]);
+
+  // Notificar cambios al ToolContainer
   useEffect(() => {
     if (onDataChange) {
       const dataToSave = {
@@ -482,7 +229,7 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
   }, [diagnosticData, companyInfo, actionPlans, onDataChange]);
 
   // Calcular puntuación por sección
-  const calculateSectionScore = useCallback((sectionId) => {
+  const calculateSectionScore = (sectionId) => {
     const questions = DIAGNOSTIC_QUESTIONS[sectionId];
     if (!questions) return 0;
 
@@ -498,22 +245,23 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
     });
 
     return totalWeight > 0 ? (weightedScore / totalWeight) * 100 : 0;
-  }, [diagnosticData]);
+  };
 
   // Calcular puntuación global
-  const calculateGlobalScore = useCallback(() => {
+  const calculateGlobalScore = () => {
     let totalScore = 0;
     Object.entries(ISO_SECTIONS).forEach(([key, section]) => {
       const sectionScore = calculateSectionScore(key);
       totalScore += sectionScore * section.weight;
     });
     return totalScore;
-  }, [calculateSectionScore]);
+  };
 
   // Generar plan de acción automático
   const generateActionPlan = () => {
     const plans = [];
     Object.entries(ISO_SECTIONS).forEach(([key, section]) => {
+      const score = calculateSectionScore(key);
       const questions = DIAGNOSTIC_QUESTIONS[key];
       
       questions.forEach(q => {
@@ -523,27 +271,34 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
             id: `${q.id}_action`,
             section: section.name,
             question: q.question,
-            currentScore: response,
+            action: `Mejorar: ${q.help}`,
             priority: response === 0 ? 'Alta' : response === 1 ? 'Media' : 'Baja',
-            action: `Implementar acciones para: ${q.question}`,
+            status: 'Pendiente',
             responsible: '',
-            deadline: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-            status: 'Pendiente'
+            deadline: ''
           });
         }
       });
     });
-    
+
     setActionPlans(plans.sort((a, b) => {
       const priorityOrder = { 'Alta': 0, 'Media': 1, 'Baja': 2 };
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     }));
   };
 
+  // Manejar respuesta del diagnóstico
+  const handleResponse = (questionId, value) => {
+    setDiagnosticData(prev => ({
+      ...prev,
+      [questionId]: value
+    }));
+  };
+
   // Datos para gráficos
   const getRadarData = () => {
     return Object.entries(ISO_SECTIONS).map(([key, section]) => ({
-      section: section.name.split(' ')[0],
+      section: section.name,
       score: calculateSectionScore(key),
       fullMark: 100
     }));
@@ -556,10 +311,23 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
     }));
   };
 
-  // Navegación al home
-  const handleLogoClick = () => {
-    window.location.href = '/';
+  const getPieData = () => {
+    const completed = Object.keys(diagnosticData).length;
+    const total = Object.values(DIAGNOSTIC_QUESTIONS).flat().length;
+    return [
+      { name: 'Completado', value: completed, color: COLORS.success },
+      { name: 'Pendiente', value: total - completed, color: COLORS.warning }
+    ];
   };
+
+  // Módulos de navegación
+  const modules = [
+    { id: 'dashboard', name: 'Dashboard', icon: Home },
+    { id: 'diagnostic', name: 'Diagnóstico ISO 9001', icon: ClipboardList },
+    { id: 'reports', name: 'Informes y KPIs', icon: BarChart3 },
+    { id: 'actions', name: 'Plan de Acción', icon: Target },
+    { id: 'settings', name: 'Configuración', icon: Settings }
+  ];
 
   // Componente Dashboard
   const Dashboard = () => {
@@ -571,74 +339,97 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
       globalScore >= 40 ? 'Básico' : 'Inicial';
 
     return (
-      <>
-        <DashboardGrid>
-          <MetricCard>
-            <MetricHeader>
-              <MetricTitle>Puntuación Global ISO 9001</MetricTitle>
-              <Award size={24} style={{ color: COLORS.primary }} />
-            </MetricHeader>
-            <MetricValue color={COLORS.primary}>
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Puntuación Global ISO 9001</h3>
+              <Award className="w-8 h-8" style={{ color: COLORS.primary }} />
+            </div>
+            <div className="text-4xl font-bold" style={{ color: COLORS.primary }}>
               {globalScore.toFixed(1)}%
-            </MetricValue>
-            <MetricLabel>Nivel de Madurez: {maturityLevel}</MetricLabel>
-          </MetricCard>
+            </div>
+            <p className="text-gray-600 mt-2">Nivel de Madurez: {maturityLevel}</p>
+          </div>
 
-          <MetricCard>
-            <MetricHeader>
-              <MetricTitle>Progreso del Diagnóstico</MetricTitle>
-              <Activity size={24} style={{ color: COLORS.info }} />
-            </MetricHeader>
-            <MetricValue color={COLORS.info}>
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Progreso del Diagnóstico</h3>
+              <Activity className="w-8 h-8" style={{ color: COLORS.info }} />
+            </div>
+            <div className="text-4xl font-bold" style={{ color: COLORS.info }}>
               {((Object.keys(diagnosticData).length / Object.values(DIAGNOSTIC_QUESTIONS).flat().length) * 100).toFixed(0)}%
-            </MetricValue>
-            <MetricLabel>Preguntas completadas</MetricLabel>
-          </MetricCard>
+            </div>
+            <p className="text-gray-600 mt-2">Preguntas completadas</p>
+          </div>
 
-          <MetricCard>
-            <MetricHeader>
-              <MetricTitle>Acciones Pendientes</MetricTitle>
-              <AlertTriangle size={24} style={{ color: COLORS.warning }} />
-            </MetricHeader>
-            <MetricValue color={COLORS.warning}>
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Acciones Pendientes</h3>
+              <AlertTriangle className="w-8 h-8" style={{ color: COLORS.warning }} />
+            </div>
+            <div className="text-4xl font-bold" style={{ color: COLORS.warning }}>
               {actionPlans.filter(a => a.status === 'Pendiente').length}
-            </MetricValue>
-            <MetricLabel>Requieren atención</MetricLabel>
-          </MetricCard>
-        </DashboardGrid>
+            </div>
+            <p className="text-gray-600 mt-2">Requieren atención</p>
+          </div>
+        </div>
 
-        <ChartContainer>
-          <ChartTitle>Cumplimiento por Sección</ChartTitle>
-          <ResponsiveContainer width="100%" height={300}>
-            <RadarChart data={getRadarData()}>
-              <PolarGrid />
-              <PolarAngleAxis dataKey="section" />
-              <PolarRadiusAxis angle={90} domain={[0, 100]} />
-              <Radar 
-                name="Puntuación" 
-                dataKey="score" 
-                stroke={COLORS.primary} 
-                fill={COLORS.primary} 
-                fillOpacity={0.6} 
-              />
-              <Tooltip />
-            </RadarChart>
-          </ResponsiveContainer>
-        </ChartContainer>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-xl font-semibold mb-4">Cumplimiento por Sección</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <RadarChart data={getRadarData()}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="section" />
+                <PolarRadiusAxis angle={90} domain={[0, 100]} />
+                <Radar 
+                  name="Puntuación" 
+                  dataKey="score" 
+                  stroke={COLORS.primary} 
+                  fill={COLORS.primary} 
+                  fillOpacity={0.6} 
+                />
+                <Tooltip />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
 
-        <ChartContainer>
-          <ChartTitle>Análisis Comparativo</ChartTitle>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={getBarData()}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis domain={[0, 100]} />
-              <Tooltip />
-              <Bar dataKey="puntuación" fill={COLORS.primary} />
-            </BarChart>
-          </ResponsiveContainer>
-        </ChartContainer>
-      </>
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-xl font-semibold mb-4">Análisis Comparativo</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={getBarData()}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis domain={[0, 100]} />
+                <Tooltip />
+                <Bar dataKey="puntuación" fill={COLORS.primary} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h3 className="text-xl font-semibold mb-4">Estado del Sistema de Gestión</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {Object.entries(ISO_SECTIONS).map(([key, section]) => {
+              const score = calculateSectionScore(key);
+              const Icon = section.icon;
+              const color = score >= 80 ? COLORS.success : score >= 60 ? COLORS.warning : COLORS.danger;
+              
+              return (
+                <div key={key} className="text-center p-4 border rounded-lg">
+                  <Icon className="w-12 h-12 mx-auto mb-2" style={{ color }} />
+                  <h4 className="font-semibold text-sm">{section.name}</h4>
+                  <p className="text-2xl font-bold mt-2" style={{ color }}>
+                    {score.toFixed(0)}%
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
     );
   };
 
@@ -647,13 +438,6 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
     const sections = Object.keys(ISO_SECTIONS);
     const currentSectionIndex = sections.indexOf(currentSection);
     const questions = DIAGNOSTIC_QUESTIONS[currentSection];
-
-    const handleResponse = (questionId, value) => {
-      setDiagnosticData(prev => ({
-        ...prev,
-        [questionId]: value
-      }));
-    };
 
     const nextSection = () => {
       if (currentSectionIndex < sections.length - 1) {
@@ -668,83 +452,153 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
     };
 
     return (
-      <>
-        <div style={{ marginBottom: '24px' }}>
-          <h2 style={{ color: COLORS.primary, marginBottom: '16px' }}>
-            {ISO_SECTIONS[currentSection].name}
-          </h2>
-          <div style={{ marginBottom: '16px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+      <div className="space-y-6">
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">Diagnóstico ISO 9001:2015</h2>
+            <button
+              onClick={() => {
+                setModalContent({
+                  title: 'Guía del Diagnóstico',
+                  text: 'Complete cada sección evaluando el nivel de cumplimiento de su organización. Use la escala de 0 (No implementado) a 5 (Totalmente implementado y optimizado). El sistema calculará automáticamente su puntuación y generará un plan de acción personalizado.'
+                });
+                setShowModal(true);
+              }}
+              className="p-2 rounded-full hover:bg-gray-100"
+            >
+              <HelpCircle className="w-6 h-6" style={{ color: COLORS.primary }} />
+            </button>
+          </div>
+
+          <div className="mb-6">
+            <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
               <span>Progreso de la sección</span>
               <span>{((Object.keys(diagnosticData).filter(k => questions.some(q => q.id === k)).length / questions.length) * 100).toFixed(0)}%</span>
             </div>
-            <div style={{ width: '100%', height: '8px', background: '#e5e7eb', borderRadius: '4px', overflow: 'hidden' }}>
+            <div className="w-full bg-gray-200 rounded-full h-2">
               <div 
+                className="h-2 rounded-full transition-all duration-300"
                 style={{ 
                   width: `${(Object.keys(diagnosticData).filter(k => questions.some(q => q.id === k)).length / questions.length) * 100}%`,
-                  height: '100%',
-                  background: COLORS.primary,
-                  transition: 'width 0.3s ease'
+                  backgroundColor: COLORS.primary 
                 }}
               />
             </div>
           </div>
-        </div>
 
-        {questions.map((question, index) => (
-          <QuestionCard key={question.id}>
-            <QuestionHeader>
-              <QuestionText>
-                {index + 1}. {question.question}
-              </QuestionText>
-            </QuestionHeader>
-            <HelpText>{question.help}</HelpText>
-            <ScoreButtons>
-              <span style={{ marginRight: '16px', fontWeight: '500' }}>Nivel:</span>
-              {[0, 1, 2, 3, 4, 5].map(value => (
-                <ScoreButton
-                  key={value}
-                  selected={diagnosticData[question.id] === value}
-                  onClick={() => handleResponse(question.id, value)}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {sections.map((sectionKey) => {
+              const section = ISO_SECTIONS[sectionKey];
+              const Icon = section.icon;
+              const isActive = currentSection === sectionKey;
+              const score = calculateSectionScore(sectionKey);
+              
+              return (
+                <button
+                  key={sectionKey}
+                  onClick={() => setCurrentSection(sectionKey)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                    isActive ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                  style={{ backgroundColor: isActive ? COLORS.primary : undefined }}
                 >
-                  {value}
-                </ScoreButton>
-              ))}
-            </ScoreButtons>
-            <div style={{ marginTop: '8px', fontSize: '0.75rem', color: '#6b7280' }}>
-              0 = No implementado | 5 = Totalmente implementado y optimizado
-            </div>
-          </QuestionCard>
-        ))}
+                  <Icon className="w-4 h-4" />
+                  <span className="text-sm font-medium">{section.name}</span>
+                  {score > 0 && (
+                    <span className="text-xs font-bold">{score.toFixed(0)}%</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
 
-        <NavigationButtons>
-          <NavButton
-            onClick={prevSection}
-            disabled={currentSectionIndex === 0}
-          >
-            <ChevronRight style={{ transform: 'rotate(180deg)' }} size={20} />
-            Sección anterior
-          </NavButton>
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold flex items-center gap-2">
+              {React.createElement(ISO_SECTIONS[currentSection].icon, { className: "w-6 h-6", style: { color: COLORS.primary } })}
+              {ISO_SECTIONS[currentSection].name}
+            </h3>
 
-          {currentSectionIndex === sections.length - 1 ? (
-            <NavButton
-              variant="primary"
-              onClick={generateActionPlan}
+            {questions.map((question, index) => (
+              <div key={question.id} className="p-4 border rounded-lg">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <h4 className="font-semibold mb-2">
+                      {index + 1}. {question.question}
+                    </h4>
+                    <p className="text-sm text-gray-600">{question.help}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setModalContent({
+                        title: 'Información adicional',
+                        text: question.help
+                      });
+                      setShowModal(true);
+                    }}
+                    className="ml-4 p-1 rounded-full hover:bg-gray-100"
+                  >
+                    <Info className="w-5 h-5 text-gray-500" />
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium mr-4">Nivel de cumplimiento:</span>
+                  {[0, 1, 2, 3, 4, 5].map(value => (
+                    <button
+                      key={value}
+                      onClick={() => handleResponse(question.id, value)}
+                      className={`w-12 h-12 rounded-lg font-semibold transition-all ${
+                        diagnosticData[question.id] === value
+                          ? 'text-white'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                      style={{
+                        backgroundColor: diagnosticData[question.id] === value ? COLORS.primary : undefined
+                      }}
+                    >
+                      {value}
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-2 text-xs text-gray-500">
+                  0 = No implementado | 5 = Totalmente implementado y optimizado
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-between mt-6">
+            <button
+              onClick={prevSection}
+              disabled={currentSectionIndex === 0}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Generar Plan de Acción
-              <Target size={20} />
-            </NavButton>
-          ) : (
-            <NavButton
-              variant="primary"
-              onClick={nextSection}
-            >
-              Siguiente sección
-              <ChevronRight size={20} />
-            </NavButton>
-          )}
-        </NavigationButtons>
-      </>
+              <ChevronRight className="w-4 h-4 rotate-180" />
+              Sección anterior
+            </button>
+
+            {currentSectionIndex === sections.length - 1 ? (
+              <button
+                onClick={generateActionPlan}
+                className="flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90"
+                style={{ backgroundColor: COLORS.primary }}
+              >
+                Generar Plan de Acción
+                <Target className="w-4 h-4" />
+              </button>
+            ) : (
+              <button
+                onClick={nextSection}
+                className="flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90"
+                style={{ backgroundColor: COLORS.primary }}
+              >
+                Siguiente sección
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
     );
   };
 
@@ -761,83 +615,64 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
   };
 
   return (
-    <ToolWrapper>
-      <LogoContainer onClick={handleLogoClick}>
-        <img 
-          src="https://i.postimg.cc/KcnFLv8g/logo-png-1.png" 
-          alt="StrateKaz Logo"
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTUwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IGZpbGw9IiNlYzI2OGYiIHdpZHRoPSIxNTAiIGhlaWdodD0iNDAiIHJ4PSI4Ii8+PHRleHQgZmlsbD0id2hpdGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZm9udC13ZWlnaHQ9ImJvbGQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9Ijc1IiB5PSIyNiI+U3RyYXRlS2F6PC90ZXh0Pjwvc3ZnPg==';
-          }}
-        />
-      </LogoContainer>
+    <div className="space-y-6">
+      {/* Navegación de módulos */}
+      <div className="bg-white p-4 rounded-lg shadow">
+        <div className="flex flex-wrap gap-2">
+          {modules.slice(0, 2).map(module => {
+            const Icon = module.icon;
+            return (
+              <button
+                key={module.id}
+                onClick={() => setActiveModule(module.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                  activeModule === module.id 
+                    ? 'text-white' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+                style={{ 
+                  backgroundColor: activeModule === module.id ? COLORS.primary : undefined 
+                }}
+              >
+                <Icon className="w-5 h-5" />
+                <span>{module.name}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
-      <MainContainer>
-        <DiagnosticHeader>
-          <Title>Diagnóstico ISO 9001:2015</Title>
-          <Subtitle>Evalúa el nivel de cumplimiento de tu Sistema de Gestión de Calidad</Subtitle>
-        </DiagnosticHeader>
+      {/* Contenido del módulo */}
+      {renderModule()}
 
-        <ModulesContainer>
-          <Sidebar>
-            <h3 style={{ marginBottom: '16px', fontSize: '1.1rem' }}>Navegación</h3>
-            
-            <SectionButton
-              active={activeModule === 'dashboard'}
-              onClick={() => setActiveModule('dashboard')}
-            >
-              <Home size={20} />
-              Dashboard
-            </SectionButton>
-
-            <SectionButton
-              active={activeModule === 'diagnostic'}
-              onClick={() => setActiveModule('diagnostic')}
-            >
-              <ClipboardList size={20} />
-              Diagnóstico
-            </SectionButton>
-
-            {activeModule === 'diagnostic' && (
-              <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid #e5e7eb' }}>
-                <h4 style={{ marginBottom: '12px', fontSize: '0.9rem', color: '#6b7280' }}>Secciones ISO</h4>
-                {Object.entries(ISO_SECTIONS).map(([key, section]) => {
-                  const Icon = section.icon;
-                  const score = calculateSectionScore(key);
-                  return (
-                    <SectionButton
-                      key={key}
-                      active={currentSection === key}
-                      onClick={() => setCurrentSection(key)}
-                      style={{ fontSize: '0.85rem', padding: '10px' }}
-                    >
-                      <Icon size={18} />
-                      <span style={{ flex: 1, textAlign: 'left' }}>{section.name}</span>
-                      {score > 0 && (
-                        <span style={{ fontSize: '0.75rem', fontWeight: 'bold' }}>
-                          {score.toFixed(0)}%
-                        </span>
-                      )}
-                    </SectionButton>
-                  );
-                })}
-              </div>
-            )}
-
-            <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #e5e7eb' }}>
-              <p style={{ fontSize: '0.75rem', color: '#6b7280', textAlign: 'center' }}>
-                Herramienta gratuita by StrateKaz
-              </p>
+      {/* Modal de ayuda */}
+      {showModal && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50"
+          onClick={() => setShowModal(false)}
+        >
+          <div 
+            className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-center p-4 border-b">
+              <h3 className="text-xl font-bold" style={{ color: COLORS.primary }}>
+                {modalContent.title}
+              </h3>
+              <button 
+                onClick={() => setShowModal(false)}
+                className="text-gray-500 hover:text-gray-800"
+              >
+                <X className="w-6 h-6" />
+              </button>
             </div>
-          </Sidebar>
-
-          <MainContent>
-            {renderModule()}
-          </MainContent>
-        </ModulesContainer>
-      </MainContainer>
-    </ToolWrapper>
+            <div className="p-6 overflow-y-auto">
+              <p className="text-gray-700">{modalContent.text}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 // C:\Proyectos\StratekazProject\frontend\src\components\dashboard\pilares\herramientas\formacion\index.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from '../../../../../design-system/icons';
+import { ArrowLeft } from 'lucide-react';
 
 const FormacionIndex = () => {
   return (

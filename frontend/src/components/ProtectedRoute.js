@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import authService from '../services/auth/AuthService';
 import { AuthContext } from '../context/AuthContext';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, requiresIncompleteProfile = false }) => {
   const { isAuthenticated, profileCompleted, loading } = useContext(AuthContext);
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
   const [isProfileComplete, setIsProfileComplete] = useState(null);
@@ -72,7 +72,17 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  // Si está autenticado pero no ha completado el perfil
+  // Lógica especial para la página de completar perfil
+  if (requiresIncompleteProfile) {
+    // Si se requiere perfil incompleto pero ya está completo, redirigir al dashboard
+    if (isProfileComplete) {
+      return <Navigate to="/dashboard" replace />;
+    }
+    // Si está autenticado y perfil incompleto, mostrar página de completar perfil
+    return children;
+  }
+
+  // Lógica normal: Si está autenticado pero no ha completado el perfil
   if (!isProfileComplete) {
     return <Navigate to="/complete-profile" replace />;
   }

@@ -22,7 +22,7 @@ const NormativasSection = () => {
   const normativas = [
     {
       id: 'iso',
-      title: 'Sistemas de Gestión',
+      title: 'ISO',
       subtitle: 'ISO 9001 | 45001 | 14001',
       icon: 'fa-certificate',
       iconClass: 'iso-icon',
@@ -37,7 +37,7 @@ const NormativasSection = () => {
     },
     {
       id: 'sgsst',
-      title: 'SG-SST: Sistema de Gestión de Seguridad y Salud en el Trabajo',
+      title: 'SG-SST',
       subtitle: 'Sistema obligatorio para empresas en Colombia',
       icon: 'fa-hard-hat',
       iconClass: 'sgsst-icon',
@@ -52,7 +52,7 @@ const NormativasSection = () => {
     },
     {
       id: 'pesv',
-      title: 'PESV: Plan Estratégico de Seguridad Vial',
+      title: 'PESV',
       subtitle: 'Plan obligatorio para empresas con flota vehicular',
       icon: 'fa-car',
       iconClass: 'pesv-icon',
@@ -67,7 +67,7 @@ const NormativasSection = () => {
     },
     {
       id: 'innovation',
-      title: 'Innovación: Transformación Digital',
+      title: 'INNOVACIÓN',
       subtitle: 'Soluciones tecnológicas para la gestión moderna',
       icon: 'fa-lightbulb',
       iconClass: 'innovation-icon',
@@ -131,7 +131,7 @@ const NormativasSection = () => {
           return (
             <Card_Interaccion
               key={normativa.id}
-              title={normativa.id.toUpperCase()}
+              title={normativa.title}
               description={normativa.description.substring(0, 100) + '...'}
               icon={<IconComponent size={32} />}
               themeColor={themeColor}

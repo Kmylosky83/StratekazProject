@@ -1,7 +1,7 @@
 // frontend/src/components/dashboard/pilares/herramientas/formacion/FichaFormacion/VistaActa.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Download } from '../../../../../../design-system/icons';
+import { ArrowLeft, Download } from 'lucide-react';
 import formacionService from '../../../../../../services/herramientas/formacion';
 
 const VistaActa = () => {

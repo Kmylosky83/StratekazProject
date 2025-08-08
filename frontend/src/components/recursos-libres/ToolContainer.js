@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import styled from 'styled-components';
-import { ArrowLeft, Download, Upload, Save, RotateCcw, Info } from 'lucide-react';
+import { ArrowLeft, Download, Upload, Save, RotateCcw, Info, AlertTriangle } from 'lucide-react';
 import { Button } from '../../design-system/components';
 import { Text } from '../../design-system/components/Typography';
 import localStorageManager from '../../services/localStorage/LocalStorageManager';
@@ -199,12 +199,26 @@ const useToolLoader = (pillar, toolId) => {
         setLoading(true);
         setError(null);
 
-        // Importación dinámica de la herramienta
+        // Intentar importación dinámica de la herramienta
         const toolModule = await import(`../../pages/herramientas/${pillar}/${toolId}.js`);
         setToolComponent(() => toolModule.default);
       } catch (err) {
         console.error('Error loading tool:', err);
-        setError(`No se pudo cargar la herramienta: ${toolId}`);
+        
+        // Mensaje de error más específico según el caso
+        if (toolId === 'diagnostico-9001') {
+          setError({
+            type: 'LOADING_ERROR',
+            message: 'Error al cargar el Diagnóstico ISO 9001',
+            suggestion: 'Por favor, recarga la página e intenta nuevamente'
+          });
+        } else {
+          setError({
+            type: 'NOT_FOUND',
+            message: `La herramienta "${toolId}" está en desarrollo`,
+            suggestion: 'Por ahora, solo el "Diagnóstico ISO 9001" está completamente funcional'
+          });
+        }
       } finally {
         setLoading(false);
       }
@@ -317,10 +331,45 @@ const ToolContainer = ({
     return (
       <ToolWrapper>
         <ErrorContainer>
-          <ErrorMessage>{error}</ErrorMessage>
-          <Button variant="outline" onClick={onBack}>
-            Volver a herramientas
-          </Button>
+          <div style={{ textAlign: 'center', maxWidth: '400px' }}>
+            <AlertTriangle size={48} color="#ef4444" style={{ marginBottom: '16px' }} />
+            
+            <h2 style={{ color: '#1f2937', marginBottom: '8px', fontSize: '24px' }}>
+              {error.type === 'NOT_FOUND' ? 'Herramienta en desarrollo' : 'Error de carga'}
+            </h2>
+            
+            <ErrorMessage style={{ marginBottom: '16px' }}>
+              {error.message || error}
+            </ErrorMessage>
+            
+            {error.suggestion && (
+              <div style={{ 
+                background: '#f3f4f6', 
+                padding: '12px', 
+                borderRadius: '8px',
+                marginBottom: '20px',
+                fontSize: '14px',
+                color: '#374151'
+              }}>
+                💡 <strong>Sugerencia:</strong> {error.suggestion}
+              </div>
+            )}
+            
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+              {error.type === 'LOADING_ERROR' && (
+                <Button 
+                  variant="outline" 
+                  onClick={() => window.location.reload()}
+                  style={{ marginRight: '8px' }}
+                >
+                  Recargar página
+                </Button>
+              )}
+              <Button variant="primary" onClick={onBack}>
+                Ver otras herramientas
+              </Button>
+            </div>
+          </div>
         </ErrorContainer>
       </ToolWrapper>
     );
