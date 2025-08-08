@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matriz de Riesgos - StrateKaz</title>
+    <link rel="stylesheet" href="../../shared/css/common.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2563eb;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+        
+        .header p {
+            margin: 0.5rem 0 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .tool-content {
+            padding: 2rem;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+        
+        .form-section h3 {
+            color: #1f2937;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.2s;
+            margin-right: 1rem;
+        }
+        
+        .btn:hover {
+            background: #1d4ed8;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        
+        .risk-matrix {
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+        
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .matrix-table th,
+        .matrix-table td {
+            border: 1px solid #d1d5db;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .matrix-table th {
+            background: #f3f4f6;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .footer {
+            background: #f3f4f6;
+            padding: 1rem 2rem;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .branding {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .branding img {
+            height: 32px;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛡️ Matriz de Riesgos ISO</h1>
+            <p>Herramienta gratuita para identificar y evaluar riesgos organizacionales</p>
+        </div>
+        
+        <div class="tool-content">
+            <div class="form-section">
+                <h3>📋 Identificación del Riesgo</h3>
+                <div class="form-group">
+                    <label for="riskName">Nombre del Riesgo</label>
+                    <input type="text" id="riskName" placeholder="Ej: Falta de capacitación del personal">
+                </div>
+                <div class="form-group">
+                    <label for="riskDescription">Descripción del Riesgo</label>
+                    <textarea id="riskDescription" rows="3" placeholder="Describe detalladamente el riesgo identificado..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="riskCategory">Categoría</label>
+                    <select id="riskCategory">
+                        <option value="">Selecciona una categoría</option>
+                        <option value="operacional">Operacional</option>
+                        <option value="financiero">Financiero</option>
+                        <option value="estrategico">Estratégico</option>
+                        <option value="cumplimiento">Cumplimiento</option>
+                        <option value="reputacional">Reputacional</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>📊 Evaluación del Riesgo</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="probability">Probabilidad (1-5)</label>
+                        <select id="probability">
+                            <option value="">Selecciona</option>
+                            <option value="1">1 - Muy Improbable</option>
+                            <option value="2">2 - Improbable</option>
+                            <option value="3">3 - Posible</option>
+                            <option value="4">4 - Probable</option>
+                            <option value="5">5 - Muy Probable</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="impact">Impacto (1-5)</label>
+                        <select id="impact">
+                            <option value="">Selecciona</option>
+                            <option value="1">1 - Muy Bajo</option>
+                            <option value="2">2 - Bajo</option>
+                            <option value="3">3 - Medio</option>
+                            <option value="4">4 - Alto</option>
+                            <option value="5">5 - Muy Alto</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="controls">Controles Existentes</label>
+                    <textarea id="controls" rows="2" placeholder="Describe los controles actuales para este riesgo..."></textarea>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 2rem 0;">
+                <button class="btn" onclick="addRisk()">➕ Agregar Riesgo</button>
+                <button class="btn btn-secondary" onclick="exportPDF()">📄 Exportar PDF</button>
+                <button class="btn btn-secondary" onclick="exportExcel()">📊 Exportar Excel</button>
+            </div>
+            
+            <div class="risk-matrix">
+                <h3>📈 Matriz de Riesgos Registrados</h3>
+                <table class="matrix-table" id="riskTable">
+                    <thead>
+                        <tr>
+                            <th>Riesgo</th>
+                            <th>Categoría</th>
+                            <th>Probabilidad</th>
+                            <th>Impacto</th>
+                            <th>Nivel de Riesgo</th>
+                            <th>Controles</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="riskTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: #6b7280; padding: 2rem;">
+                                No hay riesgos registrados. Agrega el primer riesgo usando el formulario anterior.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="branding">
+                <strong>StrateKaz</strong> - Herramienta gratuita de Matriz de Riesgos ISO
+                <br>
+                <small>Esta herramienta es completamente gratuita y no requiere registro</small>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../shared/js/common.js"></script>
+    <script>
+        // Funcionalidad básica de la herramienta
+        let risks = [];
+        
+        function addRisk() {
+            const name = document.getElementById('riskName').value;
+            const description = document.getElementById('riskDescription').value;
+            const category = document.getElementById('riskCategory').value;
+            const probability = document.getElementById('probability').value;
+            const impact = document.getElementById('impact').value;
+            const controls = document.getElementById('controls').value;
+            
+            if (!name || !probability || !impact) {
+                alert('Por favor completa los campos obligatorios: Nombre, Probabilidad e Impacto');
+                return;
+            }
+            
+            const riskLevel = calculateRiskLevel(parseInt(probability), parseInt(impact));
+            
+            const risk = {
+                id: Date.now(),
+                name,
+                description,
+                category,
+                probability: parseInt(probability),
+                impact: parseInt(impact),
+                riskLevel,
+                controls
+            };
+            
+            risks.push(risk);
+            updateRiskTable();
+            clearForm();
+        }
+        
+        function calculateRiskLevel(probability, impact) {
+            const score = probability * impact;
+            if (score >= 20) return { level: 'Crítico', color: '#dc2626' };
+            if (score >= 15) return { level: 'Alto', color: '#ea580c' };
+            if (score >= 10) return { level: 'Medio', color: '#ca8a04' };
+            if (score >= 5) return { level: 'Bajo', color: '#16a34a' };
+            return { level: 'Muy Bajo', color: '#059669' };
+        }
+        
+        function updateRiskTable() {
+            const tbody = document.getElementById('riskTableBody');
+            
+            if (risks.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #6b7280; padding: 2rem;">No hay riesgos registrados.</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = risks.map(risk => `
+                <tr>
+                    <td><strong>${risk.name}</strong><br><small>${risk.description}</small></td>
+                    <td>${risk.category || '-'}</td>
+                    <td>${risk.probability}</td>
+                    <td>${risk.impact}</td>
+                    <td style="color: ${risk.riskLevel.color}; font-weight: bold;">${risk.riskLevel.level}</td>
+                    <td>${risk.controls || '-'}</td>
+                    <td>
+                        <button onclick="removeRisk(${risk.id})" style="background: #dc2626; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function removeRisk(id) {
+            if (confirm('¿Estás seguro de eliminar este riesgo?')) {
+                risks = risks.filter(risk => risk.id !== id);
+                updateRiskTable();
+            }
+        }
+        
+        function clearForm() {
+            document.getElementById('riskName').value = '';
+            document.getElementById('riskDescription').value = '';
+            document.getElementById('riskCategory').value = '';
+            document.getElementById('probability').value = '';
+            document.getElementById('impact').value = '';
+            document.getElementById('controls').value = '';
+        }
+        
+        function exportPDF() {
+            alert('Funcionalidad de exportación PDF - Por implementar');
+        }
+        
+        function exportExcel() {
+            alert('Funcionalidad de exportación Excel - Por implementar');
+        }
+    </script>
+</body>
+</html>

@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+# StratekazProject - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicación React 19 con Design System avanzado para plataforma SaaS multi-tenant empresarial.
 
-## Available Scripts
+## 🚀 Instalación Rápida
 
-In the project directory, you can run:
+```bash
+cd frontend/
+npm install
+npm start  # http://localhost:3000
+```
+
+## 🏗️ Stack Tecnológico
+
+- **React 19** - Framework frontend
+- **Styled Components** - CSS-in-JS con theming
+- **Design System** - Sistema de diseño completo con tokens
+- **React Router** - Navegación SPA
+- **Lucide React** - Iconografía moderna
+
+## 📱 Estructura del Proyecto
+
+```
+src/
+├── design-system/           # Sistema de diseño completo
+│   ├── tokens/             # Design tokens (colores, tipografías, espaciado)
+│   ├── components/         # Componentes base reutilizables
+│   ├── themes/             # Temas (claro/oscuro)
+│   └── docs/              # Documentación completa del DS
+├── components/             # Componentes específicos de negocio
+├── pages/                  # Páginas de la aplicación
+├── hooks/                  # Custom React hooks
+└── utils/                  # Utilidades y helpers
+```
+
+## 🎨 Design System
+
+**¡Característica destacada!** Este proyecto incluye un Design System completo y profesional.
+
+- **Documentación completa**: `src/design-system/docs/README.md`
+- **80+ Design Tokens**: Colores, tipografías, espaciado, shadows, etc.
+- **30+ Componentes**: Botones, cards, forms, layouts, etc.
+- **Theming avanzado**: Soporte para temas claro/oscuro
+- **TypeScript**: Tipado completo para mejor DX
+
+### Ejemplo de uso:
+
+```jsx
+import { Button, Card, Text } from '../design-system/components';
+
+function Dashboard() {
+  return (
+    <Card variant="elevated" padding="lg">
+      <Text variant="h2" color="primary">
+        Panel de Control
+      </Text>
+      <Button variant="primary" size="lg">
+        Acción Principal
+      </Button>
+    </Card>
+  );
+}
+```
+
+## 📋 Módulos Implementados
+
+### ✅ Completamente Funcionales
+- **Design System** - Sistema de diseño completo
+- **Autenticación** - Login/registro de usuarios
+- **Dashboard** - Panel principal con navegación
+
+### 🚧 En Desarrollo
+- **Herramientas** - Módulo principal con 10 submódulos
+- **Inteligencia de Negocios** - ISO, SST, PESV
+- **Empresas** - Gestión empresarial
+- **Ecosistema** - Red de colaboración
+- **Finanzas** - Control financiero
+
+## 🛠️ Scripts Disponibles
 
 ### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Inicia el servidor de desarrollo en [http://localhost:3000](http://localhost:3000)
 
 ### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Ejecuta los tests en modo watch (⚠️ Actualmente en configuración)
 
 ### `npm run build`
+Genera build de producción optimizado en `build/`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `npm run lint`
+Ejecuta ESLint para análisis de código
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🔗 Integración con Backend
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **API Base**: `http://localhost:8000/api/`
+- **Autenticación**: Django REST + Session-based auth
+- **Multi-tenancy**: Soporte para múltiples empresas
 
-### `npm run eject`
+## 📚 Documentación Adicional
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **[Design System Guide](src/design-system/docs/README.md)** - Guía completa del sistema de diseño
+- **[Best Practices](DESIGN_SYSTEM_BEST_PRACTICES.md)** - Mejores prácticas y patrones
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🚨 Estado Actual del Proyecto
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**Fase de Desarrollo Temprano** - La aplicación tiene bases sólidas con un excelente Design System, pero muchas funcionalidades están en desarrollo.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Funcional:
+- ✅ Design System completo y documentado
+- ✅ Autenticación básica
+- ✅ Navegación y layout base
 
-## Learn More
+### Pendiente:
+- 🔄 Módulos de negocio (herramientas, inteligencia, etc.)
+- 🔄 Integración completa con APIs backend
+- 🔄 Testing suite
+- 🔄 Optimizaciones de rendimiento
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+💡 **Para desarrolladores**: Revisa la documentación del Design System antes de crear nuevos componentes. El sistema está excepcionalmente bien diseñado y documentado.

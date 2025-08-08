@@ -327,7 +327,7 @@ const FooterText = styled.p`
 const PILLAR_CONFIG = {
   iso: {
     name: 'ISO 9001 | 45001 | 14001',
-    description: 'Sistemas de gestión de calidad, seguridad y ambiente',
+    description: 'Sistemas de Gestión Integrados - Calidad, Seguridad y Ambiente',
     icon: Shield,
     color: '#2563eb'
   },
@@ -344,8 +344,8 @@ const PILLAR_CONFIG = {
     color: '#059669'
   },
   innovation: {
-    name: 'Innovación',
-    description: 'Herramientas de innovación empresarial',
+    name: 'Innovación: Transformación Digital',
+    description: 'Soluciones tecnológicas para la gestión moderna',
     icon: Lightbulb,
     color: '#7c3aed'
   }

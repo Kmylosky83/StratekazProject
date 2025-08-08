@@ -1,62 +1,60 @@
 # domains/shared/events.py
 from datetime import datetime
-from dataclasses import dataclass
 from typing import Any, Dict
 from abc import ABC
 
 
-@dataclass
 class DomainEvent(ABC):
     """
     Base class for domain events.
     Domain events represent something important that happened in the domain.
     """
-    occurred_at: datetime = None
-    event_version: str = "1.0"
+    def __init__(self, occurred_at: datetime = None, event_version: str = "1.0"):
+        self.occurred_at = occurred_at or datetime.now()
+        self.event_version = event_version
     
-    def __post_init__(self):
-        if self.occurred_at is None:
-            self.occurred_at = datetime.now()
 
 
-@dataclass
 class UserEvent(DomainEvent):
     """Base class for user-related events."""
-    user_id: int
-    user_type: str
+    def __init__(self, user_id: int, user_type: str, **kwargs):
+        super().__init__(**kwargs)
+        self.user_id = user_id
+        self.user_type = user_type
 
 
-@dataclass
 class UserRegisteredEvent(UserEvent):
     """Event raised when a user registers."""
-    email: str
-    username: str
+    def __init__(self, user_id: int, user_type: str, email: str, username: str, **kwargs):
+        super().__init__(user_id, user_type, **kwargs)
+        self.email = email
+        self.username = username
 
 
-@dataclass
 class UserProfileCompletedEvent(UserEvent):
     """Event raised when a user completes their profile."""
     pass
 
 
-@dataclass
 class UserLoggedInEvent(UserEvent):
     """Event raised when a user logs in."""
     pass
 
 
-@dataclass
 class TenantEvent(DomainEvent):
     """Base class for tenant-related events."""
-    tenant_id: int
-    user_id: int
+    def __init__(self, tenant_id: int, user_id: int, **kwargs):
+        super().__init__(**kwargs)
+        self.tenant_id = tenant_id
+        self.user_id = user_id
 
 
-@dataclass
 class TenantCreatedEvent(TenantEvent):
     """Event raised when a tenant is created."""
-    tenant_name: str
-    schema_name: str
+    def __init__(self, tenant_id: int, user_id: int, tenant_name: str, schema_name: str, **kwargs):
+        super().__init__(tenant_id, user_id, **kwargs)
+        self.tenant_name = tenant_name
+        self.schema_name = schema_name
 
 
 class EventBus:

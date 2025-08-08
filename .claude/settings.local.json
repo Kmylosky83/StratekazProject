@@ -9,7 +9,12 @@
       "Bash(npm audit:*)",
       "Bash(python manage.py test:*)",
       "Bash(npm update:*)",
-      "Bash(python manage.py:*)"
+      "Bash(python manage.py:*)",
+      "Bash(mv:*)",
+      "Bash(move automatizacion innovacion)",
+      "Bash(mv:*)",
+      "Bash(cp:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": []
   }

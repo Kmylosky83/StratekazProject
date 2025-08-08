@@ -137,3 +137,104 @@ Pipfile.lock
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# Project specific files
+nul
+
+# Additional Python cache files
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django additional files
+*.sqlite3
+*.sqlite3-journal
+staticfiles/
+media/
+
+# Frontend additional files
+frontend/package-lock.json
+frontend/yarn.lock
+frontend/.eslintcache
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Root level package files (should not be in root for Django project)
+/package-lock.json
+/package.json
+
+# Documentation build files
+docs/_build/
+docs/.doctrees/
+
+# Backup files
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Log files
+*.log
+logs/
+*.log.*
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# IDE specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# MacOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux specific
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Deployment files
+Dockerfile.prod
+docker-compose.prod.yml
+nginx.conf
+.dockerignore
+
+# Security files
+*.pem
+*.key
+*.crt
+*.p12
+.env.production

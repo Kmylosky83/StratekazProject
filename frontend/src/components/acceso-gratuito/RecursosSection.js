@@ -27,8 +27,8 @@ const tools = [
   {
     id: 'iso',
     icon: Award,
-    title: "ISO 9001 | 45001 | 14001",
-    description: "Sistema de Gestión de Calidad. Herramientas básicas para implementar ISO 9001 en tu organización.",
+    title: "Sistemas de Gestión",
+    description: "Implementación integral de las principales normas ISO: Calidad (9001), Seguridad y Salud (45001) y Gestión Ambiental (14001).",
     available: true,
     herramientas: [
       {
@@ -40,6 +40,21 @@ const tools = [
         id: 'auditoria-interna',
         name: 'Auditoría Interna',
         description: 'Planifica y ejecuta auditorías internas de calidad'
+      },
+      {
+        id: 'diagnostico-9001',
+        name: 'Diagnóstico ISO 9001',
+        description: 'Evalúa el cumplimiento de requisitos de calidad'
+      },
+      {
+        id: 'diagnostico-45001',
+        name: 'Diagnóstico ISO 45001',
+        description: 'Evalúa el sistema de seguridad y salud ocupacional'
+      },
+      {
+        id: 'diagnostico-14001',
+        name: 'Diagnóstico ISO 14001',
+        description: 'Evalúa el sistema de gestión ambiental'
       }
     ]
   },
@@ -47,7 +62,7 @@ const tools = [
     id: 'sgsst',
     icon: HardHat,
     title: "SG-SST",
-    description: "Sistema de Gestión de Seguridad y Salud en el Trabajo. Cumple con la normatividad colombiana.",
+    description: "Sistema de Gestión de Seguridad y Salud en el Trabajo obligatorio para todas las empresas en Colombia según Decreto 1072 de 2015.",
     available: true,
     herramientas: [
       {
@@ -59,6 +74,21 @@ const tools = [
         id: 'investigacion-accidentes',
         name: 'Investigación de Accidentes',
         description: 'Investiga y analiza accidentes e incidentes'
+      },
+      {
+        id: 'evaluador-riesgos',
+        name: 'Evaluador de Riesgos',
+        description: 'Herramienta para evaluar y clasificar riesgos'
+      },
+      {
+        id: 'diagnostico-0312',
+        name: 'Diagnóstico Resolución 0312',
+        description: 'Evalúa cumplimiento de estándares mínimos SG-SST'
+      },
+      {
+        id: 'diagnostico-1072',
+        name: 'Diagnóstico Decreto 1072',
+        description: 'Evalúa cumplimiento del decreto único reglamentario'
       }
     ]
   },
@@ -66,7 +96,7 @@ const tools = [
     id: 'pesv',
     icon: Car,
     title: "PESV",
-    description: "Plan Estratégico de Seguridad Vial. Herramientas para implementar PESV en tu empresa.",
+    description: "Plan Estratégico de Seguridad Vial obligatorio para organizaciones que posean, comercialicen o administren flotas vehiculares.",
     available: true,
     herramientas: [
       {
@@ -84,8 +114,8 @@ const tools = [
   {
     id: 'innovation',
     icon: Lightbulb,
-    title: "Innovación",
-    description: "Herramientas de gestión de la innovación. Impulsa la creatividad en tu organización.",
+    title: "Innovación: Transformación Digital",
+    description: "Soluciones tecnológicas que integran tecnologías emergentes para optimizar procesos de gestión empresarial moderna.",
     available: true,
     herramientas: [
       {
@@ -97,6 +127,16 @@ const tools = [
         id: 'matriz-priorizacion',
         name: 'Matriz de Priorización',
         description: 'Prioriza proyectos de innovación'
+      },
+      {
+        id: 'calculadora-roi',
+        name: 'Calculadora ROI',
+        description: 'Calcula el retorno de inversión de proyectos'
+      },
+      {
+        id: 'diagnostico-innovacion',
+        name: 'Diagnóstico de Innovación',
+        description: 'Evalúa la madurez innovadora de tu organización'
       }
     ]
   }
@@ -128,8 +168,8 @@ const RecursosSection = () => {
   };
 
   const handleToolSelect = (tool) => {
-    // Navegar a la herramienta específica
-    navigate(`/herramientas/${selectedPillar}/${tool.id}`);
+    // Abrir la herramienta como recurso libre independiente (sin header/footer)
+    window.open(`/recursoslibres/${selectedPillar}/${tool.id}/index.html`, '_blank');
   };
 
   const handleCloseSidebar = () => {

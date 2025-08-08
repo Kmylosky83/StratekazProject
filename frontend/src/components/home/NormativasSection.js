@@ -22,8 +22,8 @@ const NormativasSection = () => {
   const normativas = [
     {
       id: 'iso',
-      title: 'ISO 9001 | 45001 | 14001',
-      subtitle: 'Sistemas de Gestión Integrados',
+      title: 'Sistemas de Gestión',
+      subtitle: 'ISO 9001 | 45001 | 14001',
       icon: 'fa-certificate',
       iconClass: 'iso-icon',
       description: 'Implementación integral de las principales normas ISO: Calidad (9001), Seguridad y Salud (45001) y Gestión Ambiental (14001). Estas normas ayudan a las organizaciones a:',
