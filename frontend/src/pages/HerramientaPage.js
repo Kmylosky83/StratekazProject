@@ -14,6 +14,10 @@ const TOOLS_CONFIG = {
     name: 'ISO 9001 | 45001 | 14001',
     description: 'Sistemas de gestión de calidad, seguridad y ambiente',
     tools: {
+      'diagnostico-9001': {
+        name: 'Diagnóstico ISO 9001:2015',
+        description: 'Evalúa el cumplimiento de tu Sistema de Gestión de Calidad'
+      },
       'matriz-riesgos': {
         name: 'Matriz de Riesgos',
         description: 'Identifica y evalúa los riesgos de tu organización'
