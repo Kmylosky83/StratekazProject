@@ -62,6 +62,7 @@ export const ThemeManager = ({ children }) => {
   const contextValue = {
     currentTheme,
     changeTheme,
+    toggleTheme: changeTheme, // Alias for backwards compatibility
     getTheme,
     availableThemes: Object.keys(THEMES),
     themeNames: THEME_NAMES

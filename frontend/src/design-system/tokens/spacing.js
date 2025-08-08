@@ -84,6 +84,29 @@ const componentMeasures = {
     blurRadius: '4px',
     overlayBackground: 'rgba(0, 0, 0, 0.5)',
     shadowMobile: '-10px 0 30px rgba(0, 0, 0, 0.1)'
+  },
+  
+  // Medidas para layout de recursos libres
+  sidebar: {
+    width: '280px',
+    iconSize: '20px',
+    iconSizeLarge: '24px',
+    iconSizeButton: '32px',
+    buttonSize: '32px',
+    buttonSizeLarge: '40px'
+  },
+  
+  // Medidas para header/topbar
+  topbar: {
+    height: '72px',
+    padding: '16px 24px'
+  },
+  
+  // Medidas para tarjetas de chips/tags
+  chip: {
+    padding: '8px 16px',
+    borderRadius: '20px',
+    border: '1px solid'
   }
 };
 

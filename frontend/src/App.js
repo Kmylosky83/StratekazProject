@@ -47,7 +47,9 @@ const App = () => {
               {/* Páginas principales */}
               <Route path="/" element={<Home />} />
               <Route path="/portfolio" element={<PortfolioPage />} />
-              <Route path="/acceso-gratuito" element={<AccesoGratuitoPage />} />
+              
+              {/* Sistema de recursos libres con dashboard */}
+              <Route path="/acceso-gratuito/*" element={<AccesoGratuitoPage />} />
               
               {/* Autenticación */}
               <Route path="/login" element={<Login />} />

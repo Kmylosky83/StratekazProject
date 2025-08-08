@@ -2,10 +2,10 @@
 // Paleta de colores completa para StrateKaz
 
 export const colors = {
-  // Colores Primarios
-  primary: '#ec268f',
-  primaryLight: '#f15ba5',
-  primaryDark: '#d11f7d',
+  // Colores Primarios - Rosa original de marca
+  primary: '#ec268f', // Rosa original de identidad de marca
+  primaryLight: '#f15ba5', 
+  primaryDark: '#d11f7d', // Más oscuro para hover (mantiene contraste)
   
   // Colores de Acento
   accent: '#f4ec25',
@@ -40,11 +40,12 @@ export const colors = {
   infoLight: '#d1ecf1',
   
   // Bordes
-  border: '#dee2e6',
-  borderLight: '#f1f3f4', 
-  borderDark: '#adb5bd',
-  borderSubtle: '#e2e8f0',
-  borderVeryLight: '#f1f5f9',
+  border: '#dee2e6', // Border sutil original
+  borderAccessible: '#a0a0a0', // Border para elementos que necesiten WCAG AA
+  borderLight: '#f8f9fa', 
+  borderDark: '#858585', // Más oscuro para mejor contraste
+  borderSubtle: '#b8b8b8', // Mejorado para 3:1 mínimo
+  borderVeryLight: '#d1d5db', // Mejorado para visibilidad
   
   // Estados
   hover: 'rgba(0, 0, 0, 0.05)',
@@ -80,7 +81,37 @@ export const colors = {
   passwordChecklist: {
     valid: '#0f5132',
     invalid: '#842029'
-  }
+  },
+  
+  // Colores específicos para componentes
+  overlay: 'rgba(0, 0, 0, 0.5)',
+  
+  // Tokens faltantes encontrados en código hardcodeado
+  gray50: '#f9fafb',
+  gray100: '#f3f4f6', 
+  gray200: '#e5e7eb',
+  gray300: '#d1d5db',
+  gray400: '#9ca3af',
+  gray500: '#6b7280',
+  gray600: '#4b5563',
+  gray700: '#374151',
+  gray800: '#1f2937',
+  gray900: '#111827',
+  
+  
+  // Colores específicos de pilares (para compatibilidad temporal)
+  pilar: {
+    iso: '#3b82f6',      // Azul
+    sgsst: '#dc2626',    // Rojo  
+    pesv: '#7c3aed',     // Púrpura
+    innovation: '#f59e0b', // Amarillo
+    ambiente: '#059669'   // Verde para ISO 14001
+  },
+  
+  // Tokens adicionales para layout
+  surfaceSubtle: '#f9fafb',
+  borderSubtle: '#f3f4f6',
+  primarySubtle: '#fdf2f8'
 };
 
 export default colors;

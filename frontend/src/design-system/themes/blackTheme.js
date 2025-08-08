@@ -31,12 +31,13 @@ export const blackTheme = {
     textMutedLight: '#aaaaaa',  // Gris medio
     textDisabled: '#666666',  // Gris oscuro para deshabilitado
     
-    // Bordes oscuros con mejor definición
-    border: '#404040',  // Borde principal - mejor contraste
-    borderLight: '#333333',  // Borde más sutil
-    borderDark: '#505050',  // Borde más prominente
-    borderSubtle: '#2a2a2a',  // Borde muy sutil
-    borderVeryLight: '#1e1e1e',  // Borde apenas visible
+    // Bordes oscuros  
+    border: '#333333',  // Border sutil para header (mantiene estética original)
+    borderAccessible: '#5a5a5a',  // Mejorado: ratio 3.2:1 con negro (WCAG AA ✅) 
+    borderLight: '#2a2a2a',  // Border más sutil
+    borderDark: '#6a6a6a',  // Borde más prominente
+    borderSubtle: '#484848',  // Mejorado para 3:1 mínimo
+    borderVeryLight: '#383838',  // Mejorado para visibilidad
     
     // Estados oscuros optimizados
     hover: 'rgba(96, 165, 250, 0.15)',  // Hover con azul suave

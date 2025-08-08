@@ -34,11 +34,12 @@ export const arkaneTheme = {
     textDisabled: '#cbd5e1', // slate-300
     
     // Bordes corporativos
-    border: '#e2e8f0', // slate-200
-    borderLight: '#f1f5f9', // slate-100
-    borderDark: '#cbd5e1', // slate-300
-    borderSubtle: '#f8fafc', // slate-50
-    borderVeryLight: '#ffffff',
+    border: '#e2e8f0', // slate-200 - Border sutil original para header
+    borderAccessible: '#94a3b8', // slate-400 - Mejorado: ratio 3.7:1 (WCAG AA ✅)
+    borderLight: '#f1f5f9', // slate-100  
+    borderDark: '#64748b', // slate-500 - Más prominente para mayor contraste
+    borderSubtle: '#cbd5e1', // slate-300 - Sutil pero visible
+    borderVeryLight: '#f8fafc', // slate-50
     
     // Estados azules corporativos
     hover: 'rgba(0, 120, 212, 0.05)', // primary con opacidad

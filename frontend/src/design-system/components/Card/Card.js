@@ -427,15 +427,17 @@ export { CardBody, ToolIcon } from './Card.styled';
 // Export default
 /**
  * Card de Interacción - Para elementos clickeables con información detallada
- * Usado en: NormativasSection
+ * Usado en: NormativasSection, RecursosOverview
  */
 export const Card_Interaccion = ({
   title,
+  subtitle,
   description,
   icon,
   themeColor,
   onClick,
   className,
+  footer = 'Conocer más →',
   ...props
 }) => {
   return (
@@ -449,19 +451,22 @@ export const Card_Interaccion = ({
         {icon}
       </InteraccionIcon>
       <InteraccionTitle>{title}</InteraccionTitle>
+      {subtitle && <CardSubtitle>{subtitle}</CardSubtitle>}
       <InteraccionDescription>{description}</InteraccionDescription>
-      <InteraccionCTA>Conocer más →</InteraccionCTA>
+      <InteraccionCTA>{footer}</InteraccionCTA>
     </InteraccionCard>
   );
 };
 
 Card_Interaccion.propTypes = {
   title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
   description: PropTypes.string.isRequired,
   icon: PropTypes.node.isRequired,
   themeColor: PropTypes.string.isRequired,
   onClick: PropTypes.func,
   className: PropTypes.string,
+  footer: PropTypes.string,
 };
 
 export default Card;

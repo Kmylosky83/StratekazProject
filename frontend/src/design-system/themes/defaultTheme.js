@@ -46,6 +46,17 @@ export const defaultTheme = {
     tooltip: 1060
   },
   
+  // Componentes específicos del tema  
+  header: {
+    background: colors.white,
+    border: colors.border // Mantiene el border sutil original
+  },
+  
+  card: {
+    background: colors.white,
+    border: colors.borderSubtle
+  },
+  
   // Button primary configuration (light theme)
   buttonPrimary: {
     background: colors.primary,
