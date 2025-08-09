@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { Icon } from '../../icons';
 import { Container } from '../Layout';
 import { fadeIn } from '../../animations';
-import { Menu, X, ChevronDown, Sun, Moon, Sparkles, Home, UserPlus, Palette } from 'lucide-react';
+import { Menu, X, ChevronDown, Sun, Moon, Sparkles, Home, UserPlus, Palette, HelpCircle } from 'lucide-react';
 
 const HeaderWrapper = styled.header`
   background-color: ${props => props.theme.header?.background || props.theme.colors.white};
@@ -290,6 +290,12 @@ const IconButton = styled.button`
   }
 `;
 
+const SidebarToggleButton = styled(IconButton)`
+  @media (min-width: ${props => props.theme.breakpoints.desktop}) {
+    display: none;
+  }
+`;
+
 const MobileMenuButton = styled(IconButton)`
   display: none;
   
@@ -436,7 +442,11 @@ const Header = ({
   onLogout,
   showNavigation = true,
   currentTheme = 'light',
-  onThemeChange
+  onThemeChange,
+  showSidebarToggle = false,
+  onSidebarToggle,
+  showHelpButton = false,
+  onHelpClick
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -470,10 +480,20 @@ const Header = ({
   return (
     <HeaderWrapper>
       <HeaderContent>
-        <Logo to="/">
-          <span className="logo-main">StrateKaz</span>
-          <span className="logo-sub">Suite Empresarial</span>
-        </Logo>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {showSidebarToggle && (
+            <SidebarToggleButton 
+              onClick={onSidebarToggle}
+              title="Menú lateral"
+            >
+              <Menu size={20} />
+            </SidebarToggleButton>
+          )}
+          <Logo to="/">
+            <span className="logo-main">StrateKaz</span>
+            <span className="logo-sub">Suite Empresarial</span>
+          </Logo>
+        </div>
 
         {showNavigation && (
           <Navigation>
@@ -544,19 +564,43 @@ const Header = ({
                     </ThemeOptions>
                   </ThemeSelector>
                 </DropdownSection>
+                
+                {/* Botón de ayuda para recursos libres */}
+                {showHelpButton && (
+                  <DropdownSection>
+                    <DropdownItem 
+                      as="button" 
+                      style={{ 
+                        background: 'none', 
+                        border: 'none', 
+                        width: '100%',
+                        cursor: 'pointer'
+                      }}
+                      onClick={() => {
+                        onHelpClick?.();
+                        setShowDropdown(false);
+                      }}
+                    >
+                      <HelpCircle size={18} />
+                      <span>¿Cómo funcionan?</span>
+                    </DropdownItem>
+                  </DropdownSection>
+                )}
               </DropdownMenu>
             )}
           </div>
           
-          {/* Botón del menú móvil */}
-          <MobileMenuButton onClick={() => setShowMobileMenu(!showMobileMenu)}>
-            <Menu size={24} />
-          </MobileMenuButton>
+          {/* Botón del menú móvil - oculto cuando hay sidebar toggle */}
+          {!showSidebarToggle && (
+            <MobileMenuButton onClick={() => setShowMobileMenu(!showMobileMenu)}>
+              <Menu size={24} />
+            </MobileMenuButton>
+          )}
         </UserSection>
       </HeaderContent>
       
-      {/* Menú móvil */}
-      {showMobileMenu && (
+      {/* Menú móvil - solo cuando no hay sidebar */}
+      {showMobileMenu && !showSidebarToggle && (
         <>
           <MobileMenuOverlay onClick={() => setShowMobileMenu(false)} />
           <MobileMenu>

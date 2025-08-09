@@ -11,6 +11,7 @@ export const blackTheme = {
     primary: '#ffffff',  // Blanco puro - Contraste 21:1 con negro
     primaryLight: '#f5f5f5',  // Gris muy claro para variación
     primaryDark: '#e0e0e0',  // Gris claro para hover
+    primarySubtle: 'rgba(255, 255, 255, 0.1)',  // Fondo sutil para items activos
     
     accent: '#60a5fa',  // Azul claro - Contraste 5.94:1 con negro
     accentDark: '#3b82f6',  // Azul medio para variación
@@ -22,6 +23,7 @@ export const blackTheme = {
     background: '#000000',  // Negro puro
     backgroundLight: '#121212',  // Material Design Dark - mejor contraste
     surface: '#1e1e1e',  // Superficie para cards - Contraste mejorado
+    surfaceSubtle: '#2a2a2a',  // Superficie sutil para tarjetas pequeñas
     surfaceDark: '#151515',  // Superficie más oscura
     
     // Colores de texto optimizados para contraste

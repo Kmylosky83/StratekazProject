@@ -90,7 +90,7 @@ const InfoSection = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: ${props => props.theme.spacing.s4};
+  gap: ${props => props.theme.spacing.s10};
   text-align: center;
 `;
 

@@ -72,6 +72,7 @@ export const spacing = {
 // Medidas específicas para componentes
 const componentMeasures = {
   header: {
+    height: '76px', // Altura fija del header
     logoSubMargin: '2px',
     dropdownOffset: '8px', 
     dropdownMinWidth: '250px',

@@ -9,32 +9,32 @@ import { FormContainer } from '../../../design-system/components/Form/FormContai
 import { Award, FileText, ClipboardCheck, BarChart3, Settings, Users, Calendar, Target, Shield, Leaf } from 'lucide-react';
 
 const ModuleContainer = styled.div`
-  max-width: 1200px;
+  max-width: ${props => props.theme.breakpoints.desktop};
   margin: 0 auto;
 `;
 
 const ModuleHeader = styled(FormContainer)`
-  margin-bottom: ${props => props.theme.spacing?.s8 || '32px'};
+  margin-bottom: ${props => props.theme.spacing.s8};
   text-align: center;
-  max-width: 1000px;
+  max-width: ${props => props.theme.breakpoints.desktop};
 `;
 
 const ModuleTitle = styled.h1`
-  color: ${props => props.theme.colors?.text || '#111827'};
-  font-size: ${props => props.theme.typography?.fontSizes?.pageTitle || '2rem'};
-  font-weight: ${props => props.theme.typography?.fontWeights?.bold || '700'};
-  margin: 0 0 ${props => props.theme.spacing?.s4 || '16px'} 0;
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.pageTitle};
+  font-weight: ${props => props.theme.typography.fontWeights.bold};
+  margin: 0 0 ${props => props.theme.spacing.s4} 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${props => props.theme.spacing?.s3 || '12px'};
+  gap: ${props => props.theme.spacing.s3};
 `;
 
 const ModuleDescription = styled.p`
-  color: ${props => props.theme.colors?.textMuted || '#6b7280'};
-  font-size: ${props => props.theme.typography?.fontSizes?.large || '1.125rem'};
-  margin: 0 0 ${props => props.theme.spacing?.s6 || '24px'} 0;
-  max-width: 700px;
+  color: ${props => props.theme.colors.textMuted};
+  font-size: ${props => props.theme.typography.fontSizes.large};
+  margin: 0 0 ${props => props.theme.spacing.s6} 0;
+  max-width: ${props => props.theme.breakpoints.tablet};
   margin-left: auto;
   margin-right: auto;
   line-height: 1.6;
@@ -43,68 +43,54 @@ const ModuleDescription = styled.p`
 const NormasGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: ${props => props.theme.spacing?.s4 || '16px'};
-  margin: ${props => props.theme.spacing?.s6 || '24px'} 0;
+  gap: ${props => props.theme.spacing.s4};
+  margin: ${props => props.theme.spacing.s6} 0;
 `;
 
 const NormaCard = styled.div`
-  background: ${props => props.theme.colors?.surfaceSubtle || '#f9fafb'};
-  border: 2px solid ${props => props.color || props.theme.colors?.border};
-  border-radius: ${props => props.theme.borderRadius?.medium || '8px'};
-  padding: ${props => props.theme.spacing?.s4 || '16px'};
+  background: ${props => props.theme.colors.surfaceSubtle};
+  border: 2px solid ${props => props.color || props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  padding: ${props => props.theme.spacing.s4};
   text-align: center;
 `;
 
 const NormaIcon = styled.div`
-  color: ${props => props.color || props.theme.colors?.primary};
-  margin-bottom: ${props => props.theme.spacing?.s3 || '12px'};
+  color: ${props => props.color || props.theme.colors.primary};
+  margin-bottom: ${props => props.theme.spacing.s3};
   display: flex;
   justify-content: center;
 `;
 
 const NormaTitle = styled.h3`
-  color: ${props => props.theme.colors?.text || '#111827'};
-  font-size: ${props => props.theme.typography?.fontSizes?.cardTitle || '1.125rem'};
-  font-weight: ${props => props.theme.typography?.fontWeights?.semibold || '600'};
-  margin: 0 0 ${props => props.theme.spacing?.s2 || '8px'} 0;
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.cardTitle};
+  font-weight: ${props => props.theme.typography.fontWeights.semibold};
+  margin: 0 0 ${props => props.theme.spacing.s2} 0;
 `;
 
 const NormaSubtitle = styled.p`
-  color: ${props => props.theme.colors?.textMuted || '#6b7280'};
-  font-size: ${props => props.theme.typography?.fontSizes?.small || '0.875rem'};
+  color: ${props => props.theme.colors.textMuted};
+  font-size: ${props => props.theme.typography.fontSizes.small};
   margin: 0;
 `;
 
 const SectionTitle = styled.h2`
-  color: ${props => props.theme.colors?.text || '#111827'};
-  font-size: ${props => props.theme.typography?.fontSizes?.sectionTitle || '1.5rem'};
-  font-weight: ${props => props.theme.typography?.fontWeights?.semibold || '600'};
-  margin: ${props => props.theme.spacing?.s8 || '32px'} 0 ${props => props.theme.spacing?.s6 || '24px'} 0;
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.sectionTitle};
+  font-weight: ${props => props.theme.typography.fontWeights.semibold};
+  margin: ${props => props.theme.spacing.s8} 0 ${props => props.theme.spacing.s6} 0;
 `;
 
 const ToolsGrid = styled(Grid)`
-  margin-bottom: ${props => props.theme.spacing?.s8 || '32px'};
+  margin-bottom: ${props => props.theme.spacing.s8};
 `;
 
-const ComingSoonSection = styled(FormContainer)`
-  border: 2px dashed ${props => props.theme.colors?.border || '#d1d5db'};
-  text-align: center;
-  margin-top: ${props => props.theme.spacing?.s8 || '32px'};
-  background: ${props => props.theme.colors?.backgroundLight || '#f3f4f6'};
-  max-width: 1000px;
-`;
+// ComingSoonSection eliminado
 
-const ComingSoonTitle = styled.h3`
-  color: ${props => props.theme.colors?.text || '#374151'};
-  font-size: ${props => props.theme.typography?.fontSizes?.cardTitle || '1.25rem'};
-  font-weight: ${props => props.theme.typography?.fontWeights?.semibold || '600'};
-  margin: 0 0 ${props => props.theme.spacing?.s4 || '16px'} 0;
-`;
+// ComingSoonTitle eliminado
 
-const ComingSoonDescription = styled.p`
-  color: ${props => props.theme.colors?.textMuted || '#6b7280'};
-  margin: 0 0 ${props => props.theme.spacing?.s6 || '24px'} 0;
-`;
+// ComingSoonDescription eliminado
 
 // Datos de las normas ISO
 const normasISO = [
@@ -172,14 +158,7 @@ const herramientasDisponibles = [
   }
 ];
 
-// Herramientas próximas (para llegar a 10 total)
-const herramientasProximas = [
-  'Plan de Implementación ISO',
-  'Gestor de No Conformidades',
-  'Matriz de Competencias',
-  'Control de Documentos',
-  'Seguimiento de Objetivos'
-];
+// herramientasProximas eliminado
 
 const ISOModule = () => {
   const navigate = useNavigate();
@@ -238,43 +217,7 @@ const ISOModule = () => {
         })}
       </ToolsGrid>
 
-      <ComingSoonSection>
-        <ComingSoonTitle>Próximas Herramientas ISO</ComingSoonTitle>
-        <ComingSoonDescription>
-          Estamos trabajando en {herramientasProximas.length} herramientas adicionales para completar 
-          el conjunto de 10 recursos especializados en normas ISO.
-        </ComingSoonDescription>
-        
-        <div style={{ 
-          display: 'flex', 
-          flexWrap: 'wrap', 
-          gap: '8px', 
-          justifyContent: 'center',
-          marginBottom: '24px'
-        }}>
-          {herramientasProximas.map((tool, index) => (
-            <div key={index} style={{
-              background: 'white',
-              padding: '8px 16px',
-              borderRadius: '20px',
-              fontSize: '0.875rem',
-              color: '#6b7280',
-              border: '1px solid #d1d5db'
-            }}>
-              {tool}
-            </div>
-          ))}
-        </div>
-
-        <Button
-          variant="outline"
-          size="medium"
-          onClick={() => navigate('/register')}
-        >
-          <Users size={16} />
-          Regístrate para Actualizaciones
-        </Button>
-      </ComingSoonSection>
+      {/* Sección "Próximas Herramientas" eliminada */}
     </ModuleContainer>
   );
 };
