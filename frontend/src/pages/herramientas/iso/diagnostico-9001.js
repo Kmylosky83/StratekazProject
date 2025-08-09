@@ -1,19 +1,360 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { LineChart, Line, BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Calendar, FileText, AlertTriangle, CheckCircle, Users, Target, TrendingUp, Activity, Award, Clock, Download, Save, Play, Pause, ChevronRight, Info, Menu, X, Home, ClipboardList, BarChart3, Settings, HelpCircle } from 'lucide-react';
+// DiagnosticoISO9001 - Herramienta de diagnóstico ISO 9001:2015
+// Template profesional integrado con RecursosLibresLayout y sidebar
+// Última actualización: 2025-01-09 - VERSION 3.0 CON SIDEBAR Y LAYOUT
 
-// Configuración de colores y estilos
-const COLORS = {
-  primary: '#ec268f',
-  secondary: '#000000',
-  accent: '#f4ec25',
-  background: '#f8f9fa',
-  cardBg: '#ffffff',
-  success: '#10b981',
-  warning: '#f59e0b',
-  danger: '#ef4444',
-  info: '#3b82f6'
-};
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled, { useTheme } from 'styled-components';
+import { LineChart, Line, BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Award, Activity, AlertTriangle, Users, Target, TrendingUp, CheckCircle, HelpCircle, Home, ClipboardList, Info, X, ChevronRight, ArrowLeft } from 'lucide-react';
+import { Button, Card, Grid } from '../../../design-system/components';
+import { Text } from '../../../design-system/components/Typography';
+import RecursosLibresLayout from '../../../design-system/components/Layout/RecursosLibresLayout';
+import ISO9001Sidebar from '../../../components/recursos-libres/ISO9001Sidebar';
+
+// Styled Components para la herramienta
+const ToolContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.s6};
+  max-width: ${props => props.theme.componentMeasures.content?.maxWidth || '1200px'};
+  margin: 0 auto;
+`;
+
+const ToolHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${props => props.theme.spacing.s6};
+  flex-wrap: wrap;
+  gap: ${props => props.theme.spacing.s4};
+`;
+
+const ToolTitle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.s3};
+`;
+
+const ToolTitleText = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.pageTitle};
+  font-weight: ${props => props.theme.typography.fontWeights.bold};
+  color: ${props => props.theme.colors.text};
+  margin: 0;
+`;
+
+const ToolActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.s3};
+  flex-wrap: wrap;
+`;
+
+const ModuleNavigation = styled(Card)`
+  padding: ${props => props.theme.spacing.s4};
+`;
+
+const ModuleButtonsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${props => props.theme.spacing.s2};
+`;
+
+const ModuleButton = styled(Button)`
+  ${props => props.isActive && `
+    background: ${props.theme.colors.primary};
+    color: ${props.theme.colors.white};
+    border-color: ${props.theme.colors.primary};
+  `}
+`;
+
+const KPIGrid = styled(Grid)`
+  margin-bottom: ${props => props.theme.spacing.s6};
+`;
+
+const KPICard = styled(Card)`
+  padding: ${props => props.theme.spacing.s6};
+  text-align: center;
+`;
+
+const KPIValue = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.pageTitle};
+  font-weight: ${props => props.theme.typography.fontWeights.bold};
+  color: ${props => props.color || props.theme.colors.primary};
+  margin: ${props => props.theme.spacing.s2} 0;
+  display: block;
+`;
+
+const KPILabel = styled(Text)`
+  color: ${props => props.theme.colors.textMuted};
+  font-size: ${props => props.theme.typography.fontSizes.sm};
+  margin: 0;
+  display: block;
+`;
+
+const ChartCard = styled(Card)`
+  padding: ${props => props.theme.spacing.s6};
+`;
+
+const ChartTitle = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.cardTitle};
+  font-weight: ${props => props.theme.typography.fontWeights.semibold};
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.s4};
+  display: block;
+`;
+
+const SectionGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(${props => props.theme.componentMeasures.card?.minWidth || '200px'}, 1fr));
+  gap: ${props => props.theme.spacing.s4};
+  margin-top: ${props => props.theme.spacing.s4};
+`;
+
+const SectionStatusCard = styled.div`
+  background: ${props => props.theme.colors.surfaceSubtle};
+  border: 1px solid ${props => props.theme.colors.borderSubtle};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  padding: ${props => props.theme.spacing.s4};
+  text-align: center;
+  transition: all ${props => props.theme.transitions.fast} ease;
+
+  &:hover {
+    box-shadow: ${props => props.theme.shadows.cardHover};
+  }
+`;
+
+const SectionIcon = styled.div`
+  color: ${props => props.color || props.theme.colors.primary};
+  margin: 0 auto ${props => props.theme.spacing.s2};
+  display: flex;
+  justify-content: center;
+`;
+
+const SectionName = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.sm};
+  font-weight: ${props => props.theme.typography.fontWeights.semibold};
+  color: ${props => props.theme.colors.text};
+  margin: 0 0 ${props => props.theme.spacing.s2} 0;
+  display: block;
+`;
+
+const SectionScore = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.cardTitle};
+  font-weight: ${props => props.theme.typography.fontWeights.bold};
+  color: ${props => props.color || props.theme.colors.primary};
+  margin: 0;
+  display: block;
+`;
+
+const DiagnosticSection = styled(Card)`
+  padding: ${props => props.theme.spacing.s6};
+`;
+
+const SectionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${props => props.theme.spacing.s6};
+`;
+
+const SectionTitle = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.sectionTitle};
+  font-weight: ${props => props.theme.typography.fontWeights.bold};
+  color: ${props => props.theme.colors.text};
+  margin: 0;
+  display: block;
+`;
+
+const ProgressBar = styled.div`
+  width: 100%;
+  height: ${props => props.theme.componentMeasures.progressBar?.height || '8px'};
+  background: ${props => props.theme.colors.borderSubtle};
+  border-radius: ${props => props.theme.borderRadius.full};
+  margin: ${props => props.theme.spacing.s4} 0 ${props => props.theme.spacing.s6} 0;
+  overflow: hidden;
+`;
+
+const ProgressFill = styled.div`
+  height: 100%;
+  background: ${props => props.theme.colors.primary};
+  border-radius: ${props => props.theme.borderRadius.full};
+  width: ${props => props.progress}%;
+  transition: width ${props => props.theme.transitions.medium} ease;
+`;
+
+const SectionTabsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(${props => props.theme.componentMeasures.card?.minWidth || '200px'}, 1fr));
+  gap: ${props => props.theme.spacing.s2};
+  margin-bottom: ${props => props.theme.spacing.s6};
+`;
+
+const SectionTab = styled(Button)`
+  ${props => props.isActive && `
+    background: ${props.theme.colors.primary};
+    color: ${props.theme.colors.white};
+    border-color: ${props.theme.colors.primary};
+  `}
+  ${props => props.score > 0 && !props.isActive && `
+    position: relative;
+    &::after {
+      content: '${props.score}%';
+      position: absolute;
+      top: ${props => props.theme.spacing.s1 ? `-${props.theme.spacing.s1}` : '-8px'};
+      right: ${props => props.theme.spacing.s1 ? `-${props.theme.spacing.s1}` : '-8px'};
+      background: ${props.theme.colors.success};
+      color: ${props.theme.colors.white};
+      font-size: ${props.theme.typography.fontSizes.note};
+      font-weight: ${props.theme.typography.fontWeights.bold};
+      padding: ${props.theme.spacing.s1} ${props.theme.spacing.s2};
+      border-radius: ${props.theme.borderRadius.full};
+      min-width: ${props.theme.componentMeasures.badge?.minWidth || '20px'};
+      text-align: center;
+    }
+  `}
+`;
+
+const QuestionWrapper = styled.div`
+  background: ${props => props.theme.colors.surfaceSubtle};
+  border: 1px solid ${props => props.theme.colors.borderSubtle};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  padding: ${props => props.theme.spacing.s4};
+  margin-bottom: ${props => props.theme.spacing.s4};
+`;
+
+const QuestionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: ${props => props.theme.spacing.s4};
+`;
+
+const QuestionText = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.base};
+  font-weight: ${props => props.theme.typography.fontWeights.semibold};
+  color: ${props => props.theme.colors.text};
+  margin: 0 0 ${props => props.theme.spacing.s2} 0;
+  display: block;
+  flex: 1;
+`;
+
+const QuestionHelp = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.sm};
+  color: ${props => props.theme.colors.textMuted};
+  margin: 0;
+  display: block;
+`;
+
+const RatingWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.s2};
+  margin-top: ${props => props.theme.spacing.s3};
+  flex-wrap: wrap;
+`;
+
+const RatingLabel = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.sm};
+  font-weight: ${props => props.theme.typography.fontWeights.medium};
+  color: ${props => props.theme.colors.text};
+  margin-right: ${props => props.theme.spacing.s4};
+  white-space: nowrap;
+`;
+
+const RatingButton = styled.button`
+  width: ${props => props.theme.componentMeasures.button?.height || '48px'};
+  height: ${props => props.theme.componentMeasures.button?.height || '48px'};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  border: 1px solid ${props => props.$isSelected ? props.theme.colors.primary : props.theme.colors.borderSubtle};
+  background: ${props => props.$isSelected ? props.theme.colors.primary : props.theme.colors.surface};
+  color: ${props => props.$isSelected ? props.theme.colors.white : props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSizes.base};
+  font-weight: ${props => props.theme.typography.fontWeights.semibold};
+  cursor: pointer;
+  transition: all ${props => props.theme.transitions.fast} ease;
+
+  &:hover {
+    background: ${props => props.$isSelected ? props.theme.colors.primary : props.theme.colors.surfaceSubtle};
+    border-color: ${props => props.theme.colors.primary};
+  }
+`;
+
+const RatingScale = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.note};
+  color: ${props => props.theme.colors.textMuted};
+  margin-top: ${props => props.theme.spacing.s2};
+  display: block;
+  width: 100%;
+`;
+
+const NavigationButtons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: ${props => props.theme.spacing.s6};
+  gap: ${props => props.theme.spacing.s3};
+  flex-wrap: wrap;
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: ${props => props.theme.colors.overlay};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: ${props => props.theme.zIndex.modal};
+  padding: ${props => props.theme.spacing.s4};
+`;
+
+const ModalContent = styled(Card)`
+  width: 100%;
+  max-width: ${props => props.theme.componentMeasures.modal?.maxWidth || '600px'};
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
+
+const ModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${props => props.theme.spacing.s4};
+  border-bottom: 1px solid ${props => props.theme.colors.borderSubtle};
+`;
+
+const ModalTitle = styled(Text)`
+  font-size: ${props => props.theme.typography.fontSizes.cardTitle};
+  font-weight: ${props => props.theme.typography.fontWeights.bold};
+  color: ${props => props.theme.colors.primary};
+  margin: 0;
+`;
+
+const ModalBody = styled.div`
+  padding: ${props => props.theme.spacing.s6};
+  overflow-y: auto;
+  flex: 1;
+`;
+
+const IconButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: ${props => props.theme.spacing.s1};
+  border-radius: ${props => props.theme.borderRadius.small};
+  color: ${props => props.theme.colors.textMuted};
+  transition: all ${props => props.theme.transitions.fast} ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.surfaceSubtle};
+    color: ${props => props.theme.colors.text};
+  }
+`;
 
 // Estructura de secciones ISO 9001:2015
 const ISO_SECTIONS = {
@@ -26,7 +367,7 @@ const ISO_SECTIONS = {
   improvement: { id: 'improvement', name: 'Mejora', weight: 0.05, icon: CheckCircle }
 };
 
-// Preguntas de diagnóstico por sección
+// Preguntas de diagnóstico por sección (mantengo las mismas para consistencia)
 const DIAGNOSTIC_QUESTIONS = {
   context: [
     {
@@ -191,42 +532,65 @@ const DIAGNOSTIC_QUESTIONS = {
   ]
 };
 
-// Componente principal para integración con ToolContainer
-const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
+// Sidebar personalizado se maneja en ISO9001Sidebar component
+
+// Componente principal  
+const DiagnosticoISO9001 = () => {
+  const theme = useTheme();
+  const navigate = useNavigate();
   const [activeModule, setActiveModule] = useState('dashboard');
   const [diagnosticData, setDiagnosticData] = useState({});
   const [currentSection, setCurrentSection] = useState('context');
-  const [companyInfo, setCompanyInfo] = useState({
-    name: '',
-    sector: '',
-    size: '',
-    contact: ''
-  });
+  const [actionPlans, setActionPlans] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState({ title: '', text: '' });
-  const [actionPlans, setActionPlans] = useState([]);
 
-  // Cargar datos iniciales del ToolContainer
+  // Log para verificar que se está cargando la nueva versión
   useEffect(() => {
-    if (initialData) {
-      setDiagnosticData(initialData.diagnosticData || {});
-      setCompanyInfo(initialData.companyInfo || {});
-      setActionPlans(initialData.actionPlans || []);
-    }
-  }, [initialData]);
+    console.log('🚀 Diagnóstico ISO 9001 V3.0 - Layout profesional con sidebar cargado');
+    console.log('Active module:', activeModule);
+  }, []);
 
-  // Notificar cambios al ToolContainer
+  // Log para cambios de módulo
   useEffect(() => {
-    if (onDataChange) {
-      const dataToSave = {
-        diagnosticData,
-        companyInfo,
-        actionPlans,
-        timestamp: new Date().toISOString()
-      };
-      onDataChange(dataToSave);
+    console.log('Módulo cambiado a:', activeModule);
+  }, [activeModule]);
+
+  // Cargar datos desde localStorage directamente
+  useEffect(() => {
+    // LIMPIEZA DE VERSIÓN ANTERIOR - eliminar después de la migración
+    if (window.localStorage.getItem('stratekaz_iso_diagnostico-9001')) {
+      console.log('🧹 Limpiando datos de versión anterior del diagnóstico ISO 9001');
+      window.localStorage.removeItem('stratekaz_iso_diagnostico-9001');
     }
-  }, [diagnosticData, companyInfo, actionPlans, onDataChange]);
+    
+    // Cargar datos guardados
+    try {
+      const savedData = localStorage.getItem('stratekaz_iso_diagnostico-9001_v3');
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        setDiagnosticData(parsedData.diagnosticData || {});
+        setActionPlans(parsedData.actionPlans || []);
+      }
+    } catch (error) {
+      console.error('Error loading saved data:', error);
+    }
+  }, []);
+
+  // Guardar cambios automáticamente
+  useEffect(() => {
+    const dataToSave = {
+      diagnosticData,
+      actionPlans,
+      timestamp: new Date().toISOString()
+    };
+    
+    try {
+      localStorage.setItem('stratekaz_iso_diagnostico-9001_v3', JSON.stringify(dataToSave));
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
+  }, [diagnosticData, actionPlans]);
 
   // Calcular puntuación por sección
   const calculateSectionScore = (sectionId) => {
@@ -261,7 +625,6 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
   const generateActionPlan = () => {
     const plans = [];
     Object.entries(ISO_SECTIONS).forEach(([key, section]) => {
-      const score = calculateSectionScore(key);
       const questions = DIAGNOSTIC_QUESTIONS[key];
       
       questions.forEach(q => {
@@ -273,9 +636,7 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
             question: q.question,
             action: `Mejorar: ${q.help}`,
             priority: response === 0 ? 'Alta' : response === 1 ? 'Media' : 'Baja',
-            status: 'Pendiente',
-            responsible: '',
-            deadline: ''
+            status: 'Pendiente'
           });
         }
       });
@@ -311,23 +672,10 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
     }));
   };
 
-  const getPieData = () => {
-    const completed = Object.keys(diagnosticData).length;
-    const total = Object.values(DIAGNOSTIC_QUESTIONS).flat().length;
-    return [
-      { name: 'Completado', value: completed, color: COLORS.success },
-      { name: 'Pendiente', value: total - completed, color: COLORS.warning }
-    ];
+  // Manejar navegación del sidebar
+  const handleModuleChange = (moduleId) => {
+    setActiveModule(moduleId);
   };
-
-  // Módulos de navegación
-  const modules = [
-    { id: 'dashboard', name: 'Dashboard', icon: Home },
-    { id: 'diagnostic', name: 'Diagnóstico ISO 9001', icon: ClipboardList },
-    { id: 'reports', name: 'Informes y KPIs', icon: BarChart3 },
-    { id: 'actions', name: 'Plan de Acción', icon: Target },
-    { id: 'settings', name: 'Configuración', icon: Settings }
-  ];
 
   // Componente Dashboard
   const Dashboard = () => {
@@ -339,45 +687,62 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
       globalScore >= 40 ? 'Básico' : 'Inicial';
 
     return (
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Puntuación Global ISO 9001</h3>
-              <Award className="w-8 h-8" style={{ color: COLORS.primary }} />
-            </div>
-            <div className="text-4xl font-bold" style={{ color: COLORS.primary }}>
+      <ToolContainer>
+        <ToolHeader>
+          <ToolTitle>
+            <Award size={32} color={theme.colors.primary} />
+            <ToolTitleText>Dashboard ISO 9001</ToolTitleText>
+          </ToolTitle>
+          <ToolActions>
+            <Button
+              variant="primary"
+              size="medium"
+              onClick={() => setActiveModule('diagnostic')}
+              icon={<ClipboardList size={20} />}
+            >
+              Iniciar Diagnóstico
+            </Button>
+          </ToolActions>
+        </ToolHeader>
+
+        <KPIGrid columns={3} tablet={2} mobile={1} gap="large">
+          <KPICard>
+            <Award size={32} color={theme.colors.primary} />
+            <KPIValue color={theme.colors.primary}>
               {globalScore.toFixed(1)}%
-            </div>
-            <p className="text-gray-600 mt-2">Nivel de Madurez: {maturityLevel}</p>
-          </div>
+            </KPIValue>
+            <KPILabel>Puntuación Global ISO 9001</KPILabel>
+            <Text fontSize="sm" color="textMuted" style={{ marginTop: theme.spacing.s2 }}>
+              Nivel de Madurez: {maturityLevel}
+            </Text>
+          </KPICard>
 
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Progreso del Diagnóstico</h3>
-              <Activity className="w-8 h-8" style={{ color: COLORS.info }} />
-            </div>
-            <div className="text-4xl font-bold" style={{ color: COLORS.info }}>
+          <KPICard>
+            <Activity size={32} color={theme.colors.info} />
+            <KPIValue color={theme.colors.info}>
               {((Object.keys(diagnosticData).length / Object.values(DIAGNOSTIC_QUESTIONS).flat().length) * 100).toFixed(0)}%
-            </div>
-            <p className="text-gray-600 mt-2">Preguntas completadas</p>
-          </div>
+            </KPIValue>
+            <KPILabel>Progreso del Diagnóstico</KPILabel>
+            <Text fontSize="sm" color="textMuted" style={{ marginTop: theme.spacing.s2 }}>
+              Preguntas completadas
+            </Text>
+          </KPICard>
 
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Acciones Pendientes</h3>
-              <AlertTriangle className="w-8 h-8" style={{ color: COLORS.warning }} />
-            </div>
-            <div className="text-4xl font-bold" style={{ color: COLORS.warning }}>
+          <KPICard>
+            <AlertTriangle size={32} color={theme.colors.warning} />
+            <KPIValue color={theme.colors.warning}>
               {actionPlans.filter(a => a.status === 'Pendiente').length}
-            </div>
-            <p className="text-gray-600 mt-2">Requieren atención</p>
-          </div>
-        </div>
+            </KPIValue>
+            <KPILabel>Acciones Pendientes</KPILabel>
+            <Text fontSize="sm" color="textMuted" style={{ marginTop: theme.spacing.s2 }}>
+              Requieren atención
+            </Text>
+          </KPICard>
+        </KPIGrid>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-4">Cumplimiento por Sección</h3>
+        <Grid columns={2} tablet={1} mobile={1} gap="large">
+          <ChartCard>
+            <ChartTitle>Cumplimiento por Sección</ChartTitle>
             <ResponsiveContainer width="100%" height={300}>
               <RadarChart data={getRadarData()}>
                 <PolarGrid />
@@ -386,50 +751,52 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
                 <Radar 
                   name="Puntuación" 
                   dataKey="score" 
-                  stroke={COLORS.primary} 
-                  fill={COLORS.primary} 
+                  stroke={theme.colors.primary} 
+                  fill={theme.colors.primary} 
                   fillOpacity={0.6} 
                 />
                 <Tooltip />
               </RadarChart>
             </ResponsiveContainer>
-          </div>
+          </ChartCard>
 
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold mb-4">Análisis Comparativo</h3>
+          <ChartCard>
+            <ChartTitle>Análisis Comparativo</ChartTitle>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={getBarData()}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis domain={[0, 100]} />
                 <Tooltip />
-                <Bar dataKey="puntuación" fill={COLORS.primary} />
+                <Bar dataKey="puntuación" fill={theme.colors.primary} />
               </BarChart>
             </ResponsiveContainer>
-          </div>
-        </div>
+          </ChartCard>
+        </Grid>
 
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h3 className="text-xl font-semibold mb-4">Estado del Sistema de Gestión</h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <ChartCard>
+          <ChartTitle>Estado del Sistema de Gestión</ChartTitle>
+          <SectionGrid>
             {Object.entries(ISO_SECTIONS).map(([key, section]) => {
               const score = calculateSectionScore(key);
               const Icon = section.icon;
-              const color = score >= 80 ? COLORS.success : score >= 60 ? COLORS.warning : COLORS.danger;
+              const color = score >= 80 ? theme.colors.success : score >= 60 ? theme.colors.warning : theme.colors.danger;
               
               return (
-                <div key={key} className="text-center p-4 border rounded-lg">
-                  <Icon className="w-12 h-12 mx-auto mb-2" style={{ color }} />
-                  <h4 className="font-semibold text-sm">{section.name}</h4>
-                  <p className="text-2xl font-bold mt-2" style={{ color }}>
+                <SectionStatusCard key={key}>
+                  <SectionIcon color={color}>
+                    <Icon size={48} />
+                  </SectionIcon>
+                  <SectionName>{section.name}</SectionName>
+                  <SectionScore color={color}>
                     {score.toFixed(0)}%
-                  </p>
-                </div>
+                  </SectionScore>
+                </SectionStatusCard>
               );
             })}
-          </div>
-        </div>
-      </div>
+          </SectionGrid>
+        </ChartCard>
+      </ToolContainer>
     );
   };
 
@@ -438,6 +805,7 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
     const sections = Object.keys(ISO_SECTIONS);
     const currentSectionIndex = sections.indexOf(currentSection);
     const questions = DIAGNOSTIC_QUESTIONS[currentSection];
+    const sectionProgress = (Object.keys(diagnosticData).filter(k => questions.some(q => q.id === k)).length / questions.length) * 100;
 
     const nextSection = () => {
       if (currentSectionIndex < sections.length - 1) {
@@ -452,41 +820,43 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
     };
 
     return (
-      <div className="space-y-6">
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Diagnóstico ISO 9001:2015</h2>
-            <button
-              onClick={() => {
-                setModalContent({
-                  title: 'Guía del Diagnóstico',
-                  text: 'Complete cada sección evaluando el nivel de cumplimiento de su organización. Use la escala de 0 (No implementado) a 5 (Totalmente implementado y optimizado). El sistema calculará automáticamente su puntuación y generará un plan de acción personalizado.'
-                });
-                setShowModal(true);
-              }}
-              className="p-2 rounded-full hover:bg-gray-100"
-            >
-              <HelpCircle className="w-6 h-6" style={{ color: COLORS.primary }} />
-            </button>
-          </div>
-
-          <div className="mb-6">
-            <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
-              <span>Progreso de la sección</span>
-              <span>{((Object.keys(diagnosticData).filter(k => questions.some(q => q.id === k)).length / questions.length) * 100).toFixed(0)}%</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className="h-2 rounded-full transition-all duration-300"
-                style={{ 
-                  width: `${(Object.keys(diagnosticData).filter(k => questions.some(q => q.id === k)).length / questions.length) * 100}%`,
-                  backgroundColor: COLORS.primary 
+      <ToolContainer>
+        <DiagnosticSection>
+          <SectionHeader>
+            <SectionTitle>Diagnóstico ISO 9001:2015</SectionTitle>
+            <div style={{ display: 'flex', gap: theme.spacing.s2 }}>
+              <IconButton
+                onClick={() => {
+                  setModalContent({
+                    title: 'Guía del Diagnóstico',
+                    text: 'Complete cada sección evaluando el nivel de cumplimiento de su organización. Use la escala de 0 (No implementado) a 5 (Totalmente implementado y optimizado). El sistema calculará automáticamente su puntuación y generará un plan de acción personalizado.'
+                  });
+                  setShowModal(true);
                 }}
-              />
+              >
+                <HelpCircle size={24} />
+              </IconButton>
+              <Button
+                variant="outline"
+                size="medium"
+                onClick={() => setActiveModule('dashboard')}
+                icon={<Home size={20} />}
+              >
+                Dashboard
+              </Button>
             </div>
+          </SectionHeader>
+
+          <div>
+            <Text fontSize="sm" color="textMuted" style={{ marginBottom: theme.spacing.s2 }}>
+              Progreso de la sección: {sectionProgress.toFixed(0)}%
+            </Text>
+            <ProgressBar>
+              <ProgressFill progress={sectionProgress} />
+            </ProgressBar>
           </div>
 
-          <div className="flex flex-wrap gap-2 mb-6">
+          <SectionTabsWrapper>
             {sections.map((sectionKey) => {
               const section = ISO_SECTIONS[sectionKey];
               const Icon = section.icon;
@@ -494,40 +864,42 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
               const score = calculateSectionScore(sectionKey);
               
               return (
-                <button
+                <SectionTab
                   key={sectionKey}
+                  variant={isActive ? "primary" : "outline"}
+                  size="small"
                   onClick={() => setCurrentSection(sectionKey)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                    isActive ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                  style={{ backgroundColor: isActive ? COLORS.primary : undefined }}
+                  isActive={isActive}
+                  score={score > 0 ? score.toFixed(0) : 0}
+                  icon={<Icon size={16} />}
                 >
-                  <Icon className="w-4 h-4" />
-                  <span className="text-sm font-medium">{section.name}</span>
-                  {score > 0 && (
-                    <span className="text-xs font-bold">{score.toFixed(0)}%</span>
-                  )}
-                </button>
+                  {section.name}
+                </SectionTab>
               );
             })}
-          </div>
+          </SectionTabsWrapper>
 
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold flex items-center gap-2">
-              {React.createElement(ISO_SECTIONS[currentSection].icon, { className: "w-6 h-6", style: { color: COLORS.primary } })}
+          <div style={{ marginBottom: theme.spacing.s6 }}>
+            <Text fontSize="cardTitle" fontWeight="semibold" color="text" style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: theme.spacing.s2,
+              marginBottom: theme.spacing.s4 
+            }}>
+              {React.createElement(ISO_SECTIONS[currentSection].icon, { size: 24, color: theme.colors.primary })}
               {ISO_SECTIONS[currentSection].name}
-            </h3>
+            </Text>
 
             {questions.map((question, index) => (
-              <div key={question.id} className="p-4 border rounded-lg">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <h4 className="font-semibold mb-2">
+              <QuestionWrapper key={question.id}>
+                <QuestionHeader>
+                  <div style={{ flex: 1 }}>
+                    <QuestionText>
                       {index + 1}. {question.question}
-                    </h4>
-                    <p className="text-sm text-gray-600">{question.help}</p>
+                    </QuestionText>
+                    <QuestionHelp>{question.help}</QuestionHelp>
                   </div>
-                  <button
+                  <IconButton
                     onClick={() => {
                       setModalContent({
                         title: 'Información adicional',
@@ -535,70 +907,60 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
                       });
                       setShowModal(true);
                     }}
-                    className="ml-4 p-1 rounded-full hover:bg-gray-100"
                   >
-                    <Info className="w-5 h-5 text-gray-500" />
-                  </button>
-                </div>
+                    <Info size={20} />
+                  </IconButton>
+                </QuestionHeader>
 
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium mr-4">Nivel de cumplimiento:</span>
+                <RatingWrapper>
+                  <RatingLabel>Nivel de cumplimiento:</RatingLabel>
                   {[0, 1, 2, 3, 4, 5].map(value => (
-                    <button
+                    <RatingButton
                       key={value}
                       onClick={() => handleResponse(question.id, value)}
-                      className={`w-12 h-12 rounded-lg font-semibold transition-all ${
-                        diagnosticData[question.id] === value
-                          ? 'text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                      style={{
-                        backgroundColor: diagnosticData[question.id] === value ? COLORS.primary : undefined
-                      }}
+                      $isSelected={diagnosticData[question.id] === value}
                     >
                       {value}
-                    </button>
+                    </RatingButton>
                   ))}
-                </div>
-                <div className="mt-2 text-xs text-gray-500">
+                </RatingWrapper>
+                <RatingScale>
                   0 = No implementado | 5 = Totalmente implementado y optimizado
-                </div>
-              </div>
+                </RatingScale>
+              </QuestionWrapper>
             ))}
           </div>
 
-          <div className="flex justify-between mt-6">
-            <button
+          <NavigationButtons>
+            <Button
+              variant="outline"
               onClick={prevSection}
               disabled={currentSectionIndex === 0}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              icon={<ChevronRight size={16} style={{ transform: 'rotate(180deg)' }} />}
             >
-              <ChevronRight className="w-4 h-4 rotate-180" />
               Sección anterior
-            </button>
+            </Button>
 
             {currentSectionIndex === sections.length - 1 ? (
-              <button
+              <Button
+                variant="primary"
                 onClick={generateActionPlan}
-                className="flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90"
-                style={{ backgroundColor: COLORS.primary }}
+                icon={<Target size={16} />}
               >
                 Generar Plan de Acción
-                <Target className="w-4 h-4" />
-              </button>
+              </Button>
             ) : (
-              <button
+              <Button
+                variant="primary"
                 onClick={nextSection}
-                className="flex items-center gap-2 px-4 py-2 text-white rounded-lg hover:opacity-90"
-                style={{ backgroundColor: COLORS.primary }}
+                icon={<ChevronRight size={16} />}
               >
                 Siguiente sección
-                <ChevronRight className="w-4 h-4" />
-              </button>
+              </Button>
             )}
-          </div>
-        </div>
-      </div>
+          </NavigationButtons>
+        </DiagnosticSection>
+      </ToolContainer>
     );
   };
 
@@ -614,65 +976,52 @@ const DiagnosticoISO9001 = ({ initialData, onDataChange, pillar, toolId }) => {
     }
   };
 
-  return (
-    <div className="space-y-6">
-      {/* Navegación de módulos */}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <div className="flex flex-wrap gap-2">
-          {modules.slice(0, 2).map(module => {
-            const Icon = module.icon;
-            return (
-              <button
-                key={module.id}
-                onClick={() => setActiveModule(module.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                  activeModule === module.id 
-                    ? 'text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-                style={{ 
-                  backgroundColor: activeModule === module.id ? COLORS.primary : undefined 
-                }}
-              >
-                <Icon className="w-5 h-5" />
-                <span>{module.name}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
+  // Renderizar con sidebar personalizado
+  // console.log('🎯 Renderizando diagnóstico ISO 9001 V3.0:');
+  // console.log('  - activeModule:', activeModule);
+  
+  // Crear el sidebar personalizado
+  const customSidebarElement = (
+    <ISO9001Sidebar 
+      isOpen={false}
+      onClose={() => {}}
+      activeModule={activeModule}
+      onModuleChange={handleModuleChange}
+    />
+  );
 
-      {/* Contenido del módulo */}
+  return (
+    <RecursosLibresLayout
+      pageTitle="Diagnóstico ISO 9001:2015"
+      pageSubtitle="Evalúa el cumplimiento de tu Sistema de Gestión de Calidad"
+      customSidebar={customSidebarElement}
+      renderCustomSidebar={(sidebarProps) => (
+        <ISO9001Sidebar 
+          {...sidebarProps}
+          activeModule={activeModule}
+          onModuleChange={handleModuleChange}
+        />
+      )}
+    >
       {renderModule()}
 
       {/* Modal de ayuda */}
       {showModal && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50"
-          onClick={() => setShowModal(false)}
-        >
-          <div 
-            className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col"
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="flex justify-between items-center p-4 border-b">
-              <h3 className="text-xl font-bold" style={{ color: COLORS.primary }}>
-                {modalContent.title}
-              </h3>
-              <button 
-                onClick={() => setShowModal(false)}
-                className="text-gray-500 hover:text-gray-800"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            <div className="p-6 overflow-y-auto">
-              <p className="text-gray-700">{modalContent.text}</p>
-            </div>
-          </div>
-        </div>
+        <Modal onClick={() => setShowModal(false)}>
+          <ModalContent onClick={e => e.stopPropagation()}>
+            <ModalHeader>
+              <ModalTitle>{modalContent.title}</ModalTitle>
+              <IconButton onClick={() => setShowModal(false)}>
+                <X size={24} />
+              </IconButton>
+            </ModalHeader>
+            <ModalBody>
+              <Text color="text">{modalContent.text}</Text>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       )}
-    </div>
+    </RecursosLibresLayout>
   );
 };
 

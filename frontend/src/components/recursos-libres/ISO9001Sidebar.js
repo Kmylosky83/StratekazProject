@@ -1,13 +1,12 @@
-// RecursosLibresSidebar - Sidebar específico para el dashboard de recursos libres
-// Integrado al design system manteniendo el diseño original
+// ISO9001Sidebar - Sidebar específico para la herramienta de Diagnóstico ISO 9001
+// Navegación entre Dashboard y Diagnóstico de la herramienta
 
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import styled, { useTheme } from 'styled-components';
-import { X, Home, Award, HardHat, Car, Lightbulb } from 'lucide-react';
+import { Home, ClipboardList, ArrowLeft, X, Pin, PinOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-// Styled Components usando design system tokens
-const Sidebar = styled.aside`
+const SidebarContainer = styled.aside`
   width: ${props => {
     if (props.$isMobile) return props.theme.componentMeasures.header.mobileMenuWidth;
     if (props.$isCollapsed && !props.$isExpanded) return props.theme.componentMeasures.sidebar.widthCollapsed;
@@ -42,10 +41,6 @@ const Sidebar = styled.aside`
   }
 `;
 
-// SidebarHeader eliminado - contenido integrado en NavLabel
-
-// Logo eliminado - no se usa título en el sidebar
-
 const CloseButton = styled.button`
   position: absolute;
   top: 0;
@@ -60,7 +55,7 @@ const CloseButton = styled.button`
   color: ${props => props.theme.colors.textMuted};
   border-radius: ${props => props.theme.borderRadius.medium};
   cursor: pointer;
-  transition: all ${props => props.theme.transitions.button};
+  transition: all ${props => props.theme.transitions.fast} ease;
   z-index: ${props => props.theme.zIndex.modal};
   
   &:hover {
@@ -97,7 +92,7 @@ const NavLabel = styled.h3`
   font-size: ${props => props.theme.typography.fontSizes.small};
   font-weight: ${props => props.theme.typography.fontWeights.medium};
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: ${props => props.theme.typography.letterSpacing?.wide || '0.05em'};
   margin: 0 0 ${props => props.theme.spacing.s3} 0;
   padding: 0 ${props => props.theme.spacing.s3};
   position: relative;
@@ -179,6 +174,40 @@ const NavLink = styled.button`
   }
 `;
 
+// Pin Button para toggle del estado colapsado
+const PinButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: ${props => props.theme.spacing.s4};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: ${props => props.theme.componentMeasures.sidebar.buttonSize};
+  height: ${props => props.theme.componentMeasures.sidebar.buttonSize};
+  border: none;
+  background: transparent;
+  color: ${props => props.theme.colors.textMuted};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  cursor: pointer;
+  transition: all ${props => props.theme.transitions.button};
+  opacity: ${props => props.$isCollapsed && !props.$isExpanded ? '0' : '1'};
+  transform: translateX(${props => props.$isCollapsed && !props.$isExpanded ? '10px' : '0'});
+  transition-delay: ${props => props.$isCollapsed && !props.$isExpanded ? '0ms' : '100ms'};
+  
+  &:hover {
+    background: ${props => props.theme.colors.surfaceSubtle};
+    color: ${props => props.theme.colors.text};
+  }
+  
+  svg {
+    width: ${props => props.theme.componentMeasures.sidebar.pinIconSize};
+    height: ${props => props.theme.componentMeasures.sidebar.pinIconSize};
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
 
 const SidebarFooter = styled.div`
   padding: ${props => props.theme.spacing.s4};
@@ -189,68 +218,65 @@ const SidebarFooter = styled.div`
   transition-delay: ${props => props.$isCollapsed && !props.$isExpanded ? '0ms' : '100ms'};
 `;
 
-const CorporateCredits = styled.div`
-  text-align: center;
-  color: ${props => props.theme.colors.textMuted};
-  font-size: ${props => props.theme.typography.fontSizes.passwordBadge};
-  font-weight: ${props => props.theme.typography.fontWeights.regular};
-  line-height: 1.3;
-  padding: ${props => props.theme.spacing.s3};
-  margin-top: auto;
-  opacity: 0.6;
+const BackButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.s3};
+  width: 100%;
+  padding: ${props => {
+    if (props.$isCollapsed && !props.$isExpanded) return props.theme.componentMeasures.sidebar.collapsedPadding;
+    return props.theme.spacing.s3;
+  }};
+  border: none;
+  background: transparent;
+  color: ${props => props.theme.colors.text};
+  text-align: left;
+  font-size: ${props => props.theme.typography.fontSizes.base};
+  font-weight: ${props => props.theme.typography.fontWeights.normal};
+  border-radius: ${props => props.theme.borderRadius.medium};
+  cursor: pointer;
+  transition: all ${props => props.theme.transitions.button};
+  justify-content: ${props => props.$isCollapsed && !props.$isExpanded ? 'center' : 'flex-start'};
+  
+  &:hover {
+    background: ${props => props.theme.colors.surfaceSubtle};
+  }
+  
+  svg {
+    width: ${props => props.$isCollapsed && !props.$isExpanded ? 
+      props.theme.componentMeasures.sidebar.iconSizeCollapsed :
+      props.theme.componentMeasures.sidebar.iconSize
+    };
+    height: ${props => props.$isCollapsed && !props.$isExpanded ? 
+      props.theme.componentMeasures.sidebar.iconSizeCollapsed :
+      props.theme.componentMeasures.sidebar.iconSize
+    };
+    flex-shrink: 0;
+    transition: all ${props => props.theme.componentMeasures.sidebar.transitionDuration} ease;
+  }
+  
+  span {
+    opacity: ${props => props.$isCollapsed && !props.$isExpanded ? '0' : '1'};
+    transform: translateX(${props => props.$isCollapsed && !props.$isExpanded ? '-10px' : '0'});
+    transition: all ${props => props.theme.componentMeasures.sidebar.transitionDuration} ${props => props.theme.componentMeasures.sidebar.transitionEasing};
+    transition-delay: ${props => props.$isCollapsed && !props.$isExpanded ? '0ms' : '50ms'};
+    white-space: nowrap;
+    overflow: hidden;
+  }
 `;
 
-// Datos de navegación para los pilares
-const navigationData = [
-  {
-    section: 'Pilares de Gestión',
-    items: [
-      {
-        id: 'resumen',
-        name: 'Resumen General',
-        icon: Home,
-        path: '/acceso-gratuito',
-        description: 'Vista general de todos los recursos'
-      },
-      {
-        id: 'iso',
-        name: 'ISO',
-        icon: Award,
-        path: '/acceso-gratuito/iso',
-        description: 'Normas ISO 9001, 45001, 14001'
-      },
-      {
-        id: 'sgsst',
-        name: 'SG-SST',
-        icon: HardHat,
-        path: '/acceso-gratuito/sgsst',
-        description: 'Sistema de Gestión SST'
-      },
-      {
-        id: 'pesv',
-        name: 'PESV',
-        icon: Car,
-        path: '/acceso-gratuito/pesv',
-        description: 'Plan Estratégico Seguridad Vial'
-      },
-      {
-        id: 'innovation',
-        name: 'Innovación',
-        icon: Lightbulb,
-        path: '/acceso-gratuito/innovation',
-        description: 'Herramientas de innovación'
-      }
-    ]
-  }
-];
+// Constantes
+const RECURSOS_LIBRES_PATH = '/acceso-gratuito';
 
-const RecursosLibresSidebar = ({ isOpen, onClose }) => {
+const ISO9001Sidebar = ({ isOpen, onClose, activeModule, onModuleChange }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const theme = useTheme();
   const [isCollapsed] = useState(true); // Siempre colapsado por defecto
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isPinned] = useState(false);
+  const [isPinned, setIsPinned] = useState(() => {
+    const saved = localStorage.getItem('sidebarPinned');
+    return saved ? JSON.parse(saved) : false;
+  });
   const hoverTimeoutRef = useRef();
   const [isMobile, setIsMobile] = useState(false);
   
@@ -266,17 +292,28 @@ const RecursosLibresSidebar = ({ isOpen, onClose }) => {
     return () => window.removeEventListener('resize', checkMobile);
   }, [theme.breakpoints.tablet]);
   
+  // Guardar preferencias en localStorage  
+  useEffect(() => {
+    localStorage.setItem('sidebarPinned', JSON.stringify(isPinned));
+  }, [isPinned]);
 
-  const handleNavigation = (path) => {
-    navigate(path);
-    onClose?.();
+  // Debug logs detallados
+  // React.useEffect(() => {
+  //   console.log('🔧 ISO9001Sidebar renderizado:');
+  //   console.log('  - isOpen:', isOpen);
+  //   console.log('  - activeModule:', activeModule);
+  //   console.log('  - onClose:', typeof onClose);
+  //   console.log('  - onModuleChange:', typeof onModuleChange);
+  // }, [isOpen, activeModule, onClose, onModuleChange]);
+
+  const handleBackToResources = () => {
+    navigate(RECURSOS_LIBRES_PATH);
+    onClose();
   };
 
-  const isActiveRoute = (path) => {
-    if (path === '/acceso-gratuito') {
-      return location.pathname === '/acceso-gratuito';
-    }
-    return location.pathname.startsWith(path);
+  const handleModuleChange = (moduleId) => {
+    onModuleChange(moduleId);
+    onClose(); // Cerrar sidebar en mobile tras selección
   };
   
   // Handlers para hover en desktop
@@ -296,7 +333,17 @@ const RecursosLibresSidebar = ({ isOpen, onClose }) => {
     setIsExpanded(false);
   };
   
-  
+  // Handler para toggle pin/unpin
+  const handlePinToggle = () => {
+    const newPinnedState = !isPinned;
+    setIsPinned(newPinnedState);
+    
+    if (newPinnedState) {
+      // Si se ancla, mantener expandido
+      setIsExpanded(true);
+    }
+    // Si se desancla, el hover se encargará del comportamiento
+  };
   
   // Limpiar timeout al desmontar
   useEffect(() => {
@@ -311,8 +358,25 @@ const RecursosLibresSidebar = ({ isOpen, onClose }) => {
   const shouldShowCollapsed = !isMobile && isCollapsed;
   const shouldShowExpanded = !isMobile && (isExpanded || isPinned || !isCollapsed);
 
+  const menuItems = [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: Home,
+      description: 'Vista general y métricas'
+    },
+    {
+      id: 'diagnostic',
+      label: 'Diagnóstico',
+      icon: ClipboardList,
+      description: 'Evaluación por secciones ISO'
+    }
+  ];
+
+  // console.log('🎨 ISO9001Sidebar - Renderizando componente visual');
+  
   return (
-    <Sidebar 
+    <SidebarContainer 
       $isOpen={isOpen}
       $isCollapsed={shouldShowCollapsed}
       $isExpanded={shouldShowExpanded}
@@ -321,56 +385,66 @@ const RecursosLibresSidebar = ({ isOpen, onClose }) => {
       onMouseLeave={handleMouseLeave}
     >
       <SidebarNav>
-        {navigationData.map((section, index) => (
-          <NavSection key={section.section}>
-            <NavLabel 
-              $isCollapsed={shouldShowCollapsed}
-              $isExpanded={shouldShowExpanded}
-            >
-              {section.section}
-              {index === 0 && (
-                <>
-                  <CloseButton onClick={onClose}>
-                    <X size={parseInt(theme.componentMeasures.sidebar.closeIconSize)} />
-                  </CloseButton>
-                </>
-              )}
-            </NavLabel>
-            <NavList>
-              {section.items.map((item) => {
-                const IconComponent = item.icon;
-                return (
-                  <NavItem key={item.id}>
-                    <NavLink
-                      $isActive={isActiveRoute(item.path)}
-                      $isCollapsed={shouldShowCollapsed}
-                      $isExpanded={shouldShowExpanded}
-                      onClick={() => handleNavigation(item.path)}
-                      title={shouldShowCollapsed && !shouldShowExpanded ? item.description : undefined}
-                    >
-                      <IconComponent />
-                      <span>{item.name}</span>
-                    </NavLink>
-                  </NavItem>
-                );
-              })}
-            </NavList>
-          </NavSection>
-        ))}
+        <NavSection>
+          <NavLabel 
+            $isCollapsed={shouldShowCollapsed}
+            $isExpanded={shouldShowExpanded}
+          >
+            ISO 9001:2015
+            <CloseButton onClick={onClose}>
+              <X size={18} />
+            </CloseButton>
+            {!isMobile && (
+              <PinButton
+                onClick={handlePinToggle}
+                title={isPinned ? "Desanclar sidebar" : "Anclar sidebar"}
+                $isCollapsed={shouldShowCollapsed}
+                $isExpanded={shouldShowExpanded}
+              >
+                {isPinned ? <PinOff size={16} /> : <Pin size={16} />}
+              </PinButton>
+            )}
+          </NavLabel>
+          <NavList>
+            {menuItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeModule === item.id;
+              
+              return (
+                <NavItem key={item.id}>
+                  <NavLink
+                    $isActive={isActive}
+                    $isCollapsed={shouldShowCollapsed}
+                    $isExpanded={shouldShowExpanded}
+                    onClick={() => handleModuleChange(item.id)}
+                    title={shouldShowCollapsed && !shouldShowExpanded ? item.description : undefined}
+                  >
+                    <Icon />
+                    <span>{item.label}</span>
+                  </NavLink>
+                </NavItem>
+              );
+            })}
+          </NavList>
+        </NavSection>
       </SidebarNav>
 
       <SidebarFooter 
         $isCollapsed={shouldShowCollapsed}
         $isExpanded={shouldShowExpanded}
       >
-        <CorporateCredits>
-          Creado por Stratekaz, Una Marca Kmylosky
-          <br />
-          © 2025. Todos los derechos reservados.
-        </CorporateCredits>
+        <BackButton
+          $isCollapsed={shouldShowCollapsed}
+          $isExpanded={shouldShowExpanded}
+          onClick={handleBackToResources}
+          title={shouldShowCollapsed && !shouldShowExpanded ? "Volver a Recursos Libres" : undefined}
+        >
+          <ArrowLeft />
+          <span>Volver a Recursos Libres</span>
+        </BackButton>
       </SidebarFooter>
-    </Sidebar>
+    </SidebarContainer>
   );
 };
 
-export default RecursosLibresSidebar;
+export default ISO9001Sidebar;

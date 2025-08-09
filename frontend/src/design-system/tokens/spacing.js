@@ -90,11 +90,22 @@ const componentMeasures = {
   // Medidas para layout de recursos libres
   sidebar: {
     width: '280px',
+    widthCollapsed: '64px',
     iconSize: '20px',
     iconSizeLarge: '24px',
     iconSizeButton: '32px',
+    iconSizeCollapsed: '24px',
     buttonSize: '32px',
-    buttonSizeLarge: '40px'
+    buttonSizeLarge: '40px',
+    hoverDelay: '150ms',
+    transitionDuration: '200ms',
+    transitionEasing: 'cubic-bezier(0.23, 1, 0.32, 1)',
+    collapsedPadding: '12px',
+    expandedPadding: '16px 24px',
+    tooltipDelay: '300ms',
+    // Tamaños de iconos específicos
+    closeIconSize: '18px',
+    pinIconSize: '16px'
   },
   
   // Medidas para header/topbar
@@ -113,3 +124,6 @@ const componentMeasures = {
 
 export { componentMeasures };
 export default spacing;
+
+// Re-exportar transitions para acceso fácil
+export { transitions } from './transitions';

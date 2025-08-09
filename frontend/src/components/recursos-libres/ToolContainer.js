@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, Suspense } from 'react';
 import styled from 'styled-components';
-import { ArrowLeft, Download, Upload, Save, RotateCcw, Info, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Download, Upload, Save, RotateCcw, Info, AlertTriangle, FileText, Database, CheckCircle } from 'lucide-react';
 import { Button } from '../../design-system/components';
 import { Text } from '../../design-system/components/Typography';
 import localStorageManager from '../../services/localStorage/LocalStorageManager';
@@ -96,6 +96,52 @@ const ToolActions = styled.div`
     width: 100%;
     justify-content: center;
   }
+`;
+
+const ImportIndicator = styled.div`
+  position: relative;
+  display: inline-flex;
+`;
+
+const ImportBadge = styled.div`
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: ${props => props.theme.colors.success};
+  color: white;
+  font-size: 10px;
+  font-weight: ${props => props.theme.typography.fontWeights.bold};
+  padding: 2px 6px;
+  border-radius: ${props => props.theme.borderRadius.full};
+  min-width: 16px;
+  text-align: center;
+  box-shadow: ${props => props.theme.shadows.card};
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: ${props => props.theme.colors.success};
+  }
+`;
+
+const ExportIndicator = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.s1};
+`;
+
+const FileTypeTag = styled.span`
+  background: ${props => props.theme.colors.primarySubtle || 'rgba(236, 38, 143, 0.1)'};
+  color: ${props => props.theme.colors.primary};
+  font-size: 10px;
+  font-weight: ${props => props.theme.typography.fontWeights.semibold};
+  padding: 2px 6px;
+  border-radius: ${props => props.theme.borderRadius.small};
+  text-transform: uppercase;
 `;
 
 const ToolContent = styled.main`
@@ -301,16 +347,64 @@ const ToolContainer = ({
     }
   };
 
-  // Importar archivo (placeholder para futuras implementaciones)
+  // Estado para manejo de importación
+  const [importing, setImporting] = useState(false);
+  const [importSuccess, setImportSuccess] = useState(false);
+  
+  // Importar archivo con funcionalidad real
   const handleImportFile = () => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json,.xlsx,.csv';
-    input.onchange = (event) => {
+    input.onchange = async (event) => {
       const file = event.target.files[0];
-      if (file) {
-        // Implementar lógica de importación
-        console.log('Importing file:', file.name);
+      if (!file) return;
+      
+      setImporting(true);
+      setImportSuccess(false);
+      
+      try {
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        let importedData = null;
+        
+        if (fileExtension === 'json') {
+          // Importar JSON
+          const text = await file.text();
+          importedData = JSON.parse(text);
+        } else if (fileExtension === 'csv') {
+          // Importar CSV (básico)
+          const text = await file.text();
+          const lines = text.split('\n');
+          const headers = lines[0].split(',');
+          const data = lines.slice(1).map(line => {
+            const values = line.split(',');
+            const obj = {};
+            headers.forEach((header, index) => {
+              obj[header.trim()] = values[index]?.trim() || '';
+            });
+            return obj;
+          });
+          importedData = { csvData: data, importedAt: new Date().toISOString() };
+        } else {
+          throw new Error('Formato no soportado. Use JSON o CSV.');
+        }
+        
+        // Guardar datos importados
+        handleSaveData({
+          ...toolData,
+          ...importedData,
+          importedFrom: file.name,
+          importedAt: new Date().toISOString()
+        });
+        
+        setImportSuccess(true);
+        setTimeout(() => setImportSuccess(false), 3000);
+        
+      } catch (error) {
+        console.error('Error importing file:', error);
+        alert('Error al importar archivo: ' + error.message);
+      } finally {
+        setImporting(false);
       }
     };
     input.click();
@@ -396,34 +490,48 @@ const ToolContainer = ({
           </ToolInfo>
 
           <ToolActions>
-            <Button
-              variant="outline"
-              size="small"
-              icon={<Upload size={16} />}
-              onClick={handleImportFile}
-            >
-              Importar
-            </Button>
+            <ImportIndicator>
+              <Button
+                variant="outline"
+                size="small"
+                icon={importing ? <Database size={16} /> : <Upload size={16} />}
+                onClick={handleImportFile}
+                disabled={importing}
+              >
+                {importing ? 'Importando...' : 'Importar'}
+              </Button>
+              {importSuccess && (
+                <ImportBadge>
+                  <CheckCircle size={12} />
+                </ImportBadge>
+              )}
+            </ImportIndicator>
             
-            <Button
-              variant="outline"
-              size="small"
-              icon={<Download size={16} />}
-              onClick={handleExportPDF}
-              disabled={!toolData}
-            >
-              PDF
-            </Button>
+            <ExportIndicator>
+              <Button
+                variant="outline"
+                size="small"
+                icon={<Download size={16} />}
+                onClick={handleExportPDF}
+                disabled={!toolData}
+              >
+                PDF
+              </Button>
+              {toolData && <FileTypeTag>PDF</FileTypeTag>}
+            </ExportIndicator>
             
-            <Button
-              variant="outline"
-              size="small"
-              icon={<Download size={16} />}
-              onClick={handleExportExcel}
-              disabled={!toolData}
-            >
-              Excel
-            </Button>
+            <ExportIndicator>
+              <Button
+                variant="outline"
+                size="small"
+                icon={<Download size={16} />}
+                onClick={handleExportExcel}
+                disabled={!toolData}
+              >
+                Excel
+              </Button>
+              {toolData && <FileTypeTag>XLSX</FileTypeTag>}
+            </ExportIndicator>
             
             <Button
               variant="outline"
@@ -448,8 +556,9 @@ const ToolContainer = ({
               <InfoTitle>Herramienta Gratuita</InfoTitle>
               <InfoDescription>
                 Uso ilimitado con datos almacenados localmente. 
-                Exporta a PDF y Excel sin restricciones.
-                {lastSaved && ` Última modificación: ${new Date(lastSaved).toLocaleString('es-ES')}`}
+                <strong>Importa:</strong> JSON, CSV | <strong>Exporta:</strong> PDF, Excel sin restricciones.
+                {toolData?.importedFrom && ` | Importado desde: ${toolData.importedFrom}`}
+                {lastSaved && ` | Última modificación: ${new Date(lastSaved).toLocaleString('es-ES')}`}
               </InfoDescription>
             </InfoText>
           </InfoBanner>

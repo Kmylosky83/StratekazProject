@@ -47,9 +47,22 @@ const MainContent = styled.main`
   display: flex;
   flex-direction: column;
   margin-top: ${props => props.theme.componentMeasures.header.height}; /* Espacio para el header fijo */
+  transition: margin-left ${props => props.theme.componentMeasures.sidebar.transitionDuration} ${props => props.theme.componentMeasures.sidebar.transitionEasing};
   
   @media (min-width: ${props => props.theme.breakpoints.desktop}) {
-    margin-left: ${props => props.theme.componentMeasures.sidebar.width};
+    margin-left: ${props => {
+      // Determinar el ancho del sidebar basado en el estado colapsado
+      const sidebarCollapsed = localStorage.getItem('sidebarCollapsed');
+      const isCollapsed = sidebarCollapsed ? JSON.parse(sidebarCollapsed) : false;
+      
+      if (props.$sidebarWidth) {
+        return props.$sidebarWidth;
+      }
+      
+      return isCollapsed ? 
+        props.theme.componentMeasures.sidebar.widthCollapsed : 
+        props.theme.componentMeasures.sidebar.width;
+    }};
   }
 `;
 
@@ -110,7 +123,13 @@ const Overlay = styled.div`
 
 // navigationData movido al componente Sidebar
 
-const RecursosLibresLayout = ({ children }) => {
+const RecursosLibresLayout = ({ 
+  children, 
+  customSidebar = null, 
+  pageTitle = "Recursos Libres",
+  pageSubtitle = "Herramientas gratuitas de gestión empresarial",
+  renderCustomSidebar = null
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentTheme, changeTheme } = useTheme();
@@ -132,6 +151,14 @@ const RecursosLibresLayout = ({ children }) => {
     setInfoModalOpen(true);
   };
 
+  // Debug log para verificar sidebar personalizado
+  // useEffect(() => {
+  //   console.log('🔧 RecursosLibresLayout Debug:');
+  //   console.log('  - customSidebar:', !!customSidebar);
+  //   console.log('  - renderCustomSidebar:', !!renderCustomSidebar);
+  //   console.log('  - sidebarOpen:', sidebarOpen);
+  // }, [customSidebar, renderCustomSidebar, sidebarOpen]);
+
   // Funciones movidas al sidebar
   // Funciones eliminadas - el Header maneja los temas y menú móvil
 
@@ -150,10 +177,25 @@ const RecursosLibresLayout = ({ children }) => {
       
       <Overlay $show={sidebarOpen} onClick={() => setSidebarOpen(false)} />
       
-      <RecursosLibresSidebar 
-        isOpen={sidebarOpen} 
-        onClose={() => setSidebarOpen(false)}
-      />
+      {/* Sidebar personalizado o sidebar por defecto */}
+      {renderCustomSidebar ? (
+        renderCustomSidebar({
+          isOpen: sidebarOpen,
+          onClose: () => setSidebarOpen(false)
+        })
+      ) : customSidebar ? (
+        React.cloneElement(customSidebar, {
+          isOpen: sidebarOpen,
+          onClose: () => setSidebarOpen(false),
+          key: 'custom-sidebar'
+        })
+      ) : (
+        <RecursosLibresSidebar 
+          isOpen={sidebarOpen} 
+          onClose={() => setSidebarOpen(false)}
+          key="default-sidebar"
+        />
+      )}
 
       <MainContent>
         <ContentArea>

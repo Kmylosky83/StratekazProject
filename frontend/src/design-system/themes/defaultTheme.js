@@ -5,6 +5,7 @@ import colors from '../tokens/colors';
 import shadows from '../tokens/shadows';
 import spacing, { componentMeasures } from '../tokens/spacing';
 import typography from '../tokens/typography';
+import transitions from '../tokens/transitions';
 
 export const defaultTheme = {
   colors,
@@ -12,6 +13,7 @@ export const defaultTheme = {
   spacing,
   typography,
   componentMeasures,
+  transitions,
   
   // Configuraciones adicionales del tema
   breakpoints: {
@@ -20,12 +22,8 @@ export const defaultTheme = {
     desktop: '1200px'
   },
   
-  // Transiciones estándar
-  transitions: {
-    fast: '0.15s ease',
-    normal: '0.3s ease',
-    slow: '0.5s ease'
-  },
+  // Transiciones heredadas (mantenidas por compatibilidad)
+  // Las nuevas transiciones están en el token transitions importado
   
   // Radios de borde
   borderRadius: {

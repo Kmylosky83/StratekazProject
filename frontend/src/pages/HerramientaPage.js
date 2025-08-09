@@ -1,7 +1,7 @@
 // HerramientaPage - Página principal para herramientas SPA
 // Manejo de routing dinámico y navegación entre herramientas
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import ToolContainer from '../components/recursos-libres/ToolContainer';
@@ -88,6 +88,43 @@ const TOOLS_CONFIG = {
   }
 };
 
+// Herramientas que tienen su propio layout y no necesitan ToolContainer
+const SELF_CONTAINED_TOOLS = {
+  'iso': {
+    'diagnostico-9001': true  // Nueva versión con RecursosLibresLayout
+  }
+};
+
+// Hook para cargar herramientas directamente
+const useDirectToolLoader = (pillar, toolId) => {
+  const [ToolComponent, setToolComponent] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+
+  React.useEffect(() => {
+    if (!pillar || !toolId) return;
+
+    const loadTool = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const toolModule = await import(`./herramientas/${pillar}/${toolId}.js`);
+        setToolComponent(() => toolModule.default);
+      } catch (err) {
+        console.error('Error loading direct tool:', err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTool();
+  }, [pillar, toolId]);
+
+  return { ToolComponent, loading, error };
+};
+
 const HerramientaPage = () => {
   const { pillar, toolId } = useParams();
   const navigate = useNavigate();
@@ -99,6 +136,15 @@ const HerramientaPage = () => {
   // Validar que el pilar y herramienta existan
   const pillarConfig = TOOLS_CONFIG[pillar];
   const toolConfig = pillarConfig?.tools[toolId];
+
+  // Verificar si es una herramienta con layout propio
+  const isSelfContained = SELF_CONTAINED_TOOLS[pillar]?.[toolId];
+  console.log('🔍 HerramientaPage - pillar:', pillar, 'toolId:', toolId, 'isSelfContained:', isSelfContained);
+  
+  const { ToolComponent: DirectToolComponent, loading: directLoading, error: directError } = useDirectToolLoader(
+    isSelfContained ? pillar : null, 
+    isSelfContained ? toolId : null
+  );
 
   if (!pillarConfig || !toolConfig) {
     // Renderizar sin PageLayout para mantener consistencia con recursos gratuitos
@@ -144,7 +190,7 @@ const HerramientaPage = () => {
     navigate('/acceso-gratuito');
   };
 
-  if (loading) {
+  if (loading || directLoading) {
     // Renderizar sin PageLayout para mantener consistencia con recursos gratuitos
     return (
       <div style={{ 
@@ -165,7 +211,61 @@ const HerramientaPage = () => {
     );
   }
 
-  // Los recursos gratuitos se renderizan sin PageLayout (sin header/footer)
+  // Si es una herramienta con layout propio, renderizarla directamente
+  if (isSelfContained && DirectToolComponent) {
+    return (
+      <Suspense fallback={
+        <div style={{ 
+          minHeight: '100vh',
+          background: '#f8f9fa',
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center'
+        }}>
+          <SpinnerDiv />
+        </div>
+      }>
+        <DirectToolComponent />
+      </Suspense>
+    );
+  }
+
+  // Error al cargar herramienta directa
+  if (isSelfContained && directError) {
+    return (
+      <div style={{ 
+        minHeight: '100vh',
+        background: '#f8f9fa',
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        textAlign: 'center',
+        gap: '20px',
+        padding: '20px'
+      }}>
+        <h2>Error al cargar herramienta</h2>
+        <p>No se pudo cargar el "{toolConfig.name}"</p>
+        <button 
+          onClick={() => navigate('/acceso-gratuito')}
+          style={{
+            padding: '12px 24px',
+            borderRadius: '8px',
+            border: '1px solid #EC268F',
+            background: 'transparent',
+            color: '#EC268F',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: '500'
+          }}
+        >
+          Volver a Recursos Libres
+        </button>
+      </div>
+    );
+  }
+
+  // Herramientas tradicionales con ToolContainer
   return (
     <ToolContainer
       pillar={pillar}

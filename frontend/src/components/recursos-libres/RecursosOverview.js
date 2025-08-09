@@ -10,8 +10,9 @@ import { Card_Interaccion } from '../../design-system/components/Card';
 import { Award, HardHat, Car, Lightbulb, CheckCircle, Clock } from 'lucide-react';
 
 const OverviewContainer = styled.div`
-  max-width: ${props => props.theme.breakpoints.desktop};
-  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  padding: 0 ${props => props.theme.spacing.s6};
 `;
 
 const WelcomeSection = styled(FormContainer)`
@@ -51,9 +52,17 @@ const WelcomeDescription = styled.p`
 
 const StatsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: ${props => props.theme.spacing.s4};
   margin: ${props => props.theme.spacing.s6} 0;
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const StatCard = styled.div`
@@ -215,7 +224,7 @@ const RecursosOverview = () => {
 
       <SectionTitle>Explora los Pilares de Gestión</SectionTitle>
       
-      <PilaresGrid columns={2} tablet={1} mobile={1} gap="large">
+      <PilaresGrid columns={4} tablet={2} mobile={1} gap="large">
         {pilares.map((pilar) => {
           const IconComponent = pilar.icon;
           return (
@@ -224,7 +233,7 @@ const RecursosOverview = () => {
               title={pilar.title}
               subtitle={pilar.subtitle}
               description={pilar.description}
-              icon={<IconComponent size={32} />}
+              icon={<IconComponent size={parseInt(theme.componentMeasures.sidebar.iconSizeButton)} />}
               themeColor={getPilarColor(theme, pilar.id)}
               onClick={() => handlePilarClick(pilar)}
               footer={`${pilar.toolsCount} herramientas disponibles`}
@@ -237,35 +246,35 @@ const RecursosOverview = () => {
         <SectionTitle style={{ marginTop: 0 }}>¿Qué incluye cada pilar?</SectionTitle>
         
         <FeatureItem>
-          <FeatureIcon><CheckCircle size={20} /></FeatureIcon>
+          <FeatureIcon><CheckCircle size={parseInt(theme.componentMeasures.sidebar.iconSize)} /></FeatureIcon>
           <FeatureText>
             <strong>Diagnósticos automatizados:</strong> Evalúa el estado actual de tus sistemas de gestión
           </FeatureText>
         </FeatureItem>
         
         <FeatureItem>
-          <FeatureIcon><CheckCircle size={20} /></FeatureIcon>
+          <FeatureIcon><CheckCircle size={parseInt(theme.componentMeasures.sidebar.iconSize)} /></FeatureIcon>
           <FeatureText>
             <strong>Matrices de evaluación:</strong> Herramientas para identificar y evaluar riesgos
           </FeatureText>
         </FeatureItem>
         
         <FeatureItem>
-          <FeatureIcon><CheckCircle size={20} /></FeatureIcon>
+          <FeatureIcon><CheckCircle size={parseInt(theme.componentMeasures.sidebar.iconSize)} /></FeatureIcon>
           <FeatureText>
             <strong>Calculadoras especializadas:</strong> ROI, priorización y análisis cuantitativos
           </FeatureText>
         </FeatureItem>
         
         <FeatureItem>
-          <FeatureIcon><CheckCircle size={20} /></FeatureIcon>
+          <FeatureIcon><CheckCircle size={parseInt(theme.componentMeasures.sidebar.iconSize)} /></FeatureIcon>
           <FeatureText>
             <strong>Plantillas y formatos:</strong> Documentos listos para usar en tu organización
           </FeatureText>
         </FeatureItem>
         
         <FeatureItem>
-          <FeatureIcon><Clock size={20} /></FeatureIcon>
+          <FeatureIcon><Clock size={parseInt(theme.componentMeasures.sidebar.iconSize)} /></FeatureIcon>
           <FeatureText>
             <strong>Próximamente:</strong> 10 herramientas por pilar para un total de 40 recursos
           </FeatureText>
